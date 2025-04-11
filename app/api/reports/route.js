@@ -1,11 +1,12 @@
-import { Admin, Report } from "@lib/models"; // Import models
+import { Report } from "@lib/models"; // Import models
 import { NextResponse } from "next/server"; // Next.js response utility
 
 // POST handler for report submission
 export async function POST(request) {
+    console.log("post request?????????????", request);
     try {
         const body = await request.json();
-
+        console.log("Received report data:", body);
         // Create new report in the database
         const newReport = await Report.create({
             report_date: body.report_date || null,
@@ -30,32 +31,43 @@ export async function POST(request) {
             { status: 200 }
         );
     } catch (error) {
-        console.error("Error handling report submission:", error);
+        // console.error("Error handling report submission:", error.errors);
 
         // Handle Sequelize validation errors
         if (
             error.name === "SequelizeValidationError" ||
             error.name === "SequelizeUniqueConstraintError"
         ) {
-            const validationErrors = error.errors.reduce((acc, err) => {
+            const validationErrors = error.errors.map((err) => {
                 if (error.name === "SequelizeUniqueConstraintError") {
-                    acc[err.path] = `${err.path} already exists!`;
+                    return `${err.path} already exists!`;
                 } else {
-                    acc[err.path] = err.message;
+                    return err.message;
                 }
-                return acc;
-            }, {});
+            });
 
             return NextResponse.json(
-                { error: "Validation failed", details: validationErrors },
+                {
+                    error: true,
+                    message: "Validation failed",
+                    details: validationErrors,
+                },
                 { status: 400 }
             );
         }
 
-        // Generic error handling
         return NextResponse.json(
-            { error: "Failed to submit report." },
+            { error: true, message: "Failed to submit report." },
             { status: 500 }
         );
     }
 }
+
+// const validationErrors = error.errors.reduce((acc, err) => {
+//     if (error.name === "SequelizeUniqueConstraintError") {
+//         acc[err.path] = `${err.path} already exists!`;
+//     } else {
+//         acc[err.path] = err.message;
+//     }
+//     return acc;
+// }, {});
