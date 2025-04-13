@@ -1,8 +1,9 @@
 import FormLabel from "./FormLabel";
-import { Calendar } from "lucide-react";
+import { Calendar, Cross } from "lucide-react";
 import { useEffect } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import dynamic from "next/dynamic";
+import { useTheme } from 'next-themes';
 
 const CreatableSelectNoSSR = dynamic(() => import("react-select/creatable"), {
     ssr: false,
@@ -10,6 +11,9 @@ const CreatableSelectNoSSR = dynamic(() => import("react-select/creatable"), {
 import { BiError, BiMaleFemale } from "react-icons/bi";
 import { IoArrowUndoCircle } from "react-icons/io5";
 import { MdNextPlan } from "react-icons/md";
+import { getSingleStyle } from "@/styles/select-styles";
+import notify from "@components/ui/notify";
+import { GiCancel } from "react-icons/gi";
 
 const error_type_options = [
     {
@@ -56,21 +60,14 @@ const error_type_options = [
         value: "Incorrect Administration - Omission (medication is not given)",
         label: "Incorrect Administration - Omission (medication is not given)",
     },
-    { value: "other", label: "Others" },
+    { value: "Others", label: "Others" },
 ];
 
-const customStyles = {
-    control: (provided, state) => ({
-        ...provided,
-        borderColor: state.isFocused ? "black" : provided.borderColor,
-        boxShadow: state.isFocused ? "0 0 0 1px black" : provided.boxShadow,
-        ":hover": {
-            border: "1px solid gray",
-        },
-    }),
-};
 
-export default function FirstForm({ setIsSecondPage }) {
+export default function FirstForm({ setIsProceedForm, setIsSecondPage }) {
+
+    const { theme, resolvedTheme } = useTheme()
+
     const {
         register,
         watch,
@@ -94,7 +91,14 @@ export default function FirstForm({ setIsSecondPage }) {
             "error_type",
             "other_error_type",
         ]);
-        if (valid) setIsSecondPage(true);
+        if (valid) {
+            setIsSecondPage(true);
+        } else {
+            notify({
+                error: true,
+                message: "Please provide the necessary information..",
+            }, "warning")
+        }
     };
 
     console.log("watch:", watch());
@@ -102,17 +106,18 @@ export default function FirstForm({ setIsSecondPage }) {
     const error_type = watch("error_type");
 
     useEffect(() => {
-        if (error_type !== "others") {
+        if (error_type !== "Others") {
             setValue("other_error_type", "");
         }
     }, [error_type]);
 
     return (
         <section>
+            The current theme is: {theme} : {resolvedTheme}
             <h2 className="card-title text-2xl">Patient Details</h2>
             <div className="flex mt-5">
                 <FormLabel labelText="Report Date:" />
-                <label className="input validator mt-1 border border-gray-300">
+                <label className="input mt-1 border border-gray-300 dark:text-white">
                     <Calendar className="h-3" />
                     <input
                         type="date"
@@ -134,7 +139,7 @@ export default function FirstForm({ setIsSecondPage }) {
             <div className="mt-5 flex">
                 <FormLabel labelText="Date of the medication error happened:" />
 
-                <label className="input validator mt-1 border border-gray-300">
+                <label className="input validator mt-1 border border-gray-300 dark:text-white">
                     <Calendar className="h-3" />
                     <input
                         name="error_date"
@@ -158,7 +163,7 @@ export default function FirstForm({ setIsSecondPage }) {
             <div className="mt-5 flex items-center">
                 <FormLabel labelText="Sex of the patient:" />
                 <div className="w-full">
-                    <label className="select border border-gray-300">
+                    <label className="select border border-gray-300 dark:text-white">
                         <span className="label">
                             <BiMaleFemale />{" "}
                         </span>
@@ -189,7 +194,7 @@ export default function FirstForm({ setIsSecondPage }) {
             <div className="mt-5 flex items-center">
                 <FormLabel labelText="Weight of the patient:" />
                 <div className="w-full">
-                    <label className="input border border-gray-300">
+                    <label className="input border border-gray-300 dark:text-white">
                         <input
                             type="number"
                             name="patient_weight"
@@ -215,7 +220,7 @@ export default function FirstForm({ setIsSecondPage }) {
 
             <div className="mt-5 flex items-center">
                 <FormLabel labelText="Height of the patient:" />
-                <label className="input border border-gray-300">
+                <label className="input border border-gray-300 dark:text-white">
                     <input
                         type="number"
                         name="patient_height"
@@ -238,7 +243,7 @@ export default function FirstForm({ setIsSecondPage }) {
                 )}
             </div>
 
-            <div className="mt-5 flex">
+            <div className="mt-5">
                 <FormLabel labelText="Type of medication error:" />
                 <fieldset className="fieldset w-full">
                     <Controller
@@ -252,34 +257,39 @@ export default function FirstForm({ setIsSecondPage }) {
                                 id="error_type"
                                 name={name}
                                 ref={ref}
+                                placeholder="Type of medication error * (required)"
+                                // getOptionLabel={(
+                                //     option,
+                                // ) => (
+                                //     <div className="dark:bg-black">
+                                //         {option.label}
+                                //     </div>
+                                // )}
                                 value={error_type_options.find(
                                     (option) => option.value === value
                                 )}
                                 onChange={(selectedOption) =>
-                                    onChange(selectedOption.value)
+                                    onChange(selectedOption?.value)
                                 }
                                 options={error_type_options}
-                                styles={customStyles}
+                                styles={getSingleStyle(resolvedTheme)}
+                                isClearable
                             />
                         )}
                     />
                 </fieldset>
-            </div>
-
-            {errors.error_type && (
-                <div className="flex">
-                    <FormLabel labelText="" />
-
+                {errors.error_type && (
                     <p className="text-red-500 text-sm flex-items-center">
                         <BiError />
                         {errors.error_type?.message}
                     </p>
-                </div>
-            )}
-            {error_type === "other" && (
+                )}
+            </div>
+
+            {error_type === "Others" && (
                 <div className="mt-5 ">
                     {/* <FormLabel labelText="Exact medication prescription as ordered for the patient:" /> */}
-                    <label className="floating-label">
+                    <label className="floating-label border border-gray-300 dark:text-white">
                         <input
                             type="text"
                             name="other_error_type"
@@ -303,8 +313,8 @@ export default function FirstForm({ setIsSecondPage }) {
                 </div>
             )}
             <div className="card-actions justify-between mt-10">
-                <button disabled={true} className="btn btn-primary">
-                    <IoArrowUndoCircle /> Back
+                <button onClick={() => setIsProceedForm(false)} className="btn btn-default">
+                    <GiCancel /> Cancel
                 </button>
                 <button
                     type="button"

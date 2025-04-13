@@ -2,7 +2,7 @@ import React from "react";
 
 const Footer = () => {
     return (
-        <footer className="py-4 shadow-[1px_-7px_5px_-2px_rgba(0,_0,_0,_0.1)] border-outline">
+        <footer className="py-4 shadow-[1px_-7px_5px_-2px_rgba(0,_0,_0,_0.1)]">
             <div className="container mx-auto text-center">
                 <p>
                     &copy; {new Date().getFullYear()} Your Company Name. All

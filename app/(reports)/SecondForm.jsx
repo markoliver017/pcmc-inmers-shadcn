@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+
 import { useFormContext } from "react-hook-form";
 
 import FormLabel from "./FormLabel";
@@ -6,6 +6,7 @@ import FormLabel from "./FormLabel";
 import { IoArrowUndoCircle } from "react-icons/io5";
 import { BiError } from "react-icons/bi";
 import { MdDone } from "react-icons/md";
+import notify from "@components/ui/notify";
 
 export default function SecondForm({ setIsSecondPage, setIsConfirmationPage }) {
     const {
@@ -15,12 +16,9 @@ export default function SecondForm({ setIsSecondPage, setIsConfirmationPage }) {
         formState: { errors },
     } = useFormContext();
 
-    // useEffect(() => {
-    //     console.log("errors:", errors);
-    // }, [errors]);
-
     const handleNext = async () => {
         const valid = await trigger([
+            "exact_prescription",
             "incident_description",
             "workplace_environment",
             "patient_condition",
@@ -28,21 +26,27 @@ export default function SecondForm({ setIsSecondPage, setIsConfirmationPage }) {
             "corrective_actions",
             "preventive_actions",
         ]);
-        if (valid) setIsConfirmationPage(true);
+        if (valid) {
+            setIsConfirmationPage(true)
+        } else {
+            notify({
+                error: true,
+                message: "Please provide the necessary information..",
+            }, "warning")
+        };
     };
 
     // console.log("watch:", watch());
 
     return (
-        <section>
+        <section className="dark:text-white">
             <h2 className="card-title text-2xl">Medication Error Details</h2>
-            <div className="mt-5">
+            <div>
                 <FormLabel labelText="Exact medication prescription as ordered for the patient:" />
                 <fieldset className="fieldset">
                     <textarea
                         className="textarea h-24 w-full border border-gray-300"
                         placeholder="Medication prescription"
-                        name="exact_prescription"
                         {...register("exact_prescription", {
                             required: "Medication prescription is required.",
                             minLength: {

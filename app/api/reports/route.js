@@ -1,12 +1,14 @@
-import { Report } from "@lib/models"; // Import models
-import { NextResponse } from "next/server"; // Next.js response utility
+import { Report } from "@lib/models";
+import { NextResponse } from "next/server";
 
 // POST handler for report submission
 export async function POST(request) {
-    console.log("post request?????????????", request);
+
     try {
-        const body = await request.json();
-        console.log("Received report data:", body);
+        await new Promise((resolve) => setTimeout(resolve, 2000));
+
+        const body = await request.json(); // Parse the request body
+
         // Create new report in the database
         const newReport = await Report.create({
             report_date: body.report_date || null,

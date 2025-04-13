@@ -2,7 +2,15 @@
 @import "tw-animate-css";
 @plugin "daisyui";
 
-@custom-variant dark (&:is(.dark *));
+.border-outline {
+    @apply border border-red-500;
+}
+
+.flex-items-center {
+    @apply flex items-center gap-1;
+}
+
+/* @custom-variant dark (&:is(.dark *)); */
 
 @theme inline {
     --color-background: var(--background);
@@ -113,13 +121,6 @@
     --sidebar-ring: oklch(0.556 0 0);
 }
 
-.border-outline {
-    @apply border border-red-500;
-}
-
-.flex-items-center {
-    @apply flex items-center gap-1;
-}
 
 @layer base {
     * {

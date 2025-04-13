@@ -8,29 +8,20 @@ import FirstForm from "./FirstForm";
 import SecondForm from "./SecondForm";
 import { Send } from "lucide-react";
 import clsx from "clsx";
+import SweetAlert from "@components/ui/SweetAlert";
+import notify from "@components/ui/notify";
 
-export default function ReportForm() {
+export default function ReportForm({ setIsProceedForm }) {
     const methods = useForm({ mode: "onChange" });
     const [isSecondPage, setIsSecondPage] = useState(false);
     const [isConfirmationPage, setIsConfirmationPage] = useState(false);
     const [isConfirmed, setIsConfirmed] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-    // const [data, setData] = useState(null);
 
-    // const onFirstSubmit = (formData) => {
-    //     console.log("onFirstSubmit:", formData);
-    //     setData(formData);
-    //     setIsSecondPage(true);
-    // };
-
-    // const onSecondSubmit = (formData) => {
-    //     console.log("onSecondSubmit:", formData);
-    //     setData((prevData) => ({ ...prevData, ...formData }));
-    //     console.log("onSecondSubmit:", data);
-    // };
 
     const {
         watch,
+        reset,
         formState: { errors },
     } = methods;
 
@@ -39,6 +30,7 @@ export default function ReportForm() {
 
     const onFinalSubmit = async (data) => {
         setIsLoading(true);
+
         try {
             const response = await fetch("/api/reports", {
                 method: "POST",
@@ -46,16 +38,48 @@ export default function ReportForm() {
                 headers: { "Content-Type": "application/json" },
             });
 
+            const result = await response.json();
+
             if (!response.ok) {
-                // Handle HTTP error statuses
-                const errorData = await response.json();
-                throw new Error(errorData.message || "Something went wrong");
+                throw result;
             }
 
-            const result = await response.json();
-            console.log("onFinalSubmit result:", result);
-        } catch (error) {
-            console.error("onFinalSubmit Fetch error:", error);
+            reset({});
+            setIsSecondPage(false);
+            setIsConfirmationPage(false);
+            setIsConfirmed(false);
+            setIsProceedForm(false);
+            notify({
+                message: "Medication error report submitted successfully.",
+                error: false,
+            });
+            SweetAlert({
+                title: "Success",
+                text: "Medication error report submitted successfully.",
+                icon: "success",
+                confirmButtonText: "OK",
+            });
+
+        } catch (data) {
+
+            if (data?.message == "Validation failed" && Array.isArray(data.details)) {
+                const { error, details, message } = data;
+                notify({
+                    error,
+                    message: <div tabIndex={0} className="collapse">
+                        <div className="collapse-title font-semibold">{message}<br />
+                            <small className="link link-warning">See details</small>
+                        </div>
+                        <div className="collapse-content text-sm">
+                            <ul className="list-disc list-inside">
+                                {details.map((err, index) => (
+                                    <li key={index}>{err}</li>
+                                ))}
+                            </ul>
+                        </div>
+                    </div>
+                })
+            }
         } finally {
             setIsLoading(false);
         }
@@ -63,13 +87,9 @@ export default function ReportForm() {
 
     return (
         <>
-            <div className="card bg-base-100 w-full sm:w-3/4 shadow-[5px_5px_0px_0px_rgba(0,_0,_0,_0.5),inset_0px_2px_4px_0px_rgba(0,_0,_0,_0.3)]">
+            <div className="card w-full sm:w-3/4 shadow-[5px_5px_0px_0px_rgba(0,_0,_0,_0.5),inset_0px_2px_4px_0px_rgba(0,_0,_0,_0.3)]">
                 <div className="flex pt-2 justify-center items-center ">
-                    {/* <progress
-                        className="m-5 progress h-4 progress-accent w-[90%]"
-                        value={isSecondPage ? 100 : 50}
-                        max="100"
-                    ></progress> */}
+
                     <ul className="steps">
                         <li className="step step-primary">
                             <small>Patient Details</small>
@@ -95,15 +115,12 @@ export default function ReportForm() {
                 <div className="card-body">
                     <FormProvider {...methods}>
                         <form
-                            // onSubmit={methods.handleSubmit((data) =>
-                            //     onFinalSubmit(data)
-                            // )}
-                            className="px-5 bg-base-200 rounded-lg p-5"
+                            className="px-5 rounded-lg p-5"
                         >
                             {!isSecondPage ? (
                                 <FirstForm
+                                    setIsProceedForm={setIsProceedForm}
                                     setIsSecondPage={setIsSecondPage}
-                                    isSecondPage={isSecondPage}
                                 />
                             ) : (
                                 <>
@@ -115,7 +132,7 @@ export default function ReportForm() {
                                             }
                                         />
                                     ) : (
-                                        <div className="flex flex-col mt-10 space-y-5 text-center">
+                                        <div className="flex flex-col items-center mt-10 space-y-5 text-center">
                                             <h1 className="text-xl font-bold text-warning">
                                                 Are you sure you want to submit
                                                 this medication error?
@@ -143,23 +160,39 @@ export default function ReportForm() {
 
                                             <button
                                                 type="button"
-                                                className="btn btn-success w-full sm:w-1/2 mx-auto disabled:btn-disabled"
-                                                disabled={
-                                                    !isConfirmed || isLoading
-                                                }
-                                                onClick={methods.handleSubmit(
-                                                    (data) =>
-                                                        onFinalSubmit(data)
+                                                // className="btn  w-full sm:w-1/2 mx-auto disabled:btn-disabled"
+                                                className={clsx(
+                                                    "btn w-full sm:w-1/2 mx-auto",
+                                                    isConfirmed ? "btn-success" : "btn-gray text-gray-500 cursor-not-allowed"
                                                 )}
+                                                disabled={
+                                                    isLoading
+                                                }
+                                                onClick={() => {
+                                                    if (!isConfirmed) {
+                                                        SweetAlert({
+                                                            title: "Confirmation",
+                                                            text: "Please confirm the information provided is accurate.",
+                                                            icon: "warning"
+                                                        })
+                                                        return;
+                                                    }
+                                                    methods.handleSubmit(
+                                                        (data) =>
+                                                            onFinalSubmit(data)
+                                                    )()
+                                                }}
+
                                             >
-                                                <Send />
+
+
                                                 {isLoading
-                                                    ? "Submitting..."
-                                                    : "Submit Form"}
+                                                    ? <><span className="loading loading-bars loading-xs"></span>Submitting...</>
+                                                    : <><Send />Submit Form</>}
                                             </button>
                                             <button
                                                 type="button"
-                                                className="text-blue-500 underline"
+                                                className="sm:w-1/4 text-blue-500 underline cursor-pointer hover:text-blue-900"
                                                 onClick={() =>
                                                     setIsConfirmationPage(false)
                                                 }
@@ -167,24 +200,7 @@ export default function ReportForm() {
                                                 Review Form
                                             </button>
                                         </div>
-                                        // <div className="mt-10">
-                                        //     <h1>
-                                        //         Are you sure you want to submit
-                                        //         this medication error?
-                                        //     </h1>
-                                        //     <button
-                                        //         type="button"
-                                        //         className="btn btn-success w-full"
-                                        //         onClick={methods.handleSubmit(
-                                        //             (data) =>
-                                        //                 onFinalSubmit(data)
-                                        //         )}
-                                        //     >
-                                        //         {isLoading
-                                        //             ? "Submitting..."
-                                        //             : "Submit Form"}
-                                        //     </button>
-                                        // </div>
+
                                     )}
                                 </>
                             )}
