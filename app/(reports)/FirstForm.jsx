@@ -96,7 +96,7 @@ export default function FirstForm({ setIsProceedForm, setIsSecondPage }) {
                 if (!res.ok) throw new Error("Failed to fetch error types");
 
                 const { error_types } = await res.json();
-                console.log(">>>>>>>>>>>>>>>>>>>>>>", error_types);
+
                 setErrorTypeOptions(
                     error_types.map((type) => ({
                         value: type.name,
@@ -135,16 +135,15 @@ export default function FirstForm({ setIsProceedForm, setIsSecondPage }) {
         }
     };
 
-    console.log("watch:", watch());
-    console.log("errorserrorserrorserrors:", errors);
+    // console.log("watch:", watch());
 
-    const error_type = watch("error_type");
+    const error_type_id = watch("error_type_id");
 
     useEffect(() => {
-        if (error_type !== "Others") {
+        if (error_type_id != 12) {
             setValue("other_error_type", "");
         }
-    }, [error_type]);
+    }, [error_type_id]);
 
     return (
         <section>
@@ -282,27 +281,26 @@ export default function FirstForm({ setIsProceedForm, setIsSecondPage }) {
                         rules={{
                             required: "Type of medication error is required.",
                         }}
-                        render={({ field: { onChange, value, name, ref } }) => (
-                            <CreatableSelectNoSSR
-                                id="error_type"
-                                name={name}
-                                ref={ref}
-                                placeholder="Type of medication error * (required)"
-                                value={errorTypeOptions.find(
-                                    (option) => option.value === value
-                                )}
-                                onChange={(selectedOption) => {
-                                    console.log(
-                                        "selectedOptionselectedOption",
-                                        selectedOption
-                                    );
-                                    onChange(selectedOption?.id);
-                                }}
-                                options={errorTypeOptions}
-                                styles={getSingleStyle(resolvedTheme)}
-                                isClearable
-                            />
-                        )}
+                        render={({ field: { onChange, value, name, ref } }) => {
+                            console.log("<>>>>>>>><>>>>>>>><>", value)
+                            const selectedOption = errorTypeOptions.find(option => option.id === value) || null;
+                            return (
+                                <CreatableSelectNoSSR
+                                    id="error_type_id"
+                                    name={name}
+                                    ref={ref}
+                                    placeholder="Type of medication error * (required)"
+                                    value={selectedOption}
+                                    onChange={(selectedOption) => {
+                                        onChange(selectedOption ? selectedOption.id : null);
+                                    }}
+                                    isValidNewOption={() => false}
+                                    options={errorTypeOptions}
+                                    styles={getSingleStyle(resolvedTheme)}
+                                    isClearable
+                                />
+                            )
+                        }}
                     />
                 </fieldset>
                 {errors.error_type_id && (
@@ -312,7 +310,7 @@ export default function FirstForm({ setIsProceedForm, setIsSecondPage }) {
                     </p>
                 )}
             </div>
-            {error_type === "Others" && (
+            {error_type_id == "12" && (
                 <div className="mt-5 ">
                     {/* <FormLabel labelText="Exact medication prescription as ordered for the patient:" /> */}
                     <label className="floating-label border border-gray-300 dark:text-white">
@@ -321,7 +319,7 @@ export default function FirstForm({ setIsProceedForm, setIsSecondPage }) {
                             name="other_error_type"
                             {...register("other_error_type", {
                                 required:
-                                    error_type === "other"
+                                    error_type_id == "12"
                                         ? "Specify other medication error"
                                         : false,
                             })}

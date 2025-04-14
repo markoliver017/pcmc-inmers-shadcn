@@ -24,7 +24,7 @@ export default function ReportForm({ setIsProceedForm }) {
         formState: { errors },
     } = methods;
 
-    // console.log("watchAll", watch());
+    console.log("watchAll", watch());
     // console.log("form errors", errors);
 
     const onFinalSubmit = async (data) => {

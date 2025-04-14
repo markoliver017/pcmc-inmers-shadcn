@@ -1,19 +1,38 @@
-import { Report } from "@lib/models";
+import { ErrorType, Report } from "@lib/models";
 import { NextResponse } from "next/server";
 import { Sequelize } from "sequelize";
 
 export async function GET() {
     try {
-        const errorTypeCounts = await Report.findAll({
+        const errorTypeCounts = await ErrorType.findAll({
             attributes: [
-                "error_type",
-                [Sequelize.fn("COUNT", Sequelize.col("error_type")), "count"],
+                "id",
+                "name",
+                [Sequelize.fn("COUNT", Sequelize.col("Reports.id")), "count"]
             ],
-            group: ["error_type"],
+            include: [
+                {
+                    model: Report,
+                    attributes: [], // exclude report fields
+                    required: false, // <-- this is key! makes it a LEFT JOIN
+                }
+            ],
+            group: ["ErrorType.id", "ErrorType.name"],
+            order: [["id", "ASC"]], // optional: sort alphabetically
             raw: true,
         });
+
+        const totalReports = errorTypeCounts.reduce((sum, item) => {
+            return sum + parseInt(item.count, 10);
+        }, 0);
+
         return NextResponse.json(
-            { success: true, data: errorTypeCounts },
+            {
+                error: false,
+                message: "The reports have been successfully retrieved.",
+                total: totalReports,
+                data: errorTypeCounts
+            },
             { status: 200 }
         );
     } catch (error) {
@@ -21,7 +40,7 @@ export async function GET() {
             {
                 error: true,
                 message: "Failed to retrieve reports.",
-                details: error,
+                data: error,
             },
             { status: 500 }
         );

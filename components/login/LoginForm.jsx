@@ -33,7 +33,6 @@ export default function LoginForm() {
     // console.log("form errors", errors);
 
     const onSubmit = async (data) => {
-        console.log(data);
         setIsLoading(true);
 
         setTimeout(() => {
@@ -101,7 +100,7 @@ export default function LoginForm() {
                             },
                         })}
                         placeholder="mail@site.com"
-                        // required
+                    // required
                     />
                 </label>
                 <p className="text-red-500 text-sm">
