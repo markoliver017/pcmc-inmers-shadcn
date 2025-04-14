@@ -1,11 +1,73 @@
+"use client";
+
+import React, { useState } from "react";
 import { Key, Mail } from "lucide-react";
 import Image from "next/image";
-import React from "react";
 import { IoMdLogIn } from "react-icons/io";
+import { set, useForm } from "react-hook-form";
+import notify from "@components/ui/notify";
+import { toast } from "react-toastify";
+import { redirect } from "next/navigation";
+
+const credentials = {
+    email: "admin@email.com",
+    password: "password",
+};
 
 export default function LoginForm() {
+    const [isLoading, setIsLoading] = useState(false);
+    const {
+        register,
+        watch,
+        handleSubmit,
+        setError,
+        formState: { errors },
+    } = useForm({
+        defaultValues: {
+            email: credentials.email,
+            password: credentials.password,
+        },
+    });
+
+    // console.log("watchAll", watch());
+    // console.log("form errors", errors);
+
+    const onSubmit = async (data) => {
+        console.log(data);
+        setIsLoading(true);
+
+        setTimeout(() => {
+            // Perform login logic here
+            if (
+                data.email === credentials.email &&
+                data.password === credentials.password
+            ) {
+                toast.success("Login successful!", {
+                    // message: "Login successful!",
+                    position: "bottom-left",
+                });
+                // Redirect to the dashboard or perform any other action
+                redirect("/admin");
+            } else {
+                setError("password", {
+                    type: "manual",
+                    message: "Invalid email or password!",
+                });
+
+                toast.error("Invalid email or password!", {
+                    position: "bottom-left",
+                });
+            }
+
+            setIsLoading(false);
+        }, 2000);
+    };
+
     return (
-        <fieldset className="fieldset w-full bg-base-200 border border-base-300 p-4 rounded-box">
+        <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="fieldset w-full bg-base-200 border border-base-300 p-4 rounded-box"
+        >
             <legend className="fieldset-legend">INMERS Portal</legend>
             <div className="flex flex-col items-center justify-center mb-4">
                 <Image
@@ -24,11 +86,27 @@ export default function LoginForm() {
                 <label className="fieldset-label">Email</label>
                 <label className="input validator mt-1">
                     <Mail className="h-3" />
-                    <input type="email" placeholder="mail@site.com" required />
+                    <input
+                        type="email"
+                        {...register("email", {
+                            required: "Email Address is required.",
+                            pattern: {
+                                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                                message: "Email Address is invalid.",
+                            },
+                            validate: (value) => {
+                                if (value.length < 5) {
+                                    return "Email Address must be at least 5 characters long.";
+                                }
+                            },
+                        })}
+                        placeholder="mail@site.com"
+                        // required
+                    />
                 </label>
-                <div className="validator-hint hidden">
-                    Enter valid email address
-                </div>
+                <p className="text-red-500 text-sm">
+                    {errors.email && <span>{errors.email?.message}</span>}
+                </p>
             </div>
 
             <div className="mt-2">
@@ -37,22 +115,39 @@ export default function LoginForm() {
                     <Key className="h-3" />
                     <input
                         type="password"
-                        required
+                        {...register("password", {
+                            required: "Password is required.",
+                            validate: (value) => {
+                                if (value.length < 8) {
+                                    return "Password must be at least 8 characters long.";
+                                }
+                            },
+                        })}
+                        // required
                         placeholder="Password"
                         minLength="8"
                         pattern=".{8,}"
                         title="Must be more than 8 characters"
                     />
                 </label>
-                <p className="validator-hint hidden">
-                    Must be more than 8 characters
+                <p className="text-red-500 text-sm">
+                    {errors.password && <span>{errors.password?.message}</span>}
                 </p>
             </div>
 
             <button className="btn btn-neutral mt-4 hover:bg-neutral-800 hover:text-green-300">
-                <IoMdLogIn />
-                Login
+                {isLoading ? (
+                    <>
+                        <span className="loading loading-bars loading-xs"></span>
+                        Signing In...
+                    </>
+                ) : (
+                    <>
+                        <IoMdLogIn />
+                        Sign In
+                    </>
+                )}
             </button>
-        </fieldset>
+        </form>
     );
 }

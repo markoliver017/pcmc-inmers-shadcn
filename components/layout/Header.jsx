@@ -1,8 +1,25 @@
 import LoginDrawer from "@components/login/LoginDrawer";
 import Image from "next/image";
 import Link from "next/link";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from "@components/ui/dropdown-menu";
+import { Button } from "@components/ui/button";
+import { Command, Eye, LogOut, MoreHorizontal } from "lucide-react";
 
-const Header = () => {
+const Header = ({
+    isLoggedIn = false,
+    admin = {
+        name: "Bonnie Green",
+        email: "bonnie@example.com",
+        avatar: "https://avatar.iran.liara.run/public/boy",
+    },
+}) => {
     return (
         <>
             <header className="flex gap-10 justify-between items-center border-b border-gray-200 p-2 bg-gradient-to-r from-violet-600 to-indigo-600 text-white">
@@ -42,7 +59,44 @@ const Header = () => {
                             </li>
                         </ul>
                     </nav>
-                    <LoginDrawer />
+                    {!isLoggedIn ? (
+                        <LoginDrawer />
+                    ) : (
+                        <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                                <Button variant="ghost" className="h-8 w-8 p-0">
+                                    <span className="sr-only">Open menu</span>
+                                    <Image
+                                        src={admin.avatar}
+                                        className="flex-none"
+                                        width={50}
+                                        height={50}
+                                        layout="intrinsic"
+                                        alt="Logo"
+                                    />
+                                </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end">
+                                <DropdownMenuLabel className="flex items-center space-x-2">
+                                    <Command className="w-3 h-3" />
+                                    <div className="flex flex-col">
+                                        <span>{admin.name}</span>
+                                        <span className="text-xs font-light">
+                                            {admin.email}
+                                        </span>
+                                    </div>
+                                </DropdownMenuLabel>
+                                <DropdownMenuSeparator />
+
+                                <Link href={`/`}>
+                                    <DropdownMenuItem className="flex items-center space-x-2">
+                                        <LogOut className="w-4 h-4" />
+                                        <span>Log Out</span>
+                                    </DropdownMenuItem>
+                                </Link>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
+                    )}
                 </div>
             </header>
         </>

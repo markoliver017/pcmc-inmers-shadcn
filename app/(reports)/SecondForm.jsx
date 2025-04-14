@@ -1,4 +1,3 @@
-
 import { useFormContext } from "react-hook-form";
 
 import FormLabel from "./FormLabel";
@@ -27,13 +26,16 @@ export default function SecondForm({ setIsSecondPage, setIsConfirmationPage }) {
             "preventive_actions",
         ]);
         if (valid) {
-            setIsConfirmationPage(true)
+            setIsConfirmationPage(true);
         } else {
-            notify({
-                error: true,
-                message: "Please provide the necessary information..",
-            }, "warning")
-        };
+            notify(
+                {
+                    error: true,
+                    message: "Please provide the necessary information..",
+                },
+                "warning"
+            );
+        }
     };
 
     // console.log("watch:", watch());

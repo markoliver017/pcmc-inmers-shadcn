@@ -9,18 +9,18 @@ import { MdReport } from "react-icons/md";
 import clsx from "clsx";
 
 const menus = [
-    { name: "Home", path: "/", icon: <FaHome /> },
-    { name: "Reports", path: "/reports", icon: <MdReport /> },
-    { name: "Settings", path: "/settings", icon: <FaCog /> },
-    { name: "Profile", path: "/profile", icon: <FaUser /> },
-]
+    { name: "Dashboard", path: "/admin", icon: <FaHome /> },
+    { name: "Profile", path: "/admin/profile", icon: <FaUser /> },
+    { name: "Reports", path: "/admin/reports", icon: <MdReport /> },
+    { name: "System Administration", path: "/admin/settings", icon: <FaCog /> },
+];
 
 const Sidebar = ({
     admin = {
-        name: 'Bonnie Green',
-        email: 'bonnie@example.com',
-        avatar: 'https://avatar.iran.liara.run/public/boy',
-    }
+        name: "Bonnie Green",
+        email: "bonnie@example.com",
+        avatar: "https://avatar.iran.liara.run/public/boy",
+    },
 }) => {
     const [isCollapsed, setIsCollapsed] = useState(false);
 
@@ -85,7 +85,9 @@ const Sidebar = ({
             </div>
             <div className="mt-5">
                 {!isCollapsed && (
-                    <h2 className="text-base text-gray-500 font-bold">Main Navigation</h2>
+                    <h2 className="text-base text-gray-500 font-bold">
+                        Main Navigation
+                    </h2>
                 )}
                 <nav className="mt-4">
                     <ul>

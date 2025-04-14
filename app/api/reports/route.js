@@ -1,9 +1,33 @@
-import { Report } from "@lib/models";
+import { ErrorType, Report } from "@lib/models";
 import { NextResponse } from "next/server";
+
+export async function GET() {
+    try {
+        const reports = await Report.findAll({
+            include: [
+                {
+                    attributes: ["id", "name"],
+                    model: ErrorType,
+                    as: "error_type",
+                    required: false,
+                },
+            ],
+        });
+        return NextResponse.json({ success: true, reports }, { status: 200 });
+    } catch (error) {
+        return NextResponse.json(
+            {
+                error: true,
+                message: "Failed to retrieve reports.",
+                details: error,
+            },
+            { status: 500 }
+        );
+    }
+}
 
 // POST handler for report submission
 export async function POST(request) {
-
     try {
         await new Promise((resolve) => setTimeout(resolve, 2000));
 
@@ -17,7 +41,7 @@ export async function POST(request) {
             patient_weight: body.patient_weight || null,
             patient_height: body.patient_height || null,
             exact_prescription: body.exact_prescription || null,
-            error_type: body.error_type || null,
+            error_type_id: body.error_type_id || null,
             other_error_type: body.other_error_type || null,
             incident_description: body.incident_description || null,
             workplace_environment: body.workplace_environment || null,

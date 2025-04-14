@@ -18,15 +18,14 @@ export default function ReportForm({ setIsProceedForm }) {
     const [isConfirmed, setIsConfirmed] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
 
-
     const {
         watch,
         reset,
         formState: { errors },
     } = methods;
 
-    console.log("watchAll", watch());
-    console.log("form errors", errors);
+    // console.log("watchAll", watch());
+    // console.log("form errors", errors);
 
     const onFinalSubmit = async (data) => {
         setIsLoading(true);
@@ -50,35 +49,42 @@ export default function ReportForm({ setIsProceedForm }) {
             setIsConfirmed(false);
             setIsProceedForm(false);
             notify({
-                message: "Medication error report submitted successfully.",
+                message: "Report submitted.",
                 error: false,
             });
             SweetAlert({
-                title: "Success",
+                title: "Submission Successful",
                 text: "Medication error report submitted successfully.",
                 icon: "success",
                 confirmButtonText: "OK",
             });
-
         } catch (data) {
-
-            if (data?.message == "Validation failed" && Array.isArray(data.details)) {
+            if (
+                data?.message == "Validation failed" &&
+                Array.isArray(data.details)
+            ) {
                 const { error, details, message } = data;
                 notify({
                     error,
-                    message: <div tabIndex={0} className="collapse">
-                        <div className="collapse-title font-semibold">{message}<br />
-                            <small className="link link-warning">See details</small>
+                    message: (
+                        <div tabIndex={0} className="collapse">
+                            <div className="collapse-title font-semibold">
+                                {message}
+                                <br />
+                                <small className="link link-warning">
+                                    See details
+                                </small>
+                            </div>
+                            <div className="collapse-content text-sm">
+                                <ul className="list-disc list-inside">
+                                    {details.map((err, index) => (
+                                        <li key={index}>{err}</li>
+                                    ))}
+                                </ul>
+                            </div>
                         </div>
-                        <div className="collapse-content text-sm">
-                            <ul className="list-disc list-inside">
-                                {details.map((err, index) => (
-                                    <li key={index}>{err}</li>
-                                ))}
-                            </ul>
-                        </div>
-                    </div>
-                })
+                    ),
+                });
             }
         } finally {
             setIsLoading(false);
@@ -89,7 +95,6 @@ export default function ReportForm({ setIsProceedForm }) {
         <>
             <div className="card w-full sm:w-3/4 shadow-[5px_5px_0px_0px_rgba(0,_0,_0,_0.5),inset_0px_2px_4px_0px_rgba(0,_0,_0,_0.3)]">
                 <div className="flex pt-2 justify-center items-center ">
-
                     <ul className="steps">
                         <li className="step step-primary">
                             <small>Patient Details</small>
@@ -114,9 +119,7 @@ export default function ReportForm({ setIsProceedForm }) {
                 </div>
                 <div className="card-body">
                     <FormProvider {...methods}>
-                        <form
-                            className="px-5 rounded-lg p-5"
-                        >
+                        <form className="px-5 rounded-lg p-5">
                             {!isSecondPage ? (
                                 <FirstForm
                                     setIsProceedForm={setIsProceedForm}
@@ -163,32 +166,37 @@ export default function ReportForm({ setIsProceedForm }) {
                                                 // className="btn  w-full sm:w-1/2 mx-auto disabled:btn-disabled"
                                                 className={clsx(
                                                     "btn w-full sm:w-1/2 mx-auto",
-                                                    isConfirmed ? "btn-success" : "btn-gray text-gray-500 cursor-not-allowed"
+                                                    isConfirmed
+                                                        ? "btn-success"
+                                                        : "btn-gray text-gray-500 cursor-not-allowed"
                                                 )}
-                                                disabled={
-                                                    isLoading
-                                                }
+                                                disabled={isLoading}
                                                 onClick={() => {
                                                     if (!isConfirmed) {
                                                         SweetAlert({
                                                             title: "Confirmation",
                                                             text: "Please confirm the information provided is accurate.",
-                                                            icon: "warning"
-                                                        })
+                                                            icon: "warning",
+                                                        });
                                                         return;
                                                     }
                                                     methods.handleSubmit(
                                                         (data) =>
                                                             onFinalSubmit(data)
-                                                    )()
+                                                    )();
                                                 }}
-
                                             >
-
-
-                                                {isLoading
-                                                    ? <><span className="loading loading-bars loading-xs"></span>Submitting...</>
-                                                    : <><Send />Submit Form</>}
+                                                {isLoading ? (
+                                                    <>
+                                                        <span className="loading loading-bars loading-xs"></span>
+                                                        Submitting...
+                                                    </>
+                                                ) : (
+                                                    <>
+                                                        <Send />
+                                                        Submit Form
+                                                    </>
+                                                )}
                                             </button>
                                             <button
                                                 type="button"
@@ -200,7 +208,6 @@ export default function ReportForm({ setIsProceedForm }) {
                                                 Review Form
                                             </button>
                                         </div>
-
                                     )}
                                 </>
                             )}
