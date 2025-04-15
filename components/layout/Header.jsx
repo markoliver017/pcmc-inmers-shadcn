@@ -35,7 +35,7 @@ const Header = ({
                         layout="intrinsic"
                         alt="Logo"
                     />
-                    <h1 className="text-2xl font-bold">Inmerse</h1>
+                    <h1 className="text-2xl font-bold">INMERS</h1>
                 </Link>
 
                 <div className="flex-1 flex justify-between items-center">

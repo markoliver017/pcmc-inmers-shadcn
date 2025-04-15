@@ -24,9 +24,16 @@ import { Building, Filter, User, UserCog2 } from "lucide-react";
 import MultiSelect from "@components/reusable_components/MultiSelect";
 import { getColumns } from "./columns";
 
-export function DataTable({ reports }) {
-    const fetch_errors = use(reports);
+export function DataTable({ get_reports, get_error_types }) {
+    const fetch_errors = use(get_reports);
+    const error_types = use(get_error_types);
+    // console.log("error_typeserror_typeserror_typeserror_types", error_types)
+    // console.log("fetch_errorsfetch_errorsfetch_errorsfetch_errors", fetch_errors)
+
+    // const errorTypeOptions = [];
+
     const data = fetch_errors.reports;
+
     const columns = getColumns();
 
     const [sorting, setSorting] = useState([]);
@@ -89,7 +96,19 @@ export function DataTable({ reports }) {
         return selectedRows.map((row) => row.original);
     };
 
-    const errorTypeOptions = [];
+    const errorTypeOptions = error_types.map((type) => ({
+        id: type.id,
+        label: type.name,
+        value: type.name,
+        number: table
+            .getFilteredRowModel()
+            .rows.filter(
+                (row) => row.original.error_type.id == type.id,
+            ).length
+    }));
+
+    // console.log("Columns:>>>>>>>>>>>>>>>>>>>>>>>", table.getAllColumns());
+
     return (
         <div>
             {/* <Button onClick={getSelectedRows}>Get Data</Button> */}
@@ -108,53 +127,76 @@ export function DataTable({ reports }) {
                         </label>
                         <MultiSelect
                             options={errorTypeOptions}
-                            // onValueChange={(selectedOptions) => {
-                            //     console.log(
-                            //         "row columnsssssssssss",
-                            //         table.getColumn("role_name")
-                            //     );
-                            //     table
-                            //         .getColumn("role_name")
-                            //         ?.setFilterValue(selectedOptions);
-                            // }}
-                            // value={
-                            //     table
-                            //         .getColumn("role_name")
-                            //         ?.getFilterValue() ?? []
-                            // }
+                            onValueChange={(selectedOptions) => {
+
+                                table.getColumn("error_type")?.setFilterValue(selectedOptions);
+                            }}
+                            value={
+                                table
+                                    .getColumn("error_type")
+                                    ?.getFilterValue() ?? []
+                            }
                             placeholder={
                                 <>
                                     {<UserCog2 className="h-3 w-3" />}{" "}
-                                    <span>Role</span>
+                                    <span>Medication error type</span>
                                 </>
                             }
                             className="text-slate-700 bg-slate-100 hover:bg-white"
                             animation={2}
                             maxCount={1}
                         />
-                        {/* <MultiSelect
-                            options={userOptions}
+                        <MultiSelect
+                            options={[
+                                {
+                                    label: "male",
+                                    value: "male",
+                                    number: table
+                                        .getFilteredRowModel()
+                                        .rows.filter(
+                                            (row) => row.original.patient_sex === "male",
+                                        ).length
+                                },
+                                {
+                                    label: "female",
+                                    value: "female",
+                                    number: table
+                                        .getFilteredRowModel()
+                                        .rows.filter(
+                                            (row) => row.original.patient_sex === "female",
+                                        ).length
+                                },
+                                {
+                                    label: "unknown",
+                                    value: "unknown",
+                                    number: table
+                                        .getFilteredRowModel()
+                                        .rows.filter(
+                                            (row) => row.original.patient_sex === "unknown",
+                                        ).length
+                                },
+                            ]}
                             onValueChange={(selectedOptions) => {
                                 table
-                                    .getColumn("full_name")
+                                    .getColumn("patient_sex")
                                     ?.setFilterValue(selectedOptions);
                             }}
                             value={
                                 table
-                                    .getColumn("full_name")
+                                    .getColumn("patient_sex")
                                     ?.getFilterValue() ?? []
                             }
                             placeholder={
                                 <>
-                                    {<Building className="h-3 w-3" />}{" "}
-                                    <span>User</span>
+                                    {<User className="h-3 w-3" />}{" "}
+                                    <span>Sex</span>
                                 </>
                             }
                             // variant="inverted"
                             className="text-slate-700 bg-slate-100 hover:bg-white"
                             animation={2}
                             maxCount={1}
-                        />  */}
+                        />
                         <DataTableViewOptions table={table} />
                     </div>
                 </div>
@@ -174,10 +216,10 @@ export function DataTable({ reports }) {
                                         {header.isPlaceholder
                                             ? null
                                             : flexRender(
-                                                  header.column.columnDef
-                                                      .header,
-                                                  header.getContext()
-                                              )}
+                                                header.column.columnDef
+                                                    .header,
+                                                header.getContext()
+                                            )}
                                     </TableHead>
                                 ))}
                             </TableRow>

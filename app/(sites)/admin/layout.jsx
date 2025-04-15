@@ -9,6 +9,7 @@ import Footer from "@components/layout/Footer";
 import { ThemeProvider } from "next-themes";
 import { ToastContainer } from "react-toastify";
 import Preloader from "@components/layout/Preloader";
+import { DashboardIcon } from "@radix-ui/react-icons";
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
@@ -20,12 +21,12 @@ const geistMono = Geist_Mono({
     subsets: ["latin"],
 });
 
-const pages = [
-    { name: "Dashboard", path: "/admin" },
-    { name: "Reports", path: "/admin/reports" },
-    { name: "Profile", path: "/admin/profile" },
-    { name: "Settings", path: "/admin/settings" },
-];
+// const pages = [
+//     { name: "Dashboard", path: "/admin", icon: <DashboardIcon /> },
+//     { name: "Reports", path: "/admin/reports", icon: <DashboardIcon /> },
+//     { name: "Profile", path: "/admin/profile", icon: <DashboardIcon /> },
+//     { name: "Settings", path: "/admin/settings", icon: <DashboardIcon /> },
+// ];
 
 export const metadata = {
     title: "Inmerse Portal - Administrator",
@@ -33,7 +34,9 @@ export const metadata = {
         "Integrated National Medication Error Reporting System - Administrator",
 };
 
-export default function RootLayout({ children }) {
+
+export default async function RootLayout({ children }) {
+
     return (
         <html lang="en" suppressHydrationWarning>
             <body
@@ -44,11 +47,10 @@ export default function RootLayout({ children }) {
                 <div className="flex">
                     <Sidebar />
                     <div
-                        className="flex flex-col flex-1 max-h-screen overflow-y-scroll
-                    "
+                        className="flex flex-col flex-1 max-h-screen overflow-y-scroll"
                     >
                         <Header isLoggedIn={true} />
-                        <WrapperHead pages={pages} isLoggedIn={true} />
+                        <WrapperHead isLoggedIn={true} />
                         <main className="flex-1 p-4">
                             <ThemeProvider>{children}</ThemeProvider>
                         </main>

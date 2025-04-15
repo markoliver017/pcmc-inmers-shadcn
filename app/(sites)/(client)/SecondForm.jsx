@@ -1,4 +1,7 @@
-import { useFormContext } from "react-hook-form";
+import { useEffect, useState } from "react";
+import { Controller, useFormContext } from "react-hook-form";
+import dynamic from "next/dynamic";
+import { useTheme } from "next-themes";
 
 import FormLabel from "./FormLabel";
 
@@ -7,16 +10,26 @@ import { BiError } from "react-icons/bi";
 import { MdDone } from "react-icons/md";
 import notify from "@components/ui/notify";
 
-export default function SecondForm({ setIsSecondPage, setIsConfirmationPage }) {
+const CreatableSelectNoSSR = dynamic(() => import("react-select/creatable"), {
+    ssr: false,
+});
+import { getSingleStyle } from "@/styles/select-styles";
+
+export default function SecondForm({ errorTypeOptions, setIsSecondPage, setIsConfirmationPage }) {
+    const { theme, resolvedTheme } = useTheme();
     const {
         register,
         watch,
+        control,
+        setValue,
         trigger,
         formState: { errors },
     } = useFormContext();
 
     const handleNext = async () => {
         const valid = await trigger([
+            "error_type_id",
+            "other_error_type",
             "exact_prescription",
             "incident_description",
             "workplace_environment",
@@ -38,12 +51,85 @@ export default function SecondForm({ setIsSecondPage, setIsConfirmationPage }) {
         }
     };
 
+    const error_type_id = watch("error_type_id");
+
+    useEffect(() => {
+        if (error_type_id != 12) {
+            setValue("other_error_type", "");
+        }
+    }, [error_type_id]);
+
     // console.log("watch:", watch());
 
     return (
         <section className="dark:text-white">
             <h2 className="card-title text-2xl">Medication Error Details</h2>
-            <div>
+            <div className="mt-5">
+                <FormLabel labelText="Type of medication error:" />
+                <fieldset className="fieldset w-full">
+                    <Controller
+                        control={control}
+                        name="error_type_id"
+                        rules={{
+                            required: "Type of medication error is required.",
+                        }}
+                        render={({ field: { onChange, value, name, ref } }) => {
+
+                            const selectedOption = errorTypeOptions.find(option => option.id === value) || null;
+                            return (
+                                <CreatableSelectNoSSR
+                                    id="error_type_id"
+                                    name={name}
+                                    ref={ref}
+                                    placeholder="Type of medication error * (required)"
+                                    value={selectedOption}
+                                    onChange={(selectedOption) => {
+                                        onChange(selectedOption ? selectedOption.id : null);
+                                    }}
+                                    isValidNewOption={() => false}
+                                    options={errorTypeOptions}
+                                    styles={getSingleStyle(resolvedTheme)}
+                                    className="text-lg"
+                                    isClearable
+                                />
+                            )
+                        }}
+                    />
+                </fieldset>
+                {errors.error_type_id && (
+                    <p className="text-red-500 text-sm flex-items-center">
+                        <BiError />
+                        {errors.error_type_id?.message}
+                    </p>
+                )}
+            </div>
+            {error_type_id == "12" && (
+                <div className="mt-5 ">
+                    {/* <FormLabel labelText="Exact medication prescription as ordered for the patient:" /> */}
+                    <label className="floating-label border border-gray-300 dark:text-white">
+                        <input
+                            type="text"
+                            name="other_error_type"
+                            {...register("other_error_type", {
+                                required:
+                                    error_type_id == "12"
+                                        ? "Specify other medication error"
+                                        : false,
+                            })}
+                            placeholder="Specify other medication error"
+                            className="input input-md w-full"
+                        />
+                        <span>Other medication error</span>
+                    </label>
+                    {errors.other_error_type && (
+                        <p className="text-red-500 text-sm flex-items-center">
+                            <BiError />
+                            {errors.other_error_type?.message}
+                        </p>
+                    )}
+                </div>
+            )}
+            <div className="mt-5">
                 <FormLabel labelText="Exact medication prescription as ordered for the patient:" />
                 <fieldset className="fieldset">
                     <textarea
@@ -220,8 +306,8 @@ export default function SecondForm({ setIsSecondPage, setIsConfirmationPage }) {
                 <button
                     type="button"
                     onClick={() => setIsSecondPage(false)}
-                    disabled={false}
                     className="btn btn-primary"
+                    tabIndex={-1}
                 >
                     <IoArrowUndoCircle /> Back
                 </button>

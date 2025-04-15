@@ -7,7 +7,7 @@ export async function GET() {
             attributes: ["id", "name"],
         });
         return NextResponse.json(
-            { success: true, error_types },
+            error_types,
             { status: 200 }
         );
     } catch (error) {

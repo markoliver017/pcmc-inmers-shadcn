@@ -11,11 +11,10 @@ export default async function Page({ params }) {
     });
     const { report } = await response.json();
     if (!report) redirect("/admin/reports");
-    console.log("reports", report);
 
     const error_type =
         report.error_type.name == "Others"
-            ? `${report.error_type} <i>(${report.other_error_type})</i>`
+            ? `${report.error_type.name} <i>(${report.other_error_type})</i>`
             : report.error_type.name;
 
     return (

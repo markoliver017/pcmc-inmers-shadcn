@@ -1,116 +1,23 @@
 "use client";
 import FormLabel from "./FormLabel";
 import { Calendar, Cross } from "lucide-react";
-import { useEffect, useState } from "react";
-import { Controller, useFormContext } from "react-hook-form";
-import dynamic from "next/dynamic";
+import { useFormContext } from "react-hook-form";
 import { useTheme } from "next-themes";
 
-const CreatableSelectNoSSR = dynamic(() => import("react-select/creatable"), {
-    ssr: false,
-});
 import { BiError, BiMaleFemale } from "react-icons/bi";
-import { IoArrowUndoCircle } from "react-icons/io5";
 import { MdNextPlan } from "react-icons/md";
-import { getSingleStyle } from "@/styles/select-styles";
 import notify from "@components/ui/notify";
 import { GiCancel } from "react-icons/gi";
 
-const error_type_options = [
-    {
-        value: "Incorrect prescription (medication order)",
-        label: "Incorrect prescription (medication order)",
-    },
-    {
-        value: "Incorrect transcription on patient chart / record",
-        label: "Incorrect transcription on patient chart / record",
-    },
-    {
-        value: "Incorrect Dispensing (Drop down option 3)",
-        label: "Incorrect Dispensing (Drop down option 3)",
-    },
-    {
-        value: "Incorrect Preparation - Compounding errors",
-        label: "Incorrect Preparation - Compounding errors",
-    },
-    {
-        value: "Incorrect Administration - Wrong patient",
-        label: "Incorrect Administration - Wrong patient ",
-    },
-    {
-        value: "Incorrect Administration - Wrong medication",
-        label: "Incorrect Administration - Wrong medication",
-    },
-    {
-        value: "Incorrect Administration - Wrong dose/ dosage",
-        label: "Incorrect Administration - Wrong dose/ dosage",
-    },
-    {
-        value: "Incorrect Administration - Wrong time",
-        label: "Incorrect Administration - Wrong time",
-    },
-    {
-        value: "Incorrect Administration - Wrong route",
-        label: "Incorrect Administration - Wrong route",
-    },
-    {
-        value: "Incorrect Administration - Wrong form of medication",
-        label: "Incorrect Administration - Wrong form of medication",
-    },
-    {
-        value: "Incorrect Administration - Omission (medication is not given)",
-        label: "Incorrect Administration - Omission (medication is not given)",
-    },
-    { value: "Others", label: "Others" },
-];
-
 export default function FirstForm({ setIsProceedForm, setIsSecondPage }) {
-    // const url = new URL(`/api/error_types`, "http://localhost:3000");
-    // const response = await fetch(url, {
-    //     method: "GET",
-    //     cache: "no-store",
-    // });
-    // const error_types = await response.json();
-    // console.log(error_types);
 
-    const [errorTypeOptions, setErrorTypeOptions] = useState([]);
     const { theme, resolvedTheme } = useTheme();
 
     const {
         register,
-        watch,
-        setValue,
-        control,
         trigger,
         formState: { errors },
     } = useFormContext();
-
-    useEffect(() => {
-        const fetchErrorTypes = async () => {
-            try {
-                const res = await fetch("/api/error_types", {
-                    method: "GET",
-                    cache: "no-store",
-                });
-
-                if (!res.ok) throw new Error("Failed to fetch error types");
-
-                const { error_types } = await res.json();
-
-                setErrorTypeOptions(
-                    error_types.map((type) => ({
-                        value: type.name,
-                        label: type.name,
-                        id: type.id,
-                    }))
-                );
-            } catch (error) {
-                console.error("Error fetching error types:", error);
-            }
-        };
-
-        fetchErrorTypes();
-    }, []);
 
     const handleNext = async () => {
         const valid = await trigger([
@@ -119,8 +26,6 @@ export default function FirstForm({ setIsProceedForm, setIsSecondPage }) {
             "patient_sex",
             "patient_weight",
             "patient_height",
-            "error_type_id",
-            "other_error_type",
         ]);
         if (valid) {
             setIsSecondPage(true);
@@ -134,16 +39,6 @@ export default function FirstForm({ setIsProceedForm, setIsSecondPage }) {
             );
         }
     };
-
-    // console.log("watch:", watch());
-
-    const error_type_id = watch("error_type_id");
-
-    useEffect(() => {
-        if (error_type_id != 12) {
-            setValue("other_error_type", "");
-        }
-    }, [error_type_id]);
 
     return (
         <section>
@@ -272,74 +167,12 @@ export default function FirstForm({ setIsProceedForm, setIsSecondPage }) {
                     </p>
                 )}
             </div>
-            <div className="mt-5">
-                <FormLabel labelText="Type of medication error:" />
-                <fieldset className="fieldset w-full">
-                    <Controller
-                        control={control}
-                        name="error_type_id"
-                        rules={{
-                            required: "Type of medication error is required.",
-                        }}
-                        render={({ field: { onChange, value, name, ref } }) => {
-                            console.log("<>>>>>>>><>>>>>>>><>", value)
-                            const selectedOption = errorTypeOptions.find(option => option.id === value) || null;
-                            return (
-                                <CreatableSelectNoSSR
-                                    id="error_type_id"
-                                    name={name}
-                                    ref={ref}
-                                    placeholder="Type of medication error * (required)"
-                                    value={selectedOption}
-                                    onChange={(selectedOption) => {
-                                        onChange(selectedOption ? selectedOption.id : null);
-                                    }}
-                                    isValidNewOption={() => false}
-                                    options={errorTypeOptions}
-                                    styles={getSingleStyle(resolvedTheme)}
-                                    isClearable
-                                />
-                            )
-                        }}
-                    />
-                </fieldset>
-                {errors.error_type_id && (
-                    <p className="text-red-500 text-sm flex-items-center">
-                        <BiError />
-                        {errors.error_type_id?.message}
-                    </p>
-                )}
-            </div>
-            {error_type_id == "12" && (
-                <div className="mt-5 ">
-                    {/* <FormLabel labelText="Exact medication prescription as ordered for the patient:" /> */}
-                    <label className="floating-label border border-gray-300 dark:text-white">
-                        <input
-                            type="text"
-                            name="other_error_type"
-                            {...register("other_error_type", {
-                                required:
-                                    error_type_id == "12"
-                                        ? "Specify other medication error"
-                                        : false,
-                            })}
-                            placeholder="Specify other medication error"
-                            className="input input-md w-full"
-                        />
-                        <span>Other medication error</span>
-                    </label>
-                    {errors.other_error_type && (
-                        <p className="text-red-500 text-sm flex-items-center">
-                            <BiError />
-                            {errors.other_error_type?.message}
-                        </p>
-                    )}
-                </div>
-            )}
+
             <div className="card-actions justify-between mt-10">
                 <button
                     onClick={() => setIsProceedForm(false)}
                     className="btn btn-default"
+                    tabIndex={-1}
                 >
                     <GiCancel /> Cancel
                 </button>

@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import { DataTable } from "./DataTable";
-import Skeleton from "@components/ui/skeleton";
+import Loading from "./loading";
+import { fetchErrorTypes } from "@/action/error_types";
 
 async function fetchReports() {
     const url = new URL(`/api/reports`, "http://localhost:3000");
@@ -11,14 +12,14 @@ async function fetchReports() {
     return response.json();
 }
 
-async function fetchErrorTypes() {
-    const url = new URL(`/api/error_types`, "http://localhost:3000");
-    const response = await fetch(url, {
-        method: "GET",
-        cache: "no-store",
-    });
-    return response.json();
-}
+// async function fetchErrorTypes() {
+//     const url = new URL(`/api/error_types`, "http://localhost:3000");
+//     const response = await fetch(url, {
+//         method: "GET",
+//         cache: "no-store",
+//     });
+//     return response.json();
+// }
 
 export default async function Page() {
     // const url = new URL("/api/reports", "http://localhost:3000");
@@ -33,13 +34,11 @@ export default async function Page() {
 
     return (
         <Suspense
-            fallback={
-                <div>
-                    <Skeleton className="w-full" />
-                </div>
-            }
+            fallback={<Loading />}
         >
-            <DataTable reports={reports} error_types={error_types} />
+            <div className="w-full overflow-x-auto">
+                <DataTable get_reports={reports} get_error_types={error_types} />
+            </div>
         </Suspense>
     );
 }

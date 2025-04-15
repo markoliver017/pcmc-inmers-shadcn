@@ -45,6 +45,7 @@ export function getColumns() {
             filterFn: "columnFilter",
         },
         {
+            id: "error_type",
             accessorKey: "error_type.name",
             header: ({ column }) => (
                 <DataTableColumnHeader
@@ -99,16 +100,16 @@ export function getColumns() {
             ),
             filterFn: "columnFilter",
         },
-        {
-            accessorKey: "exact_prescription",
-            header: ({ column }) => (
-                <DataTableColumnHeader
-                    column={column}
-                    title="Exact Prescription"
-                />
-            ),
-            filterFn: "columnFilter",
-        },
+        // {
+        //     accessorKey: "exact_prescription",
+        //     header: ({ column }) => (
+        //         <DataTableColumnHeader
+        //             column={column}
+        //             title="Exact Prescription"
+        //         />
+        //     ),
+        //     filterFn: "columnFilter",
+        // },
         {
             id: "actions",
             header: ({ column }) => (

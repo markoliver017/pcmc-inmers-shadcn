@@ -273,9 +273,9 @@ export const getSingleStyle = (mode) => {
                 ...provided,
                 // backgroundColor: data?.color,
                 color: mode === 'light' ? '#000' : '#fff',
-                maxWidth: 'max-content',
+                maxWidth: '100%',
                 padding: '3px 8px',
-                borderRadius: '50px',
+                borderRadius: '10px',
                 border: '1px solid gray',
             };
         },

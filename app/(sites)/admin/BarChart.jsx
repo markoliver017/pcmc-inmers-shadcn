@@ -27,15 +27,15 @@ import {
 
 export default function Component({ chartData, chartConfig, total }) {
     return (
-        <Card className="flex-1">
+        <Card className="flex-1 overflow-y-scroll">
             <CardHeader>
                 <CardTitle>
                     Integrated National Medication Error Reporting System
                 </CardTitle>
                 <CardDescription>INMERS</CardDescription>
             </CardHeader>
-            <CardContent>
-                <ChartContainer config={chartConfig}>
+            <CardContent className="overflow-y-scroll">
+                <ChartContainer className="overflow-y-scroll" config={chartConfig}>
                     <BarChart
                         accessibilityLayer
                         data={chartData}
@@ -64,19 +64,22 @@ export default function Component({ chartData, chartConfig, total }) {
                             layout="vertical"
                             fill="var(--color-desktop)"
                             radius={4}
+                            className="overflow-y-scroll"
                         >
                             {/* <LabelList
                                 dataKey="name"
                                 position="insideLeft"
                                 offset={8}
-                                className="lg:font-bold sm:text-xs lg:text-lg"
-                                fontSize="10px"
+                                width={"500"}
+                                className="fill-foreground"
+                                fontSize="10"
                             /> */}
                             <LabelList
                                 dataKey="name"
                                 position="right"
                                 offset={8}
-                                className="fill-foreground hidden xl:block"
+                                width={500}
+                                className="fill-foreground"
                                 fontSize={12}
                             />
                         </Bar>
