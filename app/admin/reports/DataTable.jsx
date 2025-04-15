@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { use, useState } from "react";
 
 import {
     flexRender,
@@ -24,7 +24,9 @@ import { Building, Filter, User, UserCog2 } from "lucide-react";
 import MultiSelect from "@components/reusable_components/MultiSelect";
 import { getColumns } from "./columns";
 
-export function DataTable({ data }) {
+export function DataTable({ reports }) {
+    const fetch_errors = use(reports);
+    const data = fetch_errors.reports;
     const columns = getColumns();
 
     const [sorting, setSorting] = useState([]);
@@ -87,6 +89,7 @@ export function DataTable({ data }) {
         return selectedRows.map((row) => row.original);
     };
 
+    const errorTypeOptions = [];
     return (
         <div>
             {/* <Button onClick={getSelectedRows}>Get Data</Button> */}
@@ -100,37 +103,36 @@ export function DataTable({ data }) {
 
                 <div className="flex-1 flex justify-end pr-2">
                     <div className="flex space-x-2">
-                        {/* <label className="dark:text-slate-400 flex items-center space-x-1">
+                        <label className="dark:text-slate-400 flex items-center space-x-1">
                             <Filter className="h-4 w-4" />
                         </label>
                         <MultiSelect
-                            options={roleOptions}
-                            onValueChange={(selectedOptions) => {
-                                console.log(
-                                    "row columnsssssssssss",
-                                    table.getColumn("role_name")
-                                );
-                                table
-                                    .getColumn("role_name")
-                                    ?.setFilterValue(selectedOptions);
-                            }}
-                            value={
-                                table
-                                    .getColumn("role_name")
-                                    ?.getFilterValue() ?? []
-                            }
+                            options={errorTypeOptions}
+                            // onValueChange={(selectedOptions) => {
+                            //     console.log(
+                            //         "row columnsssssssssss",
+                            //         table.getColumn("role_name")
+                            //     );
+                            //     table
+                            //         .getColumn("role_name")
+                            //         ?.setFilterValue(selectedOptions);
+                            // }}
+                            // value={
+                            //     table
+                            //         .getColumn("role_name")
+                            //         ?.getFilterValue() ?? []
+                            // }
                             placeholder={
                                 <>
                                     {<UserCog2 className="h-3 w-3" />}{" "}
                                     <span>Role</span>
                                 </>
                             }
-                            // variant="inverted"
                             className="text-slate-700 bg-slate-100 hover:bg-white"
                             animation={2}
                             maxCount={1}
                         />
-                        <MultiSelect
+                        {/* <MultiSelect
                             options={userOptions}
                             onValueChange={(selectedOptions) => {
                                 table
@@ -152,7 +154,7 @@ export function DataTable({ data }) {
                             className="text-slate-700 bg-slate-100 hover:bg-white"
                             animation={2}
                             maxCount={1}
-                        /> */}
+                        />  */}
                         <DataTableViewOptions table={table} />
                     </div>
                 </div>

@@ -25,32 +25,9 @@ import {
     ChartTooltipContent,
 } from "@components/ui/chart";
 
-const chartData = [
-    { month: "January", desktop: 186, mobile: 80 },
-    { month: "February", desktop: 305, mobile: 200 },
-    { month: "March", desktop: 237, mobile: 120 },
-    { month: "April", desktop: 73, mobile: 190 },
-    { month: "May", desktop: 209, mobile: 130 },
-    { month: "June", desktop: 214, mobile: 140 },
-];
-
-const chartConfig = {
-    desktop: {
-        label: "Desktop",
-        color: "hsl(var(--chart-1))",
-    },
-    mobile: {
-        label: "Mobile",
-        color: "hsl(var(--chart-2))",
-    },
-    label: {
-        color: "hsl(var(--background))",
-    },
-};
-
-export default function Component({ data }) {
+export default function Component({ chartData, chartConfig, total }) {
     return (
-        <Card className="flex-1 max-w-3/4">
+        <Card className="flex-1">
             <CardHeader>
                 <CardTitle>
                     Integrated National Medication Error Reporting System
@@ -69,7 +46,7 @@ export default function Component({ data }) {
                     >
                         <CartesianGrid horizontal={false} />
                         <YAxis
-                            dataKey="month"
+                            dataKey="name"
                             type="category"
                             tickLine={false}
                             tickMargin={10}
@@ -77,29 +54,29 @@ export default function Component({ data }) {
                             tickFormatter={(value) => value.slice(0, 3)}
                             hide
                         />
-                        <XAxis dataKey="desktop" type="number" hide />
+                        <XAxis dataKey="count" type="number" hide />
                         <ChartTooltip
                             cursor={false}
                             content={<ChartTooltipContent indicator="line" />}
                         />
                         <Bar
-                            dataKey="desktop"
+                            dataKey="count"
                             layout="vertical"
                             fill="var(--color-desktop)"
                             radius={4}
                         >
-                            <LabelList
-                                dataKey="month"
+                            {/* <LabelList
+                                dataKey="name"
                                 position="insideLeft"
                                 offset={8}
-                                className="fill-[--color-label]"
-                                fontSize={12}
-                            />
+                                className="lg:font-bold sm:text-xs lg:text-lg"
+                                fontSize="10px"
+                            /> */}
                             <LabelList
-                                dataKey="desktop"
+                                dataKey="name"
                                 position="right"
                                 offset={8}
-                                className="fill-foreground"
+                                className="fill-foreground hidden xl:block"
                                 fontSize={12}
                             />
                         </Bar>
@@ -112,7 +89,7 @@ export default function Component({ data }) {
                     <TrendingUp className="h-4 w-4" />
                 </div> */}
                 <div className="leading-none text-muted-foreground">
-                    Showing overall form submission
+                    Showing overall form submission (<b>{total}</b>)
                 </div>
             </CardFooter>
         </Card>

@@ -1,4 +1,6 @@
-import BarChart from "./BarChart";
+import { Suspense } from "react";
+import Dashboard from "./Dashboard";
+import Skeleton from "@components/ui/skeleton";
 
 export const metadata = {
     title: "Inmerse Portal - Dashboard",
@@ -6,19 +8,28 @@ export const metadata = {
         "Integrated National Medication Error Reporting System - Administrator Dashboard",
 };
 
-export default async function Page() {
-    const url = new URL(`/api/dashboard`, "http://localhost:3000");
+async function fetchReports() {
+    const url = new URL(`/api/dashboard?year=2025`, "http://localhost:3000");
     const response = await fetch(url, {
         method: "GET",
         cache: "no-store",
     });
-    const { data } = await response.json();
-    console.log(data);
+    return response.json();
+}
+
+export default function Page() {
+    const data = fetchReports();
 
     return (
-        <div className="flex">
-            {/* Dashboard Page */}
-            <BarChart data={data} />
-        </div>
+        <Suspense
+            fallback={
+                <div className="flex gap-5">
+                    <Skeleton className="w-full" />
+                    <Skeleton className="w-full" />
+                </div>
+            }
+        >
+            <Dashboard reports={data} />
+        </Suspense>
     );
 }
