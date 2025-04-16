@@ -2,7 +2,6 @@
 import FormLabel from "./FormLabel";
 import { Calendar, Cross } from "lucide-react";
 import { useFormContext } from "react-hook-form";
-import { useTheme } from "next-themes";
 
 import { BiError, BiMaleFemale } from "react-icons/bi";
 import { MdNextPlan } from "react-icons/md";
@@ -10,9 +9,6 @@ import notify from "@components/ui/notify";
 import { GiCancel } from "react-icons/gi";
 
 export default function FirstForm({ setIsProceedForm, setIsSecondPage }) {
-
-    const { theme, resolvedTheme } = useTheme();
-
     const {
         register,
         trigger,
@@ -42,10 +38,12 @@ export default function FirstForm({ setIsProceedForm, setIsSecondPage }) {
 
     return (
         <section>
-            The current theme is: {theme} : {resolvedTheme}
-            <h2 className="card-title text-2xl">Patient Details</h2>
+            <div className="flex gap-5">
+                <h2 className="card-title text-2xl">Patient Details</h2>
+                <div className="text-orange-600 italic">* required fields</div>
+            </div>
             <div className="flex mt-5">
-                <FormLabel labelText="Report Date:" />
+                <FormLabel labelText="Report Date: *" />
                 <label className="input mt-1 border border-gray-300 dark:text-white">
                     <Calendar className="h-3" />
                     <input
@@ -65,7 +63,7 @@ export default function FirstForm({ setIsProceedForm, setIsSecondPage }) {
                 </p>
             </div>
             <div className="mt-5 flex">
-                <FormLabel labelText="Date of the medication error happened:" />
+                <FormLabel labelText="Date of the medication error happened: *" />
 
                 <label className="input validator mt-1 border border-gray-300 dark:text-white">
                     <Calendar className="h-3" />
@@ -88,7 +86,7 @@ export default function FirstForm({ setIsProceedForm, setIsSecondPage }) {
                 )}
             </div>
             <div className="mt-5 flex items-center">
-                <FormLabel labelText="Sex of the patient:" />
+                <FormLabel labelText="Sex of the patient: *" />
                 <div className="w-full">
                     <label className="select border border-gray-300 dark:text-white">
                         <span className="label">
@@ -118,7 +116,7 @@ export default function FirstForm({ setIsProceedForm, setIsSecondPage }) {
                 )}
             </div>
             <div className="mt-5 flex items-center">
-                <FormLabel labelText="Weight of the patient:" />
+                <FormLabel labelText="Weight of the patient: *" />
                 <div className="w-full">
                     <label className="input border border-gray-300 dark:text-white">
                         <input
@@ -144,7 +142,7 @@ export default function FirstForm({ setIsProceedForm, setIsSecondPage }) {
                 )}
             </div>
             <div className="mt-5 flex items-center">
-                <FormLabel labelText="Height of the patient:" />
+                <FormLabel labelText="Height of the patient: *" />
                 <label className="input border border-gray-300 dark:text-white">
                     <input
                         type="number"

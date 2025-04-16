@@ -27,7 +27,7 @@ import {
 
 export default function Component({ chartData, chartConfig, total }) {
     return (
-        <Card className="flex-1 overflow-y-scroll">
+        <Card className="flex flex-col justify-between flex-1 overflow-y-scroll">
             <CardHeader>
                 <CardTitle>
                     Integrated National Medication Error Reporting System
@@ -35,7 +35,10 @@ export default function Component({ chartData, chartConfig, total }) {
                 <CardDescription>INMERS</CardDescription>
             </CardHeader>
             <CardContent className="overflow-y-scroll">
-                <ChartContainer className="overflow-y-scroll" config={chartConfig}>
+                <ChartContainer
+                    className="overflow-y-scroll"
+                    config={chartConfig}
+                >
                     <BarChart
                         accessibilityLayer
                         data={chartData}

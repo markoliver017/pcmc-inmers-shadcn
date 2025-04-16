@@ -15,7 +15,11 @@ const CreatableSelectNoSSR = dynamic(() => import("react-select/creatable"), {
 });
 import { getSingleStyle } from "@/styles/select-styles";
 
-export default function SecondForm({ errorTypeOptions, setIsSecondPage, setIsConfirmationPage }) {
+export default function SecondForm({
+    errorTypeOptions,
+    setIsSecondPage,
+    setIsConfirmationPage,
+}) {
     const { theme, resolvedTheme } = useTheme();
     const {
         register,
@@ -63,9 +67,15 @@ export default function SecondForm({ errorTypeOptions, setIsSecondPage, setIsCon
 
     return (
         <section className="dark:text-white">
-            <h2 className="card-title text-2xl">Medication Error Details</h2>
+            <div className="flex gap-5">
+                <h2 className="card-title text-2xl">
+                    Medication Error Details
+                </h2>
+
+                <div className="text-orange-600 italic">* required fields</div>
+            </div>
             <div className="mt-5">
-                <FormLabel labelText="Type of medication error:" />
+                <FormLabel labelText="Type of medication error: *" />
                 <fieldset className="fieldset w-full">
                     <Controller
                         control={control}
@@ -74,8 +84,10 @@ export default function SecondForm({ errorTypeOptions, setIsSecondPage, setIsCon
                             required: "Type of medication error is required.",
                         }}
                         render={({ field: { onChange, value, name, ref } }) => {
-
-                            const selectedOption = errorTypeOptions.find(option => option.id === value) || null;
+                            const selectedOption =
+                                errorTypeOptions.find(
+                                    (option) => option.id === value
+                                ) || null;
                             return (
                                 <CreatableSelectNoSSR
                                     id="error_type_id"
@@ -84,7 +96,11 @@ export default function SecondForm({ errorTypeOptions, setIsSecondPage, setIsCon
                                     placeholder="Type of medication error * (required)"
                                     value={selectedOption}
                                     onChange={(selectedOption) => {
-                                        onChange(selectedOption ? selectedOption.id : null);
+                                        onChange(
+                                            selectedOption
+                                                ? selectedOption.id
+                                                : null
+                                        );
                                     }}
                                     isValidNewOption={() => false}
                                     options={errorTypeOptions}
@@ -92,7 +108,7 @@ export default function SecondForm({ errorTypeOptions, setIsSecondPage, setIsCon
                                     className="text-lg"
                                     isClearable
                                 />
-                            )
+                            );
                         }}
                     />
                 </fieldset>
@@ -130,7 +146,7 @@ export default function SecondForm({ errorTypeOptions, setIsSecondPage, setIsCon
                 </div>
             )}
             <div className="mt-5">
-                <FormLabel labelText="Exact medication prescription as ordered for the patient:" />
+                <FormLabel labelText="Exact medication prescription as ordered for the patient: *" />
                 <fieldset className="fieldset">
                     <textarea
                         className="textarea h-24 w-full border border-gray-300"
@@ -153,7 +169,7 @@ export default function SecondForm({ errorTypeOptions, setIsSecondPage, setIsCon
                 )}
             </div>
             <div className="mt-5">
-                <FormLabel labelText="Narrative description of the medication error incident:" />
+                <FormLabel labelText="Narrative description of the medication error incident: *" />
                 <fieldset className="fieldset">
                     <textarea
                         className="textarea h-24 w-full border border-gray-300"
@@ -178,7 +194,7 @@ export default function SecondForm({ errorTypeOptions, setIsSecondPage, setIsCon
             </div>
 
             <div className="mt-5">
-                <FormLabel labelText="Workplace environment description before, during, and after the medication error incident:" />
+                <FormLabel labelText="Workplace environment description before, during, and after the medication error incident: *" />
                 <fieldset className="fieldset">
                     <textarea
                         className="textarea h-24 w-full border border-gray-300"
@@ -204,7 +220,7 @@ export default function SecondForm({ errorTypeOptions, setIsSecondPage, setIsCon
             </div>
 
             <div className="mt-5">
-                <FormLabel labelText="Patient’s condition before, during, and after the medication error incident:" />
+                <FormLabel labelText="Patient’s condition before, during, and after the medication error incident: *" />
                 <fieldset className="fieldset">
                     <textarea
                         className="textarea h-24 w-full border border-gray-300"
@@ -229,7 +245,7 @@ export default function SecondForm({ errorTypeOptions, setIsSecondPage, setIsCon
             </div>
 
             <div className="mt-5">
-                <FormLabel labelText="Immediate action/s done after the medication error incident:" />
+                <FormLabel labelText="Immediate action/s done after the medication error incident: *" />
                 <fieldset className="fieldset">
                     <textarea
                         className="textarea h-24 w-full border border-gray-300"
@@ -254,7 +270,7 @@ export default function SecondForm({ errorTypeOptions, setIsSecondPage, setIsCon
             </div>
 
             <div className="mt-5">
-                <FormLabel labelText="Corrective action/s done after the medication error incident: " />
+                <FormLabel labelText="Corrective action/s done after the medication error incident: *" />
                 <fieldset className="fieldset">
                     <textarea
                         className="textarea h-24 w-full border border-gray-300"
@@ -279,7 +295,7 @@ export default function SecondForm({ errorTypeOptions, setIsSecondPage, setIsCon
             </div>
 
             <div className="mt-5">
-                <FormLabel labelText="Description of the preventive action/s done after the medication error incident: " />
+                <FormLabel labelText="Description of the preventive action/s done after the medication error incident: *" />
                 <fieldset className="fieldset">
                     <textarea
                         className="textarea h-24 w-full border border-gray-300"

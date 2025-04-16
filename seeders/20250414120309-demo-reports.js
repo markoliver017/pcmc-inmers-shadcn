@@ -9,7 +9,7 @@ export async function up(queryInterface) {
     const startDate = new Date("2020-01-01");
     const endDate = new Date();
 
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 1000; i++) {
         const errorDate = faker.date.between({ from: startDate, to: endDate });
 
         reports.push({
@@ -21,8 +21,8 @@ export async function up(queryInterface) {
             patient_weight: parseFloat((Math.random() * 50 + 40).toFixed(2)),
             patient_height: parseFloat((Math.random() * 50 + 140).toFixed(2)),
             exact_prescription: faker.lorem.sentence(),
-            error_type_id: Math.floor(Math.random() * 11) + 1,
-            other_error_type: null,
+            error_type_id: Math.floor(Math.random() * 12) + 1,
+            other_error_type: faker.lorem.sentence(),
             incident_description: faker.lorem.paragraph(),
             workplace_environment: faker.lorem.sentences(2),
             patient_condition: faker.lorem.sentence(),

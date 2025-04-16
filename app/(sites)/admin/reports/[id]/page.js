@@ -24,7 +24,7 @@ export default async function Page({ params }) {
             </Link>
             <div className="card shadow-md mt-2">
                 <div className="card-body overflow-x-auto rounded-box border border-base-content/5 bg-base-100">
-                    <table className="table table-zebra">
+                    <table className="table">
                         {/* head */}
                         <thead>
                             <tr>
@@ -33,6 +33,24 @@ export default async function Page({ params }) {
                             </tr>
                         </thead>
                         <tbody>
+                            <tr className="bg-gray-200 border-b border-gray-300">
+                                <th colSpan={2}>Patient Details</th>
+                            </tr>
+                            <tr className="hover:bg-base-300">
+                                <th>Patient Sex</th>
+                                <td>{report.patient_sex.toUpperCase()}</td>
+                            </tr>
+                            <tr className="hover:bg-base-300">
+                                <th>Patient Height</th>
+                                <td>{report.patient_height} cm</td>
+                            </tr>
+                            <tr className="hover:bg-base-300">
+                                <th>Patient Weight</th>
+                                <td>{report.patient_weight} kg</td>
+                            </tr>
+                            <tr className="bg-gray-200 border-b border-gray-300">
+                                <th colSpan={2}>Medication Error Details</th>
+                            </tr>
                             <tr className="hover:bg-base-300">
                                 <th>Reported Date</th>
                                 <td>{report.report_date}</td>
@@ -61,18 +79,7 @@ export default async function Page({ params }) {
                                 <th>Patient Condition</th>
                                 <td>{report.patient_condition}</td>
                             </tr>
-                            <tr className="hover:bg-base-300">
-                                <th>Patient Height</th>
-                                <td>{report.patient_height} cm</td>
-                            </tr>
-                            <tr className="hover:bg-base-300">
-                                <th>Patient Weight</th>
-                                <td>{report.patient_weight} kg</td>
-                            </tr>
-                            <tr className="hover:bg-base-300">
-                                <th>Patient Sex</th>
-                                <td>{report.patient_sex}</td>
-                            </tr>
+
                             <tr className="hover:bg-base-300">
                                 <th>Immediate Actions</th>
                                 <td>{report.immediate_actions}</td>

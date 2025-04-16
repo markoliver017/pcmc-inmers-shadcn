@@ -7,22 +7,24 @@ import { FaCog, FaHome, FaUser } from "react-icons/fa";
 import SideNavLink from "./SideNavLink";
 import { MdReport } from "react-icons/md";
 import clsx from "clsx";
+import { usePagesStore } from "@/store/pagesStore";
 
-const menus = [
-    { name: "Dashboard", path: "/admin", icon: <FaHome /> },
-    { name: "Profile", path: "/admin/profile", icon: <FaUser /> },
-    { name: "Reports", path: "/admin/reports", icon: <MdReport /> },
-    { name: "System Administration", path: "/admin/settings", icon: <FaCog /> },
-];
+// const menus = [
+//     { name: "Dashboard", path: "/admin", icon: <FaHome /> },
+//     { name: "Profile", path: "/admin/profile", icon: <FaUser /> },
+//     { name: "Reports", path: "/admin/reports", icon: <MdReport /> },
+//     { name: "System Administration", path: "/admin/settings", icon: <FaCog /> },
+// ];
 
 const Sidebar = ({
     admin = {
         name: "Bonnie Green",
-        email: "bonnie@example.com",
+        email: "admin@email.com",
         avatar: "https://avatar.iran.liara.run/public/boy",
     },
 }) => {
     const [isCollapsed, setIsCollapsed] = useState(false);
+    const menus = usePagesStore((state) => state.pages);
 
     useEffect(() => {
         const handleResize = () => {
@@ -78,7 +80,7 @@ const Sidebar = ({
                     <div className="ml-2">
                         <h5 className="text-lg font-bold ">Dela Cruz, Juan</h5>
                         <p className="text-blue-300 dark:text-slate-200">
-                            example@email.com
+                            {admin.email}
                         </p>
                     </div>
                 )}
@@ -97,7 +99,7 @@ const Sidebar = ({
                                     isCollapsed={isCollapsed}
                                     path={menu.path}
                                     Icon={menu.icon}
-                                    name={menu.name}
+                                    name={menu.title}
                                 />
                             </li>
                         ))}

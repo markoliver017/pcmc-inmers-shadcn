@@ -21,22 +21,13 @@ const geistMono = Geist_Mono({
     subsets: ["latin"],
 });
 
-// const pages = [
-//     { name: "Dashboard", path: "/admin", icon: <DashboardIcon /> },
-//     { name: "Reports", path: "/admin/reports", icon: <DashboardIcon /> },
-//     { name: "Profile", path: "/admin/profile", icon: <DashboardIcon /> },
-//     { name: "Settings", path: "/admin/settings", icon: <DashboardIcon /> },
-// ];
-
 export const metadata = {
     title: "Inmerse Portal - Administrator",
     description:
         "Integrated National Medication Error Reporting System - Administrator",
 };
 
-
 export default async function RootLayout({ children }) {
-
     return (
         <html lang="en" suppressHydrationWarning>
             <body
@@ -47,6 +38,7 @@ export default async function RootLayout({ children }) {
                 <div className="flex">
                     <Sidebar />
                     <div
+                        id="main-container"
                         className="flex flex-col flex-1 max-h-screen overflow-y-scroll"
                     >
                         <Header isLoggedIn={true} />

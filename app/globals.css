@@ -17,6 +17,10 @@
     max-width: 100px; /* adjust the width as needed */
 }
 
+#__nextjs-dev-overlay {
+    display: none !important;
+}
+
 /* @custom-variant dark (&:is(.dark *)); */
 
 @theme inline {

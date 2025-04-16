@@ -15,8 +15,8 @@ import { Command, Eye, LogOut, MoreHorizontal } from "lucide-react";
 const Header = ({
     isLoggedIn = false,
     admin = {
-        name: "Bonnie Green",
-        email: "bonnie@example.com",
+        name: "Dela Cruz, Juan",
+        email: "admin@email.com",
         avatar: "https://avatar.iran.liara.run/public/boy",
     },
 }) => {
@@ -37,25 +37,26 @@ const Header = ({
                     />
                     <h1 className="text-2xl font-bold">INMERS</h1>
                 </Link>
+                <a id="top"></a>
 
                 <div className="flex-1 flex justify-between items-center">
                     <nav>
                         <ul className="flex space-x-4">
                             <li>
-                                <a
+                                <Link
                                     href="/"
                                     className="p-3 hover:ring rounded-xl"
                                 >
                                     Home
-                                </a>
+                                </Link>
                             </li>
                             <li>
-                                <a
+                                <Link
                                     href="/about"
                                     className="p-3 hover:ring rounded-xl"
                                 >
                                     About
-                                </a>
+                                </Link>
                             </li>
                         </ul>
                     </nav>
