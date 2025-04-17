@@ -10,6 +10,7 @@ import { ThemeProvider } from "next-themes";
 import { ToastContainer } from "react-toastify";
 import Preloader from "@components/layout/Preloader";
 import { DashboardIcon } from "@radix-ui/react-icons";
+import Providers from "../AuthProvider";
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
@@ -33,22 +34,24 @@ export default async function RootLayout({ children }) {
             <body
                 className={`${geistSans.variable} ${geistMono.variable} antialiased`}
             >
-                <ToastContainer />
-                <Preloader />
-                <div className="flex">
-                    <Sidebar />
-                    <div
-                        id="main-container"
-                        className="flex flex-col flex-1 max-h-screen overflow-y-scroll"
-                    >
-                        <Header isLoggedIn={true} />
-                        <WrapperHead isLoggedIn={true} />
-                        <main className="flex-1 p-4">
-                            <ThemeProvider>{children}</ThemeProvider>
-                        </main>
-                        <Footer />
+                <Providers>
+                    <ToastContainer />
+                    <Preloader />
+                    <div className="flex">
+                        <Sidebar />
+                        <div
+                            id="main-container"
+                            className="flex flex-col flex-1 max-h-screen overflow-y-scroll"
+                        >
+                            <Header isLoggedIn={true} />
+                            <WrapperHead isLoggedIn={true} />
+                            <main className="flex-1 p-4">
+                                <ThemeProvider>{children}</ThemeProvider>
+                            </main>
+                            <Footer />
+                        </div>
                     </div>
-                </div>
+                </Providers>
             </body>
         </html>
     );

@@ -8,6 +8,7 @@ import { set, useForm } from "react-hook-form";
 import notify from "@components/ui/notify";
 import { toast } from "react-toastify";
 import { redirect } from "next/navigation";
+import { signIn } from "next-auth/react";
 
 const credentials = {
     email: "admin@email.com",
@@ -34,32 +35,53 @@ export default function LoginForm() {
 
     const onSubmit = async (data) => {
         setIsLoading(true);
+        const { email, password } = data;
+        const res = await signIn("credentials", {
+            email,
+            password,
+            redirect: false,
+            callbackUrl: "/admin", // redirect after login
+        });
+        console.log("signIn>>>>>>>>>>>>>>>>>>", res);
+        setIsLoading(false);
+        if (res.ok) {
+            toast.success("Login successful!", {
+                message: "Login successful!",
+                position: "bottom-left",
+            });
+            redirect(res.url);
+        }
 
-        setTimeout(() => {
-            // Perform login logic here
-            if (
-                data.email === credentials.email &&
-                data.password === credentials.password
-            ) {
-                toast.success("Login successful!", {
-                    // message: "Login successful!",
-                    position: "bottom-left",
-                });
-                // Redirect to the dashboard or perform any other action
-                redirect("/admin");
-            } else {
-                setError("password", {
-                    type: "manual",
-                    message: "Invalid email or password!",
-                });
+        setError("password", {
+            type: "manual",
+            message: "Invalid email or password!",
+        });
 
-                toast.error("Invalid email or password!", {
-                    position: "bottom-left",
-                });
-            }
+        // setTimeout(() => {
+        //     // Perform login logic here
+        //     if (
+        //         data.email === credentials.email &&
+        //         data.password === credentials.password
+        //     ) {
+        //         toast.success("Login successful!", {
+        //             // message: "Login successful!",
+        //             position: "bottom-left",
+        //         });
+        //         // Redirect to the dashboard or perform any other action
+        //         redirect("/admin");
+        //     } else {
+        //         setError("password", {
+        //             type: "manual",
+        //             message: "Invalid email or password!",
+        //         });
 
-            setIsLoading(false);
-        }, 2000);
+        //         toast.error("Invalid email or password!", {
+        //             position: "bottom-left",
+        //         });
+        //     }
+
+        //     setIsLoading(false);
+        // }, 2000);
     };
 
     return (

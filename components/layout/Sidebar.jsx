@@ -1,4 +1,5 @@
 "use client";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { motion } from "framer-motion";
@@ -23,6 +24,17 @@ const Sidebar = ({
         avatar: "https://avatar.iran.liara.run/public/boy",
     },
 }) => {
+
+    const { data: session, status } = useSession();
+
+    if (status == "authenticated") {
+        const { user } = session
+        admin.name = user?.name;
+        admin.email = user?.email;
+    } else {
+        return <>You are not authenticated.</>
+    }
+
     const [isCollapsed, setIsCollapsed] = useState(false);
     const menus = usePagesStore((state) => state.pages);
 
@@ -78,7 +90,7 @@ const Sidebar = ({
                 />
                 {!isCollapsed && (
                     <div className="ml-2">
-                        <h5 className="text-lg font-bold ">Dela Cruz, Juan</h5>
+                        <h5 className="text-lg font-bold ">{admin.name}</h5>
                         <p className="text-blue-300 dark:text-slate-200">
                             {admin.email}
                         </p>

@@ -1,3 +1,4 @@
+
 import { Geist, Geist_Mono } from "next/font/google";
 import "@/globals.css";
 
@@ -9,6 +10,7 @@ import Footer from "@components/layout/Footer";
 import { ThemeProvider } from "next-themes";
 import { ToastContainer } from "react-toastify";
 import Preloader from "@components/layout/Preloader";
+import Providers from "../AuthProvider";
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
@@ -31,22 +33,23 @@ export default function RootLayout({ children }) {
             <body
                 className={`${geistSans.variable} ${geistMono.variable} antialiased`}
             >
-                <ToastContainer />
-                <Preloader />
-                <div className="flex">
-                    {/* <Sidebar /> */}
-                    <div
-                        className="flex flex-col flex-1 max-h-screen overflow-y-scroll
-                    "
-                    >
-                        <Header />
-                        <WrapperHead />
-                        <main className="flex-1 p-4">
-                            <ThemeProvider>{children}</ThemeProvider>
-                        </main>
-                        <Footer />
+                <Providers>
+                    <ToastContainer />
+                    <Preloader />
+                    <div className="flex">
+                        {/* <Sidebar /> */}
+                        <div
+                            className="flex flex-col flex-1 max-h-screen overflow-y-scroll"
+                        >
+                            <Header />
+                            <WrapperHead />
+                            <main className="flex-1 p-4">
+                                <ThemeProvider>{children}</ThemeProvider>
+                            </main>
+                            <Footer />
+                        </div>
                     </div>
-                </div>
+                </Providers>
             </body>
         </html>
     );

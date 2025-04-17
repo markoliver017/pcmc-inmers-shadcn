@@ -1,3 +1,4 @@
+"use client";
 import LoginDrawer from "@components/login/LoginDrawer";
 import Image from "next/image";
 import Link from "next/link";
@@ -11,6 +12,9 @@ import {
 } from "@components/ui/dropdown-menu";
 import { Button } from "@components/ui/button";
 import { Command, Eye, LogOut, MoreHorizontal } from "lucide-react";
+import SweetAlert from "@components/ui/SweetAlert";
+import { useSession } from "next-auth/react";
+import { signOut } from "next-auth/react";
 
 const Header = ({
     isLoggedIn = false,
@@ -20,6 +24,28 @@ const Header = ({
         avatar: "https://avatar.iran.liara.run/public/boy",
     },
 }) => {
+    const { data: session, status } = useSession();
+
+
+    if (status == "authenticated") {
+        const { user } = session
+        isLoggedIn = true;
+        admin.name = user?.name;
+        admin.email = user?.email;
+    }
+
+    const handleLogOut = () => {
+        // signOut({ callbackUrl: "/" });
+
+        SweetAlert({
+            title: "Logged out?",
+            text: "Are you sure you want to log out?",
+            icon: "question",
+            showCancelButton: true,
+            cancelButtonText: 'Cancel',
+            onConfirm: () => signOut({ callbackUrl: "/" })
+        })
+    }
     return (
         <>
             <header className="flex gap-10 justify-between items-center border-b border-gray-200 p-2 bg-gradient-to-r from-violet-600 to-indigo-600 text-white">
@@ -32,7 +58,6 @@ const Header = ({
                         className="flex-none"
                         width={50}
                         height={50}
-                        layout="intrinsic"
                         alt="Logo"
                     />
                     <h1 className="text-2xl font-bold">INMERS</h1>
@@ -72,7 +97,6 @@ const Header = ({
                                         className="flex-none"
                                         width={50}
                                         height={50}
-                                        layout="intrinsic"
                                         alt="Logo"
                                     />
                                 </Button>
@@ -89,12 +113,14 @@ const Header = ({
                                 </DropdownMenuLabel>
                                 <DropdownMenuSeparator />
 
-                                <Link href={`/`}>
-                                    <DropdownMenuItem className="flex items-center space-x-2">
-                                        <LogOut className="w-4 h-4" />
-                                        <span>Log Out</span>
-                                    </DropdownMenuItem>
-                                </Link>
+                                {/* <Link href={`/`}> */}
+                                <DropdownMenuItem className="flex items-center space-x-2"
+                                    onClick={handleLogOut}
+                                >
+                                    <LogOut className="w-4 h-4" />
+                                    <span>Log Out</span>
+                                </DropdownMenuItem>
+                                {/* </Link> */}
                             </DropdownMenuContent>
                         </DropdownMenu>
                     )}
