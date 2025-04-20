@@ -4,18 +4,10 @@ import { useEffect, useState } from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { FaCog, FaHome, FaUser } from "react-icons/fa";
 import SideNavLink from "./SideNavLink";
-import { MdReport } from "react-icons/md";
 import clsx from "clsx";
 import { usePagesStore } from "@/store/pagesStore";
 
-// const menus = [
-//     { name: "Dashboard", path: "/admin", icon: <FaHome /> },
-//     { name: "Profile", path: "/admin/profile", icon: <FaUser /> },
-//     { name: "Reports", path: "/admin/reports", icon: <MdReport /> },
-//     { name: "System Administration", path: "/admin/settings", icon: <FaCog /> },
-// ];
 
 const Sidebar = ({
     admin = {
@@ -26,15 +18,6 @@ const Sidebar = ({
 }) => {
 
     const { data: session, status } = useSession();
-
-    if (status == "authenticated") {
-        const { user } = session
-        admin.name = user?.name;
-        admin.email = user?.email;
-    } else {
-        return <>You are not authenticated.</>
-    }
-
     const [isCollapsed, setIsCollapsed] = useState(false);
     const menus = usePagesStore((state) => state.pages);
 
@@ -51,6 +34,15 @@ const Sidebar = ({
         handleResize();
         return () => window.removeEventListener("resize", handleResize);
     }, []);
+
+    if (status != "authenticated") {
+        return;
+    }
+
+    const { user } = session
+    admin.name = user?.name;
+    admin.email = user?.email;
+
 
     const handleToggleSidebar = () => {
         setIsCollapsed(!isCollapsed);

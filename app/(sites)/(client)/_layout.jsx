@@ -1,15 +1,13 @@
+
 import { Geist, Geist_Mono } from "next/font/google";
 import "@/globals.css";
 
-// import { Button } from "@components/ui/button";
-import Sidebar from "@components/layout/Sidebar";
 import Header from "@components/layout/Header";
 import WrapperHead from "@components/layout/WrapperHead";
 import Footer from "@components/layout/Footer";
 import { ThemeProvider } from "next-themes";
 import { ToastContainer } from "react-toastify";
 import Preloader from "@components/layout/Preloader";
-import { DashboardIcon } from "@radix-ui/react-icons";
 import Providers from "../AuthProvider";
 
 const geistSans = Geist({
@@ -23,12 +21,11 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-    title: "Inmerse Portal - Administrator",
-    description:
-        "Integrated National Medication Error Reporting System - Administrator",
+    title: "Inmerse Portal",
+    description: "Integrated National Medication Error Reporting System",
 };
 
-export default async function RootLayout({ children }) {
+export default function RootLayout({ children }) {
     return (
         <html lang="en" suppressHydrationWarning>
             <body
@@ -38,13 +35,12 @@ export default async function RootLayout({ children }) {
                     <ToastContainer />
                     <Preloader />
                     <div className="flex">
-                        <Sidebar />
+                        {/* <Sidebar /> */}
                         <div
-                            id="main-container"
                             className="flex flex-col flex-1 max-h-screen overflow-y-scroll"
                         >
-                            <Header isLoggedIn={true} />
-                            <WrapperHead isLoggedIn={true} />
+                            <Header />
+                            <WrapperHead />
                             <main className="flex-1 p-4">
                                 <ThemeProvider>{children}</ThemeProvider>
                             </main>

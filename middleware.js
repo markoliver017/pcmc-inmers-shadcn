@@ -9,7 +9,9 @@ export async function middleware(request) {
     const token = await getToken({ req: request, secret })
     const { pathname } = request.nextUrl
 
-    const isAdminRoute = pathname.startsWith('/admin')
+    const isAdminRoute = pathname.startsWith('/admin');
+
+    console.log("token", token)
 
     // Allow the request if it's not /admin or user is authenticated
     if (!isAdminRoute || token) {
@@ -17,7 +19,7 @@ export async function middleware(request) {
     }
 
     // If user is authenticated and visiting /login, redirect to /admin
-    if (token && pathname === '/login') {
+    if (token && pathname === '/') {
         return NextResponse.redirect(new URL('/admin', request.url))
     }
     // If trying to access /admin and not authenticated, redirect
@@ -31,3 +33,13 @@ export const config = {
     // matcher: '/',
     matcher: '/admin/:path*',
 }
+
+// export function middleware(request) {
+//     if (request.nextUrl.pathname.startsWith('/about')) {
+//         return NextResponse.rewrite(new URL('/about-2', request.url))
+//     }
+
+//     if (request.nextUrl.pathname.startsWith('/dashboard')) {
+//         return NextResponse.rewrite(new URL('/dashboard/user', request.url))
+//     }
+// }

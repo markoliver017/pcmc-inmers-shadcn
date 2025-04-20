@@ -16,22 +16,22 @@ import { GiToggles } from "react-icons/gi";
 export default function ReportForm({ setIsProceedForm }) {
     const methods = useForm({
         mode: "onChange",
-        defaultValues: {
-            exact_prescription:
-                "The doctor prescribed Amoxicillin 500 mg tablets to be taken twice daily for 7 days to treat a bacterial infection.",
-            incident_description:
-                "During administration, the nurse mistakenly gave the patient 500 mg of Ibuprofen instead of the prescribed Amoxicillin 500 mg due to a labeling error in the medication storage area.",
-            workplace_environment:
-                "Before the incident, the workplace was moderately busy, with staff multitasking to handle patient check-ins and medication preparation. During the incident, there was a rush to meet patient schedules, and the storage area was poorly lit and disorganized.After the incident, the staff became aware of the error and immediately stopped further medication administration to other patients, reviewing all prescription records.",
-            patient_condition:
-                "Before: The patient was experiencing mild symptoms of bacterial infection, including a sore throat and mild fever.During: After receiving the incorrect medication (Ibuprofen), the patient reported dizziness and stomach upset.After: The patient's bacterial infection persisted, requiring additional medical intervention.",
-            immediate_actions:
-                "The nurse immediately informed the attending physician, documented the error in the patient record, and monitored the patient for adverse reactions to Ibuprofen. The correct medication was then administered promptly.",
-            corrective_actions:
-                "The storage area for medications was reorganized to ensure clear labeling of all drugs. Staff received additional training on medication verification processes to prevent future errors.",
-            preventive_actions:
-                "Introduced a barcode scanning system to verify medications before administration, ensuring the correct match between prescription and drug. Conducted regular audits of medication storage and administration procedures.",
-        },
+        // defaultValues: {
+        //     exact_prescription:
+        //         "The doctor prescribed Amoxicillin 500 mg tablets to be taken twice daily for 7 days to treat a bacterial infection.",
+        //     incident_description:
+        //         "During administration, the nurse mistakenly gave the patient 500 mg of Ibuprofen instead of the prescribed Amoxicillin 500 mg due to a labeling error in the medication storage area.",
+        //     workplace_environment:
+        //         "Before the incident, the workplace was moderately busy, with staff multitasking to handle patient check-ins and medication preparation. During the incident, there was a rush to meet patient schedules, and the storage area was poorly lit and disorganized.After the incident, the staff became aware of the error and immediately stopped further medication administration to other patients, reviewing all prescription records.",
+        //     patient_condition:
+        //         "Before: The patient was experiencing mild symptoms of bacterial infection, including a sore throat and mild fever.During: After receiving the incorrect medication (Ibuprofen), the patient reported dizziness and stomach upset.After: The patient's bacterial infection persisted, requiring additional medical intervention.",
+        //     immediate_actions:
+        //         "The nurse immediately informed the attending physician, documented the error in the patient record, and monitored the patient for adverse reactions to Ibuprofen. The correct medication was then administered promptly.",
+        //     corrective_actions:
+        //         "The storage area for medications was reorganized to ensure clear labeling of all drugs. Staff received additional training on medication verification processes to prevent future errors.",
+        //     preventive_actions:
+        //         "Introduced a barcode scanning system to verify medications before administration, ensuring the correct match between prescription and drug. Conducted regular audits of medication storage and administration procedures.",
+        // },
     });
 
     const [isSecondPage, setIsSecondPage] = useState(false);
@@ -85,8 +85,8 @@ export default function ReportForm({ setIsProceedForm }) {
     const error_type =
         selected_error_type?.id == 12
             ? `${selected_error_type?.label} <i>(${watch(
-                  "other_error_type"
-              )})</i>`
+                "other_error_type"
+            )})</i>`
             : selected_error_type?.label;
 
     // console.log("error_typeerror_typeerror_typeerror_typeerror_type", error_type)

@@ -3,8 +3,12 @@ import React from "react";
 import Breadcrumbs from "./Breadcrumbs";
 import { usePagesStore } from "@/store/pagesStore";
 import { usePathname } from "next/navigation";
+import { useSession } from "next-auth/react";
 
-export default function WrapperHead({ isLoggedIn = false }) {
+export default function WrapperHead() {
+    const { status } = useSession();
+    const isLoggedIn = (status == "authenticated");
+
     const pages = usePagesStore((state) => state.pages);
     const pathname = usePathname();
     const currentPage = pages.find((page) => pathname == page.path);

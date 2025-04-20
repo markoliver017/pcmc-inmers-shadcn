@@ -1,4 +1,3 @@
-
 import { Geist, Geist_Mono } from "next/font/google";
 import "@/globals.css";
 
@@ -10,7 +9,8 @@ import Footer from "@components/layout/Footer";
 import { ThemeProvider } from "next-themes";
 import { ToastContainer } from "react-toastify";
 import Preloader from "@components/layout/Preloader";
-import Providers from "../AuthProvider";
+import Providers from "./AuthProvider";
+// import { getServerSession } from "next-auth/next";
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
@@ -23,11 +23,14 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-    title: "Inmerse Portal",
-    description: "Integrated National Medication Error Reporting System",
+    title: "Inmerse Portal - Administrator",
+    description:
+        "Integrated National Medication Error Reporting System - Administrator",
 };
 
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children }) {
+    // const session = await getServerSession();
+    // console.log("getServerSession", session)
     return (
         <html lang="en" suppressHydrationWarning>
             <body
@@ -37,8 +40,9 @@ export default function RootLayout({ children }) {
                     <ToastContainer />
                     <Preloader />
                     <div className="flex">
-                        {/* <Sidebar /> */}
+                        <Sidebar />
                         <div
+                            id="main-container"
                             className="flex flex-col flex-1 max-h-screen overflow-y-scroll"
                         >
                             <Header />

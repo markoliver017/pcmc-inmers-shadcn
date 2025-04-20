@@ -17,15 +17,14 @@ import { useSession } from "next-auth/react";
 import { signOut } from "next-auth/react";
 
 const Header = ({
-    isLoggedIn = false,
     admin = {
         name: "Dela Cruz, Juan",
         email: "admin@email.com",
         avatar: "https://avatar.iran.liara.run/public/boy",
     },
 }) => {
+    let isLoggedIn = false;
     const { data: session, status } = useSession();
-
 
     if (status == "authenticated") {
         const { user } = session
@@ -35,7 +34,6 @@ const Header = ({
     }
 
     const handleLogOut = () => {
-        // signOut({ callbackUrl: "/" });
 
         SweetAlert({
             title: "Logged out?",
