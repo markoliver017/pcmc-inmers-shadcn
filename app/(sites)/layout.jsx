@@ -32,27 +32,29 @@ export default async function RootLayout({ children }) {
     // const session = await getServerSession();
     // console.log("getServerSession", session)
     return (
-        <html lang="en" suppressHydrationWarning>
+        <html lang="en" suppressHydrationWarning={true}>
             <body
                 className={`${geistSans.variable} ${geistMono.variable} antialiased`}
             >
                 <Providers>
                     <ToastContainer />
                     <Preloader />
-                    <div className="flex">
-                        <Sidebar />
-                        <div
-                            id="main-container"
-                            className="flex flex-col flex-1 max-h-screen overflow-y-scroll"
-                        >
-                            <Header />
-                            <WrapperHead />
-                            <main className="flex-1 p-4">
-                                <ThemeProvider>{children}</ThemeProvider>
-                            </main>
-                            <Footer />
+                    <ThemeProvider>
+                        <div className="flex dark:bg-black dark:text-slate-100">
+                            <Sidebar />
+                            <div
+                                id="main-container"
+                                className="flex flex-col flex-1 max-h-screen overflow-y-scroll"
+                            >
+                                <Header />
+                                <WrapperHead />
+                                <main className="flex-1 p-4">
+                                    {children}
+                                </main>
+                                <Footer />
+                            </div>
                         </div>
-                    </div>
+                    </ThemeProvider>
                 </Providers>
             </body>
         </html>

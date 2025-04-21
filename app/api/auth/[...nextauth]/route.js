@@ -42,8 +42,8 @@ export const authOptions = {
                     email: admin.email,
                     gender: admin.gender,
                     avatar: {
-                        url: admin.File.url,
-                        type: admin.type,
+                        url: admin?.File?.url || null,
+                        type: admin?.File?.type || null,
                     },
                 };
             },

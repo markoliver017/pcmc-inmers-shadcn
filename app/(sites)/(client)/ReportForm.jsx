@@ -12,6 +12,7 @@ import clsx from "clsx";
 import SweetAlert from "@components/ui/SweetAlert";
 import notify from "@components/ui/notify";
 import { GiToggles } from "react-icons/gi";
+import { Card } from "@components/ui/card";
 
 export default function ReportForm({ setIsProceedForm }) {
     const methods = useForm({
@@ -85,8 +86,8 @@ export default function ReportForm({ setIsProceedForm }) {
     const error_type =
         selected_error_type?.id == 12
             ? `${selected_error_type?.label} <i>(${watch(
-                  "other_error_type"
-              )})</i>`
+                "other_error_type"
+            )})</i>`
             : selected_error_type?.label;
 
     const onFinalSubmit = async (data) => {
@@ -155,12 +156,12 @@ export default function ReportForm({ setIsProceedForm }) {
 
     return (
         <>
-            <div
+            <Card
                 id="form-container"
                 className="card w-full sm:w-3/4 shadow-[5px_5px_0px_0px_rgba(0,_0,_0,_0.5),inset_0px_2px_4px_0px_rgba(0,_0,_0,_0.3)]"
             >
-                <div className="flex pt-2 justify-center items-center ">
-                    <ul className="steps">
+                <div className="flex pt-2 justify-center items-center dark:bg-slate-800 dark:p-2 ">
+                    <ul className="steps ">
                         <li className="step step-primary">
                             <small>Patient Details</small>
                         </li>
@@ -306,19 +307,9 @@ export default function ReportForm({ setIsProceedForm }) {
                                                     <div className="card shadow-md mt-2">
                                                         <div className="card-body overflow-x-auto rounded-box border border-base-content/5 bg-base-100">
                                                             <table className="table">
-                                                                {/* head */}
-                                                                <thead>
-                                                                    <tr>
-                                                                        <th>
-                                                                            Fields
-                                                                        </th>
-                                                                        <th>
-                                                                            Inputs
-                                                                        </th>
-                                                                    </tr>
-                                                                </thead>
+
                                                                 <tbody>
-                                                                    <tr className="bg-gray-200 border-b border-gray-300">
+                                                                    <tr className="bg-gray-200 dark:bg-gray-900 border-b border-gray-300">
                                                                         <th
                                                                             colSpan={
                                                                                 2
@@ -364,7 +355,7 @@ export default function ReportForm({ setIsProceedForm }) {
                                                                             cm
                                                                         </td>
                                                                     </tr>
-                                                                    <tr className="bg-gray-200 border-b border-gray-300">
+                                                                    <tr className="bg-gray-200 dark:bg-gray-900 border-b border-gray-300">
                                                                         <th
                                                                             colSpan={
                                                                                 2
@@ -505,7 +496,7 @@ export default function ReportForm({ setIsProceedForm }) {
                         </form>
                     </FormProvider>
                 </div>
-            </div>
+            </Card>
         </>
     );
 }

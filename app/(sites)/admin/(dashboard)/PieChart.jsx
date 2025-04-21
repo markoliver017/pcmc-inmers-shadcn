@@ -1,6 +1,6 @@
 "use client";
 
-import { File, PieChartIcon, TrendingUp } from "lucide-react";
+import { PieChartIcon } from "lucide-react";
 import { LabelList, Pie, PieChart } from "recharts";
 
 import {
@@ -17,10 +17,50 @@ import {
     ChartTooltip,
     ChartTooltipContent,
 } from "@components/ui/chart";
+import { use, useEffect, useState } from "react";
 
-export function PieChartComponent({ chartData, chartConfig, total }) {
+function getRandomColor() {
+    const r = Math.floor(Math.random() * 256);
+    const g = Math.floor(Math.random() * 256);
+    const b = Math.floor(Math.random() * 256);
+    return `rgb(${r}, ${g}, ${b})`;
+}
+
+export function PieChartComponent({ reports }) {
+    // const { chartData, chartConfig, total } = reports;
+    const { data, total } = use(reports);
+    const [chartData, setChartData] = useState([]);
+
+    useEffect(() => {
+        const generateChartData = () => {
+            return data.map((report) => ({
+                ...report,
+                name: report.name + " - " + report.count,
+                fill: getRandomColor(),
+            }));
+        };
+
+        setChartData(generateChartData());
+    }, [data]);
+
+    const chartConfig = data.reduce(
+        (acc, curr) => {
+            acc[curr.name] = {
+                label: curr.name,
+            };
+            return acc;
+        },
+        {
+            count: {
+                label: "No of reports",
+            },
+        }
+    );
+
+    if (!chartData.length) return null;
+
     return (
-        <Card className="flex-1">
+        <Card className="w-full md:w-96">
             <CardHeader className="items-center pb-0">
                 <CardTitle>INMERS </CardTitle>
                 <CardDescription>Medication Error Report Chart</CardDescription>

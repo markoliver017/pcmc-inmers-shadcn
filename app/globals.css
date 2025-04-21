@@ -14,7 +14,13 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 100px; /* adjust the width as needed */
+    max-width: 100px;
+    /* adjust the width as needed */
+}
+
+.custom-steps::before {
+    background-color: blue;
+    /* Change to your desired color */
 }
 
 #__nextjs-dev-overlay {

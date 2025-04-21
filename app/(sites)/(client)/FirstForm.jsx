@@ -42,8 +42,8 @@ export default function FirstForm({ setIsProceedForm, setIsSecondPage }) {
                 <h2 className="card-title text-2xl">Patient Details</h2>
                 <div className="text-orange-600 italic">* required fields</div>
             </div>
-            <div className="flex mt-5">
-                <FormLabel labelText="Report Date: *" />
+            <div className="mt-5 hidden">
+                <FormLabel labelText="Report Date: <sup>default now</sup>" />
                 <label className="input mt-1 border border-gray-300 dark:text-white">
                     <Calendar className="h-3" />
                     <input
@@ -72,6 +72,7 @@ export default function FirstForm({ setIsProceedForm, setIsSecondPage }) {
                         {...register("error_date", {
                             required: "Medication error date is required.",
                         })}
+                        value={new Date().toISOString().slice(0, 10)}
                         type="date"
                     />
                 </label>

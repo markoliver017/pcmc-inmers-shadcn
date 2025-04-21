@@ -27,9 +27,9 @@ export default function LoginDrawer() {
             </button>
 
             <Drawer ref={drawerRef} direction="right">
-                <DrawerContent>
+                <DrawerContent className="dark:bg-neutral-900 dark:text-slate-100">
                     <DrawerHeader>
-                        <DrawerTitle>SYSTEM ADMINISTRATOR LOGIN</DrawerTitle>
+                        <DrawerTitle className="dark:text-slate-100">SYSTEM ADMINISTRATOR LOGIN</DrawerTitle>
                         {/* <DrawerDescription>
                             Lorem ipsum dolor sit amet consectetur adipisicing
                             elit. Nam veniam reiciendis nulla ducimus fuga ad.

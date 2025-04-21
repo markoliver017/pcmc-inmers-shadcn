@@ -1,9 +1,7 @@
 "use client";
 import { use, useEffect, useState } from "react";
-import BarChart from "./BarChart";
 import { PieChartComponent } from "./PieChart";
-import { useSession } from "next-auth/react";
-import { MonthBarChart } from "./MontBarChart";
+import { MonthBarChart } from "./MonthBarChart";
 
 function getRandomColor() {
     const r = Math.floor(Math.random() * 256);

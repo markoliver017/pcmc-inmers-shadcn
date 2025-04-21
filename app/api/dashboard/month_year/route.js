@@ -1,49 +1,38 @@
-import { ErrorType, Report } from "@lib/models";
+import { Report } from "@lib/models";
 import { NextResponse } from "next/server";
 import { Sequelize } from "sequelize";
 
-export async function GET() {
+export async function GET(request) {
     try {
-        // const searchParams = request.nextUrl.searchParams;
-        // const Op = Sequelize.Op;
-        // const currentYear = new Date().getFullYear();
-        // const year = searchParams.get("year") || currentYear;
-        // const startDate = `${year}-01-01`;
-        // const endDate = `${year}-12-31`;
-        await new Promise((resolve) => setTimeout(resolve, 5000));
-        const errorTypeCounts = await ErrorType.findAll({
-            attributes: [
-                "id",
-                "name",
-                [Sequelize.fn("COUNT", Sequelize.col("Reports.id")), "count"],
-            ],
-            include: [
-                {
-                    model: Report,
-                    attributes: [], // exclude report fields
-                    // where: {
-                    //     error_date: {
-                    //         [Op.between]: [startDate, endDate],
-                    //     },
-                    // },
-                    required: false, // <-- this is key! makes it a LEFT JOIN
-                },
-            ],
-            group: ["ErrorType.id", "ErrorType.name"],
-            order: [["id", "ASC"]], // optional: sort alphabetically
-            raw: true,
-        });
+        await new Promise((resolve) => setTimeout(resolve, 3000));
 
-        const totalReports = errorTypeCounts.reduce((sum, item) => {
-            return sum + parseInt(item.count, 10);
-        }, 0);
+        const searchParams = request.nextUrl.searchParams;
+        const Op = Sequelize.Op;
+        const currentYear = new Date().getFullYear();
+        const year = searchParams.get("year") || currentYear;
+        const startDate = `${year}-01-01`;
+        const endDate = `${year}-12-31`;
+        const monthlyReportCounts = await Report.findAll({
+            where: {
+                error_date: {
+                    [Op.between]: [startDate, endDate],
+                },
+            },
+            attributes: [
+                [Sequelize.literal("MONTHNAME(error_date)"), "month"],
+                [Sequelize.fn("COUNT", Sequelize.col("error_date")), "count"],
+            ],
+            group: ["month"],
+            order: [[Sequelize.literal("MONTH(error_date)"), "ASC"]],
+        });
+        const totalReports = monthlyReportCounts.reduce((sum, item) => sum + parseInt(item.dataValues.count, 10), 0);
 
         return NextResponse.json(
             {
                 error: false,
                 message: "The reports have been successfully retrieved.",
                 total: totalReports,
-                data: errorTypeCounts,
+                data: monthlyReportCounts,
             },
             { status: 200 }
         );

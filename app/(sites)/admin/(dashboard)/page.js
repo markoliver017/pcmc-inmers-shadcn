@@ -1,6 +1,9 @@
 import { Suspense } from "react";
 import Dashboard from "./Dashboard";
 import Skeleton from "@components/ui/skeleton";
+import { MonthBarChart } from "./MonthBarChart";
+import { PieChartComponent } from "./PieChart";
+import { fetchMonthYearReports } from "./action";
 
 export const metadata = {
     title: "Inmerse Portal - Dashboard",
@@ -8,7 +11,7 @@ export const metadata = {
         "Integrated National Medication Error Reporting System - Administrator Dashboard",
 };
 
-async function fetchReports() {
+async function fetchErrorTypeReports() {
     const url = new URL(`/api/dashboard/error_type_count`, process.env.host);
     const response = await fetch(url, {
         method: "GET",
@@ -17,19 +20,29 @@ async function fetchReports() {
     return response.json();
 }
 
+
 export default function Page() {
-    const data = fetchReports();
+    const error_type_reports = fetchErrorTypeReports();
+    const month_year_reports = fetchMonthYearReports();
 
     return (
-        <Suspense
-            fallback={
-                <div className="flex gap-5">
-                    <Skeleton className="w-full" />
-                    <Skeleton className="w-full" />
-                </div>
-            }
-        >
-            <Dashboard reports={data} />
-        </Suspense>
+        <div className="flex flex-wrap gap-2">
+
+            <Suspense
+                fallback={
+                    <Skeleton className="flex-1" />
+
+                }
+            >
+                <PieChartComponent reports={error_type_reports} />
+            </Suspense>
+            <Suspense
+                fallback={
+                    <Skeleton className="flex-1" />
+                }
+            >
+                <MonthBarChart reports={month_year_reports} />
+            </Suspense>
+        </div>
     );
 }

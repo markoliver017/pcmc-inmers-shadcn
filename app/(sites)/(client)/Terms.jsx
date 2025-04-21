@@ -1,3 +1,4 @@
+import { Card } from '@components/ui/card';
 import SweetAlert from '@components/ui/SweetAlert';
 import clsx from 'clsx';
 import React from 'react'
@@ -10,7 +11,7 @@ export default function Terms({
     setIsProceedForm,
 }) {
     return (
-        <div className="card w-3/4 min-h-[30vh] shadow-lg border ">
+        <Card className="w-3/4 min-h-[30vh]">
             <div className="card-body">
                 <h2 className="card-title">Terms and Conditions</h2>
                 <p>
@@ -136,6 +137,6 @@ export default function Terms({
                     </button>
                 </div>
             </div>
-        </div>
+        </Card>
     )
 }
