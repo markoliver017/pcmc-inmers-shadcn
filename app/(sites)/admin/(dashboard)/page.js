@@ -9,7 +9,7 @@ export const metadata = {
 };
 
 async function fetchReports() {
-    const url = new URL(`/api/dashboard?year=2025`, "http://localhost:3000");
+    const url = new URL(`/api/dashboard/error_type_count`, process.env.host);
     const response = await fetch(url, {
         method: "GET",
         cache: "no-store",

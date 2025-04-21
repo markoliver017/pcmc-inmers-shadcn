@@ -8,7 +8,6 @@ import SideNavLink from "./SideNavLink";
 import clsx from "clsx";
 import { usePagesStore } from "@/store/pagesStore";
 
-
 const Sidebar = ({
     admin = {
         name: "Bonnie Green",
@@ -16,7 +15,6 @@ const Sidebar = ({
         avatar: "https://avatar.iran.liara.run/public/boy",
     },
 }) => {
-
     const { data: session, status } = useSession();
     const [isCollapsed, setIsCollapsed] = useState(false);
     const menus = usePagesStore((state) => state.pages);
@@ -39,10 +37,10 @@ const Sidebar = ({
         return;
     }
 
-    const { user } = session
+    const { user } = session;
     admin.name = user?.name;
     admin.email = user?.email;
-
+    admin.avatar = user?.avatar || "https://avatar.iran.liara.run/public/boy";
 
     const handleToggleSidebar = () => {
         setIsCollapsed(!isCollapsed);
@@ -68,13 +66,13 @@ const Sidebar = ({
             {/* User Profile */}
             <div
                 className={clsx(
-                    "flex items-center mt-4 hover:bg-gray-300 hover:text-blue-900 dark:hover:text-blue-200 dark:hover:bg-slate-700 rounded cursor-pointer",
+                    "flex items-center mt-4 hover:bg-gray-300 truncate hover:text-blue-900 dark:hover:text-blue-200 dark:hover:bg-slate-700 rounded cursor-pointer",
                     !isCollapsed && "p-4"
                 )}
             >
                 <Image
                     src={admin.avatar}
-                    className="flex-none"
+                    className="flex-none rounded-4xl"
                     width={50}
                     height={50}
                     layout="intrinsic"
@@ -83,7 +81,7 @@ const Sidebar = ({
                 {!isCollapsed && (
                     <div className="ml-2">
                         <h5 className="text-lg font-bold ">{admin.name}</h5>
-                        <p className="text-blue-300 dark:text-slate-200">
+                        <p className="text-blue-300 truncate w-full overflow-hidden whitespace-nowrap dark:text-slate-200">
                             {admin.email}
                         </p>
                     </div>
@@ -104,6 +102,7 @@ const Sidebar = ({
                                     path={menu.path}
                                     Icon={menu.icon}
                                     name={menu.title}
+                                    menu={menu}
                                 />
                             </li>
                         ))}

@@ -85,11 +85,9 @@ export default function ReportForm({ setIsProceedForm }) {
     const error_type =
         selected_error_type?.id == 12
             ? `${selected_error_type?.label} <i>(${watch(
-                "other_error_type"
-            )})</i>`
+                  "other_error_type"
+              )})</i>`
             : selected_error_type?.label;
-
-    // console.log("error_typeerror_typeerror_typeerror_typeerror_type", error_type)
 
     const onFinalSubmit = async (data) => {
         setIsLoading(true);

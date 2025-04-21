@@ -1,6 +1,6 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { Admin } from "@lib/models"; // Adjust to your actual model import
+import { Admin, File } from "@lib/models"; // Adjust to your actual model import
 
 export const authOptions = {
     providers: [
@@ -13,18 +13,38 @@ export const authOptions = {
             async authorize(credentials) {
                 const { email, password } = credentials;
 
-                const admin = await Admin.findOne({ where: { email } });
+                const admin = await Admin.findOne({
+                    where: { email },
+                    attributes: [
+                        "id",
+                        "first_name",
+                        "last_name",
+                        "gender",
+                        "email",
+                        "password",
+                    ],
+                    include: [
+                        {
+                            attributes: ["id", "url", "type"],
+                            model: File,
+                            required: false,
+                        },
+                    ],
+                });
                 if (!admin) return null;
-                console.log("Im hereeee: Admin FOUND>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>", admin);
 
                 const isValid = await admin.validPassword(password);
                 if (!isValid) return null;
-                console.log("Im hereeee: VALID PASSWORD Admin>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 
                 return {
                     id: admin.id,
                     name: admin.full_name,
                     email: admin.email,
+                    gender: admin.gender,
+                    avatar: {
+                        url: admin.File.url,
+                        type: admin.type,
+                    },
                 };
             },
         }),
@@ -41,11 +61,16 @@ export const authOptions = {
                 token.id = user.id;
                 token.name = user.name;
                 token.email = user.email;
+                token.uid = user;
             }
             return token;
         },
         async session({ session, token }) {
             session.user.id = token.id;
+            session.user.name = token.name;
+            session.user.email = token.email;
+            session.user.gender = token.uid.gender;
+            session.user.avatar = token.uid.avatar?.url || null;
             return session;
         },
     },

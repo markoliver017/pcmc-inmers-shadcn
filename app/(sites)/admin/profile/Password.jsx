@@ -1,8 +1,10 @@
-"use client"
+"use client";
 
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 
-import { Button } from "@components/ui/button"
+import { Button } from "@components/ui/button";
 import {
     Card,
     CardContent,
@@ -10,48 +12,182 @@ import {
     CardFooter,
     CardHeader,
     CardTitle,
-} from "@components/ui/card"
-import { Input } from "@components/ui/input"
-import { Label } from "@components/ui/label"
+} from "@components/ui/card";
+import { Input } from "@components/ui/input";
+import {
+    Form,
+    FormControl,
+    FormDescription,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from "@components/ui/form";
+import Link from "next/link";
+import notify from "@components/ui/notify";
+import { changePassword } from "./action";
+import { useEffect, useState } from "react";
+import Image from "next/image";
+import { signOut } from "next-auth/react";
+import SweetAlert from "@components/ui/SweetAlert";
 
-export default function Password() {
-    const {
-        register,
-        trigger,
-        formState: { errors },
-    } = useForm({
+const formSchema = z
+    .object({
+        password: z.string().min(8, {
+            message: "Password must be at least 8 characters.",
+        }),
+        passwordConfirmation: z.string(),
+        email: z
+            .string()
+            .email({
+                message: "Invalid email format",
+            })
+            .min(6, {
+                message: "Email must be at least 6 characters.",
+            }),
+    })
+    .refine((data) => data.password === data.passwordConfirmation, {
+        message: "Passwords do not match.",
+        path: ["passwordConfirmation"],
+    });
+
+export default function Password({ admin }) {
+    useEffect(() => {
+        console.log("Admin>>>>>>>>>>>>>>>>>>>>", admin);
+    }, [admin]);
+
+    const [state, setState] = useState({
+        isSubmitting: false,
+        error: null,
+        success: false,
+    });
+
+    const form = useForm({
         mode: "onChange",
+        resolver: zodResolver(formSchema),
         defaultValues: {
-            first_name: "",
-            last_name: "",
-            gender: "",
-            last_name: "",
-            photo_id: ""
+            password: "",
+            passwordConfirmation: "",
+            email: admin.email,
         },
     });
-    return (
 
+    const onSubmit = async (data) => {
+        SweetAlert({
+            title: "Continue?",
+            text: "After saving, you'll be logged out?",
+            icon: "question",
+            showCancelButton: true,
+            cancelButtonText: "Cancel",
+            onConfirm: async () => {
+                setState({ isSubmitting: true, error: null, success: false });
+
+                const formData = new FormData();
+                formData.append("id", admin.id);
+
+                Object.entries(data).forEach(([key, value]) => {
+                    if (value !== null) {
+                        formData.append(key, value);
+                    }
+                });
+
+                const result = await changePassword(formData);
+                setState(result);
+                if (result.success) {
+                    notify(
+                        {
+                            error: result.success,
+                            message: "Admin credentials updated successfully!",
+                        },
+                        "success"
+                    );
+                    signOut({ callbackUrl: "/" });
+                } else if (result.details?.length) {
+                    notify(
+                        {
+                            error: result.success,
+                            message: result.details.join(", "),
+                        },
+                        "error"
+                    );
+                }
+            },
+        });
+    };
+
+    return (
         <Card>
             <CardHeader>
                 <CardTitle>Password</CardTitle>
                 <CardDescription>
-                    Change your password here. After saving, you'll be logged out.
+                    Change your password here. After saving, you'll be logged
+                    out.
                 </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-2">
-                <div className="space-y-1">
-                    <Label htmlFor="current">Current password</Label>
-                    <Input id="current" type="password" />
-                </div>
-                <div className="space-y-1">
-                    <Label htmlFor="new">New password</Label>
-                    <Input id="new" type="password" />
-                </div>
-            </CardContent>
-            <CardFooter>
-                <Button>Save password</Button>
-            </CardFooter>
-        </Card>
+            <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)}>
+                    <CardContent className="space-y-2">
+                        <FormField
+                            control={form.control}
+                            name="email"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Email *</FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            placeholder="Your Email"
+                                            {...field}
+                                        />
+                                    </FormControl>
 
-    )
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="password"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Password *</FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            placeholder="New Password"
+                                            {...field}
+                                        />
+                                    </FormControl>
+
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="passwordConfirmation"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Confirm Password *</FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            placeholder="Cofirm your new password"
+                                            {...field}
+                                        />
+                                    </FormControl>
+
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                    </CardContent>
+                    <CardFooter className="flex justify-end">
+                        <Button type="submit" disabled={state.isSubmitting}>
+                            {state.isSubmitting
+                                ? "Submitting..."
+                                : "Save changes"}
+                        </Button>
+                    </CardFooter>
+                </form>
+            </Form>
+        </Card>
+    );
 }

@@ -27,23 +27,24 @@ const Header = ({
     const { data: session, status } = useSession();
 
     if (status == "authenticated") {
-        const { user } = session
+        const { user } = session;
         isLoggedIn = true;
         admin.name = user?.name;
         admin.email = user?.email;
+        admin.avatar =
+            user?.avatar || "https://avatar.iran.liara.run/public/boy";
     }
 
     const handleLogOut = () => {
-
         SweetAlert({
             title: "Logged out?",
             text: "Are you sure you want to log out?",
             icon: "question",
             showCancelButton: true,
-            cancelButtonText: 'Cancel',
-            onConfirm: () => signOut({ callbackUrl: "/" })
-        })
-    }
+            cancelButtonText: "Cancel",
+            onConfirm: () => signOut({ callbackUrl: "/" }),
+        });
+    };
     return (
         <>
             <header className="flex gap-10 justify-between items-center border-b border-gray-200 p-2 bg-gradient-to-r from-violet-600 to-indigo-600 text-white">
@@ -92,7 +93,7 @@ const Header = ({
                                     <span className="sr-only">Open menu</span>
                                     <Image
                                         src={admin.avatar}
-                                        className="flex-none"
+                                        className="flex-none rounded-4xl"
                                         width={50}
                                         height={50}
                                         alt="Logo"
@@ -112,7 +113,8 @@ const Header = ({
                                 <DropdownMenuSeparator />
 
                                 {/* <Link href={`/`}> */}
-                                <DropdownMenuItem className="flex items-center space-x-2"
+                                <DropdownMenuItem
+                                    className="flex items-center space-x-2"
                                     onClick={handleLogOut}
                                 >
                                     <LogOut className="w-4 h-4" />

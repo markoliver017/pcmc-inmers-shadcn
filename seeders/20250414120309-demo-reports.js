@@ -6,8 +6,8 @@ import { faker } from "@faker-js/faker";
 export async function up(queryInterface) {
     const reports = [];
 
-    const startDate = new Date("2020-01-01");
-    const endDate = new Date();
+    const startDate = new Date("2025-01-01");
+    const endDate = new Date("2025-12-31");
 
     for (let i = 0; i < 1000; i++) {
         const errorDate = faker.date.between({ from: startDate, to: endDate });

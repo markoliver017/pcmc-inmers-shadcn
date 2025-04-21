@@ -2,6 +2,8 @@
 import { use, useEffect, useState } from "react";
 import BarChart from "./BarChart";
 import { PieChartComponent } from "./PieChart";
+import { useSession } from "next-auth/react";
+import { MonthBarChart } from "./MontBarChart";
 
 function getRandomColor() {
     const r = Math.floor(Math.random() * 256);
@@ -50,11 +52,12 @@ export default function Dashboard({ reports }) {
                 chartConfig={chartConfig}
                 total={total}
             />
-            <BarChart
+            {/* <BarChart
                 chartData={chartData}
                 chartConfig={chartConfig}
                 total={total}
-            />
+            /> */}
+            <MonthBarChart />
             {/* <Chart data={data} /> */}
         </div>
     );

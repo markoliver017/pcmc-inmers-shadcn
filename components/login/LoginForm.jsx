@@ -42,12 +42,11 @@ export default function LoginForm() {
             redirect: false,
             callbackUrl: "/admin", // redirect after login
         });
-        console.log("signIn>>>>>>>>>>>>>>>>>>", res);
         setIsLoading(false);
         if (res.ok) {
             toast.success("Login successful!", {
                 message: "Login successful!",
-                position: "bottom-left",
+                position: "top-right",
             });
             redirect(res.url);
         }
@@ -122,7 +121,7 @@ export default function LoginForm() {
                             },
                         })}
                         placeholder="mail@site.com"
-                    // required
+                        // required
                     />
                 </label>
                 <p className="text-red-500 text-sm">
