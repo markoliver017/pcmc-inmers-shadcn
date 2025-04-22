@@ -72,7 +72,7 @@ export default function FirstForm({ setIsProceedForm, setIsSecondPage }) {
                         {...register("error_date", {
                             required: "Medication error date is required.",
                         })}
-                        value={new Date().toISOString().slice(0, 10)}
+                        defaultValue={new Date().toISOString().slice(0, 10)}
                         type="date"
                     />
                 </label>

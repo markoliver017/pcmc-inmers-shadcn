@@ -45,13 +45,16 @@ const chartConfig = {
 };
 
 export function MonthBarChart({ reports }) {
-    const { data, total } = use(reports);
+    const { data, total, error } = use(reports);
     const [year, setYear] = useState(new Date());
     const [isLoading, setIsLoading] = useState(false);
 
     const [chartData, setChartData] = useState(() => {
+        if (error) return defaultMonths;
         return data.reduce((acc, current) => {
-            const monthIndex = acc.findIndex((item) => item.month === current.month);
+            const monthIndex = acc.findIndex(
+                (item) => item.month === current.month
+            );
             acc[monthIndex].count = current.count;
             return acc;
         }, defaultMonths);
@@ -62,16 +65,16 @@ export function MonthBarChart({ reports }) {
 
     useEffect(() => {
         if (prevYear.current == year.getFullYear()) {
-            console.log("skipppppppppppp", prevYear.current)
+            // console.log("skipppppppppppp", prevYear.current);
             return; // 🔕 Skip first render
         }
 
         prevYear.current = year.getFullYear();
         setIsLoading(true);
         const fetchReports = async () => {
-            const res = await fetchMonthYearReports(year.getFullYear())
+            const res = await fetchMonthYearReports(year.getFullYear());
             const json = await res;
-            console.log("json>>>>>>>>>>>>>", json)
+            // console.log("json>>>>>>>>>>>>>", json);
             const { data, total } = json;
 
             const updatedData = defaultMonths.map((month) => {
@@ -85,7 +88,7 @@ export function MonthBarChart({ reports }) {
             setChartData(updatedData);
             setTotalReports(total);
             setIsLoading(false);
-        }
+        };
 
         fetchReports();
     }, [year]);
@@ -94,7 +97,6 @@ export function MonthBarChart({ reports }) {
     const labelFill = systemTheme === "dark" ? "white" : "black";
     const barFill = systemTheme === "dark" ? "blue" : "black";
 
-
     if (isLoading) {
         return <Skeleton className="w-full h-80 rounded-xl" />;
     }
@@ -102,13 +104,29 @@ export function MonthBarChart({ reports }) {
     return (
         <Card className="flex-1 flex flex-col justify-between min-w-96">
             <CardHeader>
-                <CardTitle>Integrated National Medication Error Reporting System</CardTitle>
-                <CardDescription>January - December {year.getFullYear()} ({totalReports || 0} reports)</CardDescription>
-                <div>
+                <CardTitle>
+                    <div className="flex justify-between items-center">
+                        <p>
+                            Integrated National Medication Error Reporting
+                            System
+                        </p>
+                        <div className="flex justify-center items-base gap-1">
+                            <h1 className="text-xl">Select a Year:</h1>
+                            <YearPicker
+                                selectedYear={year}
+                                onChange={setYear}
+                            />
+                        </div>
+                    </div>
+                </CardTitle>
+                <CardDescription>
+                    January - December {year.getFullYear()} ({totalReports || 0}{" "}
+                    reports)
+                </CardDescription>
+                {/* <div>
                     <h1 className="text-xl mb-4">Select a Year:</h1>
-                    <YearPicker selectedYear={year} onChange={setYear} />
                     <p className="mt-4">Selected Year: {year.getFullYear()}</p>
-                </div>
+                </div> */}
             </CardHeader>
             <CardContent>
                 <ChartContainer config={chartConfig}>
@@ -131,11 +149,7 @@ export function MonthBarChart({ reports }) {
                             cursor={false}
                             content={<ChartTooltipContent hideLabel />}
                         />
-                        <Bar
-                            dataKey="count"
-                            fill={barFill}
-                            radius={8}
-                        >
+                        <Bar dataKey="count" fill={barFill} radius={8}>
                             <LabelList
                                 position="top"
                                 offset={12}

@@ -20,17 +20,19 @@ import {
 } from "@components/ui/table";
 import { DataTablePagination } from "@components/reusable_components/DataTablePagination";
 import { DataTableViewOptions } from "@components/reusable_components/DataTableViewOptions";
-import { Building, Filter, User, UserCog2 } from "lucide-react";
+import { Filter } from "lucide-react";
 import MultiSelect from "@components/reusable_components/MultiSelect";
-import { getColumns } from "./columns";
-import GenerateReport from "./GenerateReport";
 import Skeleton from "@components/ui/skeleton";
+import { getColumns } from "./columns";
+import CreateAdmin from "./CreateAdmin";
 
-export function DataTable({ get_reports, get_error_types }) {
-    const fetch_errors = use(get_reports);
-    const error_types = use(get_error_types);
+export function DataTable({ admins }) {
+    const fetch_admins = use(admins);
 
-    const [data, setData] = useState(fetch_errors.reports);
+    const [data, setData] = useState(() => {
+        if (!fetch_admins.success) return [];
+        return fetch_admins.admins;
+    });
     const [isLoading, setIsLoading] = useState(false);
 
     const columns = getColumns();
@@ -74,22 +76,6 @@ export function DataTable({ get_reports, get_error_types }) {
         },
     });
 
-    // useEffect(() => {
-    //     setUserOptions(() => {
-    //         return data.map((element, index) => ({
-    //             label: element.full_name,
-    //             value: element.full_name,
-    //             icon: User,
-    //             number: table
-    //                 .getFilteredRowModel()
-    //                 .rows.filter(
-    //                     (row) => row.original.full_name === element.full_name
-    //                 ).length,
-    //             key: index,
-    //         }));
-    //     });
-    // }, [data, table]);
-
     const handleChangeData = (newData) => {
         setData(newData);
         setIsLoading(false);
@@ -100,64 +86,13 @@ export function DataTable({ get_reports, get_error_types }) {
         return selectedRows.map((row) => row.original);
     };
 
-    const errorTypeOptions = error_types.map((type) => ({
-        id: type.id,
-        label: type.name,
-        value: type.name,
-        number: table
-            .getFilteredRowModel()
-            .rows.filter((row) => row.original.error_type.id == type.id).length,
-    }));
-
     return (
         <div className="p-2">
-            <GenerateReport
-                data={data}
-                onLoad={() => setIsLoading(true)}
-                onDataChange={handleChangeData}
-            />
-            {/* <div>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Report Date</th>
-                            <th>Medication Error Date</th>
-                            <th>Error Type</th>
-                            <th>Patient Sex</th>
-                            <th>Patient Weight</th>
-                            <th>Patient Height</th>
-                            <th>Exact Prescription</th>
-                            <th>Incident Description</th>
-                            <th>Workplace Environment</th>
-                            <th>Immediate Actions</th>
-                            <th>Corrective Actions</th>
-                            <th>Preventive Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {data.map((row, i) => (
-                            <tr key={i}>
-                                <td>{row.report_date}</td>
-                                <td>{row.error_date}</td>
-                                <td>{row.error_type.name}</td>
-                                <td>{row.patient_sex}</td>
-                                <td>{row.patient_weight}</td>
-                                <td>{row.patient_height}</td>
-                                <td>{row.exact_prescription}</td>
-                                <td>{row.incident_description}</td>
-                                <td>{row.workplace_environment}</td>
-                                <td>{row.immediate_actions}</td>
-                                <td>{row.corrective_actions}</td>
-                                <td>{row.preventive_actions}</td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div> */}
             {isLoading ? (
                 <Skeleton className="w-full h-80 rounded-xl" />
             ) : (
                 <>
+                    <CreateAdmin />
                     <div className="flex items-center py-2 space-x-2">
                         <input
                             placeholder="Search all .."
@@ -173,7 +108,7 @@ export function DataTable({ get_reports, get_error_types }) {
                                 <label className="dark:text-slate-400 flex items-center space-x-1">
                                     <Filter className="h-4 w-4" />
                                 </label>
-                                <MultiSelect
+                                {/* <MultiSelect
                                     options={errorTypeOptions}
                                     onValueChange={(selectedOptions) => {
                                         table
@@ -254,7 +189,7 @@ export function DataTable({ get_reports, get_error_types }) {
                                     className="text-slate-700 bg-slate-100 hover:bg-white"
                                     animation={2}
                                     maxCount={1}
-                                />
+                                /> */}
                                 <DataTableViewOptions table={table} />
                             </div>
                         </div>

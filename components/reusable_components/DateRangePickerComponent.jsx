@@ -66,7 +66,7 @@ export default function DateRangePickerComponent({ state, handleSelect }) {
                 value={`${moment(state[0].startDate).format(
                     "MMM. DD, YYYY"
                 )} - ${moment(state[0].endDate).format("MMM. D, YYYY")}`}
-                className="p-2 border border-gray-300 rounded-md rounded-e-none cursor-pointer w-full sm:max-w-60 dark:border-neutral-800 dark:bg-neutral-950 dark:text-neutral-50"
+                className="p-2 border border-gray-300 rounded-md rounded-e-none cursor-pointer w-full sm:min-w-64 dark:border-neutral-800 dark:bg-neutral-950 dark:text-neutral-50"
                 onClick={() => setShowCalendar(!showCalendar)}
             />
 

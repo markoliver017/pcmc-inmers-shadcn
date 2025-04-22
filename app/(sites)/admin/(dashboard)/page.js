@@ -1,5 +1,4 @@
 import { Suspense } from "react";
-import Dashboard from "./Dashboard";
 import Skeleton from "@components/ui/skeleton";
 import { MonthBarChart } from "./MonthBarChart";
 import { PieChartComponent } from "./PieChart";
@@ -20,27 +19,16 @@ async function fetchErrorTypeReports() {
     return response.json();
 }
 
-
 export default function Page() {
     const error_type_reports = fetchErrorTypeReports();
     const month_year_reports = fetchMonthYearReports();
 
     return (
         <div className="flex flex-wrap gap-2">
-
-            <Suspense
-                fallback={
-                    <Skeleton className="flex-1" />
-
-                }
-            >
+            <Suspense fallback={<Skeleton className="flex-1" />}>
                 <PieChartComponent reports={error_type_reports} />
             </Suspense>
-            <Suspense
-                fallback={
-                    <Skeleton className="flex-1" />
-                }
-            >
+            <Suspense fallback={<Skeleton className="flex-1" />}>
                 <MonthBarChart reports={month_year_reports} />
             </Suspense>
         </div>

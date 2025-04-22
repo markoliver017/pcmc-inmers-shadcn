@@ -11,6 +11,7 @@ import {
 import { Button } from "@components/ui/button";
 import { Command, Eye, MoreHorizontal } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 export function getColumns() {
     return [
         // {
@@ -38,78 +39,58 @@ export function getColumns() {
         //     enableHiding: false,
         // },
         {
-            accessorKey: "report_date",
+            accessorKey: "id",
             header: ({ column }) => (
-                <DataTableColumnHeader column={column} title="Report Date" />
+                <DataTableColumnHeader column={column} title="ID#" />
             ),
             filterFn: "columnFilter",
         },
         {
-            id: "error_type",
-            accessorKey: "error_type.name",
+            id: "avatar_url",
             header: ({ column }) => (
-                <DataTableColumnHeader
-                    column={column}
-                    title="Medication Error Type"
-                />
+                <DataTableColumnHeader column={column} title="Avatar" />
             ),
             cell: ({ row }) => {
                 const data = row.original;
-                const errorType = data.error_type.name;
-                const otherErrorType = data.other_error_type;
-                if (errorType === "Others" && otherErrorType) {
-                    return (
-                        <div>
-                            {errorType} <i>({otherErrorType})</i>
-                        </div>
-                    );
-                } else {
-                    return <div className="flex items-center">{errorType}</div>;
-                }
+                const avatar_url = data.File?.url || "/default_avatar.png";
+                return (
+                    <Image
+                        src={avatar_url || "/default_avatar.png"}
+                        className="rounded-4xl"
+                        width={50}
+                        height={50}
+                        alt="Avatar"
+                    />
+                );
             },
-            filterFn: "columnFilter",
         },
         {
-            accessorKey: "error_date",
+            accessorKey: "full_name",
             header: ({ column }) => (
-                <DataTableColumnHeader
-                    column={column}
-                    title="Medication Error Date"
-                />
+                <DataTableColumnHeader column={column} title="Name" />
             ),
             filterFn: "columnFilter",
         },
         {
-            accessorKey: "patient_sex",
+            accessorKey: "gender",
             header: ({ column }) => (
-                <DataTableColumnHeader column={column} title="Patient Sex" />
+                <DataTableColumnHeader column={column} title="Gender" />
             ),
             filterFn: "columnFilter",
+            cell: ({ getValue }) => {
+                const value = getValue();
+                return (
+                    value.charAt(0).toUpperCase() + value.slice(1).toLowerCase()
+                );
+            },
         },
         {
-            accessorKey: "patient_weight",
+            accessorKey: "email",
             header: ({ column }) => (
-                <DataTableColumnHeader column={column} title="Patient Weight" />
+                <DataTableColumnHeader column={column} title="Email" />
             ),
             filterFn: "columnFilter",
         },
-        {
-            accessorKey: "patient_height",
-            header: ({ column }) => (
-                <DataTableColumnHeader column={column} title="Patient Height" />
-            ),
-            filterFn: "columnFilter",
-        },
-        // {
-        //     accessorKey: "exact_prescription",
-        //     header: ({ column }) => (
-        //         <DataTableColumnHeader
-        //             column={column}
-        //             title="Exact Prescription"
-        //         />
-        //     ),
-        //     filterFn: "columnFilter",
-        // },
         {
             id: "actions",
             header: ({ column }) => (

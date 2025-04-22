@@ -1,4 +1,4 @@
-import { Admin } from "@lib/models";
+import { Admin, File } from "@lib/models";
 import { NextResponse } from "next/server";
 
 // POST handler for report submission
@@ -49,6 +49,42 @@ export async function POST(request) {
 
         return NextResponse.json(
             { error: true, message: "Failed to submit report." },
+            { status: 500 }
+        );
+    }
+}
+
+export async function GET() {
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+
+    try {
+        const admins = await Admin.findAll({
+            attributes: [
+                "id",
+                "first_name",
+                "last_name",
+                "full_name",
+                "gender",
+                "email",
+                "is_active",
+                "createdAt",
+            ],
+            include: [
+                {
+                    attributes: ["id", "url", "type"],
+                    model: File,
+                    required: false,
+                },
+            ],
+        });
+        return NextResponse.json({ success: true, admins }, { status: 200 });
+    } catch (error) {
+        return NextResponse.json(
+            {
+                success: false,
+                message: "Failed to retrieve admins.",
+                details: error,
+            },
             { status: 500 }
         );
     }

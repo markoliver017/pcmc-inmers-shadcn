@@ -1,3 +1,4 @@
+import { Users } from "lucide-react";
 import { create } from "zustand";
 
 export const usePagesStore = create((set) => ({
@@ -22,20 +23,20 @@ export const usePagesStore = create((set) => ({
         },
         {
             title: "System Administation",
-            path: "/admin/settings",
+            path: "#",
             icon: "⚙️",
             has_child: true,
             child: [
                 {
-                    title: "User Management",
-                    path: "/admin",
-                    icon: "⚙️",
+                    title: "Users Management",
+                    path: "/admin/users",
+                    icon: <Users />,
                 },
-                {
-                    title: "Medication Errors",
-                    path: "/admin/error_types",
-                    icon: "⚙️",
-                },
+                // {
+                //     title: "Medication Errors",
+                //     path: "/admin/error_types",
+                //     icon: <MdMedication />,
+                // },
             ],
         },
     ],

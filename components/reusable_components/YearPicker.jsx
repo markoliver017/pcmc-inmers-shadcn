@@ -17,7 +17,7 @@ export default function YearPicker({ selectedYear, onChange }) {
             onChange={handleChange}
             showYearPicker
             dateFormat="yyyy"
-            className="border p-2 rounded"
+            className="border p-2 rounded w-20"
         />
     );
 }

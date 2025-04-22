@@ -1,10 +1,39 @@
 import { ErrorType, Report } from "@lib/models";
 import { NextResponse } from "next/server";
+import { Sequelize } from "sequelize";
 
-export async function GET() {
+export async function GET(request) {
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+
+    const Op = Sequelize.Op;
+    const searchParams = request.nextUrl.searchParams;
+    const start_date = searchParams.get("start_date");
+    const end_date = searchParams.get("end_date");
+
+    const currentDate = new Date();
+    const defaultStartDate = new Date(
+        currentDate.getFullYear(),
+        currentDate.getMonth(),
+        1
+    );
+    const defaultEndDate = currentDate;
+
+    const startDate = start_date ? new Date(start_date) : defaultStartDate;
+    const endDate = end_date ? new Date(end_date) : defaultEndDate;
+
+    console.log("end_date", end_date);
+    console.log("defaultStartDate", defaultStartDate);
+    console.log("startDate", startDate);
+    console.log("endDate", endDate);
+
     try {
-        await new Promise((resolve) => setTimeout(resolve, 2000));
         const reports = await Report.findAll({
+            where: {
+                error_date: {
+                    [Op.gte]: startDate,
+                    [Op.lte]: endDate,
+                },
+            },
             include: [
                 {
                     attributes: ["id", "name"],
