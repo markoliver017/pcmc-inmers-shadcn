@@ -92,13 +92,13 @@ export default function CreateForm({ closeModal }) {
     const form = useForm({
         mode: "onChange",
         resolver: zodResolver(formSchema),
-        defaultValues: {
-            first_name: "",
-            last_name: "",
-            email: "",
-            gender: "unknown",
-            profile_picture: null,
-        },
+        first_name: "",
+        last_name: "",
+        email: "",
+        gender: "",
+        profile_picture: null,
+        password: "",
+        passwordConfirmation: "",
     });
 
     const onSubmit = async (data) => {
@@ -184,27 +184,17 @@ export default function CreateForm({ closeModal }) {
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel>Gender: *</FormLabel>
-                                    <Select
-                                        onValueChange={field.onChange}
-                                        defaultValue={field.value}
-                                    >
-                                        <FormControl>
-                                            <SelectTrigger>
-                                                <SelectValue placeholder="Select a gender to display" />
-                                            </SelectTrigger>
-                                        </FormControl>
-                                        <SelectContent>
-                                            <SelectItem value="male">
-                                                Male
-                                            </SelectItem>
-                                            <SelectItem value="female">
-                                                Female
-                                            </SelectItem>
-                                            <SelectItem value="unknown">
-                                                Unknown
-                                            </SelectItem>
-                                        </SelectContent>
-                                    </Select>
+                                    <FormControl>
+                                        <select
+                                            {...field}
+                                            className="w-full border px-3 py-2 rounded-md text-sm dark:bg-slate-900"
+                                        >
+                                            <option value="">Select...</option>
+                                            <option value="male">Male</option>
+                                            <option value="female">Female</option>
+                                            <option value="unknown">Unknown</option>
+                                        </select>
+                                    </FormControl>
 
                                     <FormMessage />
                                 </FormItem>

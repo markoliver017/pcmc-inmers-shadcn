@@ -65,7 +65,7 @@ const formSchema = z.object({
         ),
 });
 
-export default function UpdateProfile({ admin }) {
+export default function UpdateProfile({ admin, onClose = () => console.log("Profile updated!") }) {
     useEffect(() => {
         console.log("Admin>>>>>>>>>>>>>>>>>>>>", admin);
     }, [admin]);
@@ -109,8 +109,7 @@ export default function UpdateProfile({ admin }) {
                 "success"
             );
             form.resetField("profile_picture");
-            console.log(form.watch());
-            // fileInputRef.current.value = null;
+            onClose();
         } else if (result.details?.length) {
             notify(
                 {

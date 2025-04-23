@@ -12,7 +12,7 @@ import { Button } from "@components/ui/button";
 import { Command, Eye, MoreHorizontal } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
-export function getColumns() {
+export function getColumns(handleEdit) {
     return [
         // {
         //     id: "select",
@@ -114,12 +114,14 @@ export function getColumns() {
                             </DropdownMenuLabel>
                             <DropdownMenuSeparator />
 
-                            <Link href={`/admin/reports/${report.id}`}>
-                                <DropdownMenuItem className="flex items-center space-x-2">
-                                    <Eye className="w-4 h-4" />
-                                    <span>Show</span>
-                                </DropdownMenuItem>
-                            </Link>
+                            <DropdownMenuItem
+                                className="flex items-center space-x-2"
+                                onClick={() => handleEdit(row.original)}
+                            >
+                                <Eye className="w-4 h-4" />
+                                <span>Show</span>
+                            </DropdownMenuItem>
+
                         </DropdownMenuContent>
                     </DropdownMenu>
                 );

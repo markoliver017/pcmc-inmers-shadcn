@@ -25,17 +25,25 @@ import MultiSelect from "@components/reusable_components/MultiSelect";
 import Skeleton from "@components/ui/skeleton";
 import { getColumns } from "./columns";
 import CreateAdmin from "./CreateAdmin";
+import UpdateAdmin from "./UpdateAdmin";
 
 export function DataTable({ admins }) {
     const fetch_admins = use(admins);
+    const [isLoading, setIsLoading] = useState(false);
+    const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
+    const [selectedAdmin, setSelectedAdmin] = useState(null);
+
+    const handleEdit = (admin) => {
+        setSelectedAdmin(admin);
+        setIsUpdateModalOpen(true);
+    };
 
     const [data, setData] = useState(() => {
         if (!fetch_admins.success) return [];
         return fetch_admins.admins;
     });
-    const [isLoading, setIsLoading] = useState(false);
 
-    const columns = getColumns();
+    const columns = getColumns(handleEdit);
 
     const [sorting, setSorting] = useState([]);
     const [columnFilters, setColumnFilters] = useState([]);
@@ -93,6 +101,11 @@ export function DataTable({ admins }) {
             ) : (
                 <>
                     <CreateAdmin />
+                    <UpdateAdmin
+                        isOpen={isUpdateModalOpen}
+                        setIsOpen={setIsUpdateModalOpen}
+                        admin={selectedAdmin}
+                    />
                     <div className="flex items-center py-2 space-x-2">
                         <input
                             placeholder="Search all .."
@@ -208,10 +221,10 @@ export function DataTable({ admins }) {
                                                 {header.isPlaceholder
                                                     ? null
                                                     : flexRender(
-                                                          header.column
-                                                              .columnDef.header,
-                                                          header.getContext()
-                                                      )}
+                                                        header.column
+                                                            .columnDef.header,
+                                                        header.getContext()
+                                                    )}
                                             </TableHead>
                                         ))}
                                     </TableRow>
