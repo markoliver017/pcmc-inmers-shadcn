@@ -62,8 +62,8 @@ const formSchema = z
         profile_picture: z
             .any()
             .optional()
-            .refine((file) => !file || file.size <= 1024 * 1024 * 5, {
-                message: "File size should be less than 5MB",
+            .refine((file) => !file || file.size <= 1024 * 1024 * 2, {
+                message: "File size should be less than 2MB",
             })
             .refine(
                 (file) =>

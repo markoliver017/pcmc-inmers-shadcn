@@ -1,6 +1,14 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     devIndicators: false,
+    env: {
+        host: "http://localhost:3000",
+        SESSION_PASSWORD: "this-is-a-very-long-super-secret-password-123",
+        NEXTAUTH_URL: "http://localhost:3000",
+        NEXTAUTH_SECRET: "this-is-a-very-long-super-secret-password-123",
+        DB_PASSWORD: "",
+        AUTH_SECRET: "aw3UOdK3jUmLJGgbx3lMIczkKnOVFS/06Sk84l5+N2k="
+    },
     images: {
         remotePatterns: [
             {
@@ -10,34 +18,32 @@ const nextConfig = {
             },
         ],
     },
-    env: {
-        host: "http://localhost:3000",
-        SESSION_PASSWORD: "this-is-a-very-long-super-secret-password-123",
-        NEXTAUTH_URL: "http://localhost:3000",
-        NEXTAUTH_SECRET: "this-is-a-very-long-super-secret-password-123",
-        DB_PASSWORD: "root",
+    experimental: {
+        serverActions: {
+            bodySizeLimit: '2mb',
+        },
     },
-    productionBrowserSourceMaps: true, // Enables source maps in production
-    compiler: {
-        removeConsole: false,
-    },
-    typescript: {
-        ignoreBuildErrors: true,
-    },
-    eslint: {
-        ignoreDuringBuilds: true,
-    },
-    webpack: (config, { isServer }) => {
-        if (!isServer) {
-            config.resolve.fallback = {
-                fs: false,
-                net: false,
-                tls: false,
-                mysql2: false,
-            };
-        }
-        return config;
-    },
+    // productionBrowserSourceMaps: true,
+    // compiler: {
+    //     removeConsole: false,
+    // },
+    // typescript: {
+    //     ignoreBuildErrors: true,
+    // },
+    // eslint: {
+    //     ignoreDuringBuilds: true,
+    // },
+    // webpack: (config, { isServer }) => {
+    //     if (!isServer) {
+    //         config.resolve.fallback = {
+    //             fs: false,
+    //             net: false,
+    //             tls: false,
+    //             mysql2: false,
+    //         };
+    //     }
+    //     return config;
+    // },
     // experimental: {
     //     turbo: false,
     // },

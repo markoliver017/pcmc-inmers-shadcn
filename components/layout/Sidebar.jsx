@@ -19,6 +19,8 @@ const Sidebar = ({
     const [isCollapsed, setIsCollapsed] = useState(false);
     const menus = usePagesStore((state) => state.pages);
 
+    // console.log("session", session)
+
     useEffect(() => {
         const handleResize = () => {
             if (window.innerWidth < 768) {

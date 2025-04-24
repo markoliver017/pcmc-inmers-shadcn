@@ -7,8 +7,9 @@ import { IoMdLogIn } from "react-icons/io";
 import { set, useForm } from "react-hook-form";
 import notify from "@components/ui/notify";
 import { toast } from "react-toastify";
+// import { signIn } from "@lib/auth";
+import { signIn } from "next-auth/react"
 import { redirect } from "next/navigation";
-import { signIn } from "@/auth";
 
 const credentials = {
     email: "admin@email.com",
@@ -42,19 +43,25 @@ export default function LoginForm() {
             redirect: false,
             callbackUrl: "/admin", // redirect after login
         });
+
         setIsLoading(false);
-        if (res.ok) {
+        console.log("res>>>>>>>>>", res)
+        if (res.ok && res.error == undefined) {
             toast.success("Login successful!", {
                 message: "Login successful!",
                 position: "top-right",
             });
-            redirect(res.url);
+            setTimeout(() => {
+                redirect(res.url)
+            }, 1000);
+
+        } else {
+            setError("password", {
+                type: "manual",
+                message: "Invalid email or password!",
+            });
         }
 
-        setError("password", {
-            type: "manual",
-            message: "Invalid email or password!",
-        });
 
         // setTimeout(() => {
         //     // Perform login logic here
@@ -121,7 +128,7 @@ export default function LoginForm() {
                             },
                         })}
                         placeholder="mail@site.com"
-                        // required
+                    // required
                     />
                 </label>
                 <p className="text-red-500 text-sm">

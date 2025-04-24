@@ -2,12 +2,14 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@components/ui/tabs";
 import Password from "./Password";
 import UpdateProfile from "./UpdateProfile";
 import { getAdmin } from "./action";
-import { getServerSession } from "next-auth";
+import { auth } from "@lib/auth";
 
 export default async function Page() {
-    const session = await getServerSession();
+    const session = await auth();
     const { user } = session;
     const admin = await getAdmin(user.email);
+
+    // console.log("session>>>>>>>", session)
 
     return (
         <div className="flex justify-center">

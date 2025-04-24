@@ -1,17 +1,23 @@
 // middleware.ts or middleware.js
 import { NextResponse } from 'next/server'
-import { getToken } from 'next-auth/jwt'
+import { auth } from '@lib/auth'
+
+// export default auth((req) => {
+//     console.log("req.auth >>>>>>>>>>>>>>>", req.auth)
+// })
 
 // This is your secret from [...nextauth].ts config
-const secret = process.env.NEXTAUTH_SECRET
+// const secret = process.env.NEXTAUTH_SECRET
 
 export async function middleware(request) {
-    const token = await getToken({ req: request, secret })
+    // const token = await getToken({ req: request, secret })
+    const token = await auth()
+
     const { pathname } = request.nextUrl
 
-    const isAdminRoute = pathname.startsWith('/admin');
+    console.log("middleware token:", token)
 
-    console.log("token", token)
+    const isAdminRoute = pathname.startsWith('/admin');
 
     // Allow the request if it's not /admin or user is authenticated
     if (!isAdminRoute || token) {
