@@ -26,22 +26,39 @@ import Skeleton from "@components/ui/skeleton";
 import { getColumns } from "./columns";
 import CreateAdmin from "./CreateAdmin";
 import UpdateAdmin from "./UpdateAdmin";
+import { fetchAdmins } from "./action";
 
 export function DataTable({ admins }) {
     const fetch_admins = use(admins);
     const [isLoading, setIsLoading] = useState(false);
     const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
     const [selectedAdmin, setSelectedAdmin] = useState(null);
+    const [data, setData] = useState(() => {
+        if (!fetch_admins.success) return [];
+        return fetch_admins.admins;
+    });
 
     const handleEdit = (admin) => {
         setSelectedAdmin(admin);
         setIsUpdateModalOpen(true);
     };
 
-    const [data, setData] = useState(() => {
-        if (!fetch_admins.success) return [];
-        return fetch_admins.admins;
-    });
+    const refetchData = () => {
+        setIsLoading(true);
+        const fetchData = async () => {
+            const res = await fetchAdmins();
+            const json = await res;
+            console.log("jsonnn>>>>>>>>>>>>>", json);
+            if (!json.success) return;
+
+            const { admins } = json;
+
+            setData(admins);
+
+            setIsLoading(false);
+        };
+        fetchData();
+    };
 
     const columns = getColumns(handleEdit);
 
@@ -100,11 +117,12 @@ export function DataTable({ admins }) {
                 <Skeleton className="w-full h-80 rounded-xl" />
             ) : (
                 <>
-                    <CreateAdmin />
+                    <CreateAdmin onSave={refetchData} />
                     <UpdateAdmin
                         isOpen={isUpdateModalOpen}
                         setIsOpen={setIsUpdateModalOpen}
                         admin={selectedAdmin}
+                        onSave={refetchData}
                     />
                     <div className="flex items-center py-2 space-x-2">
                         <input
@@ -221,10 +239,10 @@ export function DataTable({ admins }) {
                                                 {header.isPlaceholder
                                                     ? null
                                                     : flexRender(
-                                                        header.column
-                                                            .columnDef.header,
-                                                        header.getContext()
-                                                    )}
+                                                          header.column
+                                                              .columnDef.header,
+                                                          header.getContext()
+                                                      )}
                                             </TableHead>
                                         ))}
                                     </TableRow>

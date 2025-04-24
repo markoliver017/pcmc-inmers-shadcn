@@ -14,7 +14,7 @@ import { MdOutlineAdminPanelSettings } from "react-icons/md";
 import CreateForm from "./CreateForm";
 import { useState } from "react";
 
-export default function CreateAdmin() {
+export default function CreateAdmin({ onSave }) {
     const [open, setOpen] = useState(false);
 
     return (
@@ -33,7 +33,10 @@ export default function CreateAdmin() {
                         </DialogTitle>
                         {/* <DialogDescription> */}
 
-                        <CreateForm closeModal={() => setOpen(false)} />
+                        <CreateForm
+                            onSave={onSave}
+                            closeModal={() => setOpen(false)}
+                        />
 
                         {/* </DialogDescription> */}
                     </DialogHeader>

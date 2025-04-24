@@ -8,7 +8,7 @@ import { set, useForm } from "react-hook-form";
 import notify from "@components/ui/notify";
 import { toast } from "react-toastify";
 import { redirect } from "next/navigation";
-import { signIn } from "next-auth/react";
+import { signIn } from "@/auth";
 
 const credentials = {
     email: "admin@email.com",

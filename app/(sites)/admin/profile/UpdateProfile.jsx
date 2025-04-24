@@ -65,10 +65,14 @@ const formSchema = z.object({
         ),
 });
 
-export default function UpdateProfile({ admin, onClose = () => console.log("Profile updated!") }) {
-    useEffect(() => {
-        console.log("Admin>>>>>>>>>>>>>>>>>>>>", admin);
-    }, [admin]);
+export default function UpdateProfile({
+    admin,
+    onClose = () => console.log("closing .."),
+    onSave = () => console.log("updating .."),
+}) {
+    // useEffect(() => {
+    //     console.log("Admin>>>>>>>>>>>>>>>>>>>>", admin);
+    // }, [admin]);
 
     const [state, setState] = useState({
         isSubmitting: false,
@@ -109,6 +113,7 @@ export default function UpdateProfile({ admin, onClose = () => console.log("Prof
                 "success"
             );
             form.resetField("profile_picture");
+            onSave();
             onClose();
         } else if (result.details?.length) {
             notify(
@@ -187,27 +192,25 @@ export default function UpdateProfile({ admin, onClose = () => console.log("Prof
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>Gender: *</FormLabel>
-                                        <Select
-                                            onValueChange={field.onChange}
-                                            defaultValue={field.value}
-                                        >
-                                            <FormControl>
-                                                <SelectTrigger>
-                                                    <SelectValue placeholder="Select a gender to display" />
-                                                </SelectTrigger>
-                                            </FormControl>
-                                            <SelectContent>
-                                                <SelectItem value="male">
+                                        <FormControl>
+                                            <select
+                                                {...field}
+                                                className="w-full border px-3 py-2 rounded-md text-sm dark:bg-slate-900"
+                                            >
+                                                <option value="">
+                                                    Select...
+                                                </option>
+                                                <option value="male">
                                                     Male
-                                                </SelectItem>
-                                                <SelectItem value="female">
+                                                </option>
+                                                <option value="female">
                                                     Female
-                                                </SelectItem>
-                                                <SelectItem value="unknown">
+                                                </option>
+                                                <option value="unknown">
                                                     Unknown
-                                                </SelectItem>
-                                            </SelectContent>
-                                        </Select>
+                                                </option>
+                                            </select>
+                                        </FormControl>
                                         {/* <FormDescription>
                                         You can manage email addresses in your{" "}
                                         <Link href="/examples/forms">

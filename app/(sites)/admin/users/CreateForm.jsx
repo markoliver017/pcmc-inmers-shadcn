@@ -82,7 +82,7 @@ const formSchema = z
         path: ["passwordConfirmation"],
     });
 
-export default function CreateForm({ closeModal }) {
+export default function CreateForm({ onSave, closeModal }) {
     const [state, setState] = useState({
         isSubmitting: false,
         error: null,
@@ -120,6 +120,7 @@ export default function CreateForm({ closeModal }) {
                 { error: false, message: "Admin created successfully!" },
                 "success"
             );
+            onSave();
             closeModal();
         } else if (result.details?.length) {
             notify(
@@ -191,8 +192,12 @@ export default function CreateForm({ closeModal }) {
                                         >
                                             <option value="">Select...</option>
                                             <option value="male">Male</option>
-                                            <option value="female">Female</option>
-                                            <option value="unknown">Unknown</option>
+                                            <option value="female">
+                                                Female
+                                            </option>
+                                            <option value="unknown">
+                                                Unknown
+                                            </option>
                                         </select>
                                     </FormControl>
 
@@ -258,6 +263,7 @@ export default function CreateForm({ closeModal }) {
                                     <FormLabel>Password *</FormLabel>
                                     <FormControl>
                                         <Input
+                                            type="password"
                                             placeholder="Your Password"
                                             {...field}
                                         />
@@ -274,6 +280,7 @@ export default function CreateForm({ closeModal }) {
                                     <FormLabel>Confirm Password: *</FormLabel>
                                     <FormControl>
                                         <Input
+                                            type="password"
                                             placeholder="Confirm password"
                                             {...field}
                                         />

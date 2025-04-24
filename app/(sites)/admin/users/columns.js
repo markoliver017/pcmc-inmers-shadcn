@@ -10,7 +10,6 @@ import {
 } from "@components/ui/dropdown-menu";
 import { Button } from "@components/ui/button";
 import { Command, Eye, MoreHorizontal } from "lucide-react";
-import Link from "next/link";
 import Image from "next/image";
 export function getColumns(handleEdit) {
     return [
@@ -116,12 +115,11 @@ export function getColumns(handleEdit) {
 
                             <DropdownMenuItem
                                 className="flex items-center space-x-2"
-                                onClick={() => handleEdit(row.original)}
+                                onClick={() => handleEdit(report)}
                             >
                                 <Eye className="w-4 h-4" />
-                                <span>Show</span>
+                                <span>View</span>
                             </DropdownMenuItem>
-
                         </DropdownMenuContent>
                     </DropdownMenu>
                 );

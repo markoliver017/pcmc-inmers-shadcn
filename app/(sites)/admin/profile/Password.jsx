@@ -28,7 +28,7 @@ import notify from "@components/ui/notify";
 import { changePassword } from "./action";
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import SweetAlert from "@components/ui/SweetAlert";
 
 const formSchema = z
@@ -51,10 +51,18 @@ const formSchema = z
         path: ["passwordConfirmation"],
     });
 
-export default function Password({ admin }) {
-    useEffect(() => {
-        console.log("Admin>>>>>>>>>>>>>>>>>>>>", admin);
-    }, [admin]);
+export default function Password({
+    admin,
+    onClose = () => console.log("closing .."),
+    onSave = () => console.log("updating .."),
+}) {
+    const session = useSession();
+    const isCurrentUser = admin?.id == session?.data?.user?.id || false;
+    // useEffect(() => {
+    //     console.log("Admin>>>>>>>>>>>>>>>>>>>>", admin.id);
+    //     console.log("session>>>>>>>>>>>>>>>>>>>>", session.data.user.id);
+    //     console.log("isCurrentUser>>>>>>>>>>>>>>>>>>>>", isCurrentUser);
+    // }, [admin]);
 
     const [state, setState] = useState({
         isSubmitting: false,
@@ -73,46 +81,105 @@ export default function Password({ admin }) {
     });
 
     const onSubmit = async (data) => {
-        SweetAlert({
-            title: "Continue?",
-            text: "After saving, you'll be logged out?",
-            icon: "question",
-            showCancelButton: true,
-            cancelButtonText: "Cancel",
-            onConfirm: async () => {
-                setState({ isSubmitting: true, error: null, success: false });
+        if (isCurrentUser) {
+            SweetAlert({
+                title: "Continue?",
+                text: "After saving, you'll be logged out?",
+                icon: "question",
+                showCancelButton: true,
+                cancelButtonText: "Cancel",
+                onConfirm: async () => {
+                    setState({
+                        isSubmitting: true,
+                        error: null,
+                        success: false,
+                    });
 
-                const formData = new FormData();
-                formData.append("id", admin.id);
+                    const formData = new FormData();
+                    formData.append("id", admin.id);
 
-                Object.entries(data).forEach(([key, value]) => {
-                    if (value !== null) {
-                        formData.append(key, value);
+                    Object.entries(data).forEach(([key, value]) => {
+                        if (value !== null) {
+                            formData.append(key, value);
+                        }
+                    });
+
+                    const result = await changePassword(formData);
+                    setState(result);
+                    if (result.success) {
+                        notify(
+                            {
+                                error: result.success,
+                                message:
+                                    "Admin credentials updated successfully!",
+                            },
+                            "success"
+                        );
+                        onSave();
+                        onClose();
+                        signOut({ callbackUrl: "/" });
+                    } else if (result.details?.length) {
+                        notify(
+                            {
+                                error: result.success,
+                                message: result.details.join(", "),
+                            },
+                            "error"
+                        );
                     }
-                });
+                },
+            });
+        } else {
+            SweetAlert({
+                title: "Continue?",
+                text: "Are you sure you want to update the user credentials?",
+                icon: "question",
+                showCancelButton: true,
+                cancelButtonText: "Cancel",
+                onConfirm: async () => {
+                    setState({
+                        isSubmitting: true,
+                        error: null,
+                        success: false,
+                    });
 
-                const result = await changePassword(formData);
-                setState(result);
-                if (result.success) {
-                    notify(
-                        {
-                            error: result.success,
-                            message: "Admin credentials updated successfully!",
-                        },
-                        "success"
-                    );
-                    signOut({ callbackUrl: "/" });
-                } else if (result.details?.length) {
-                    notify(
-                        {
-                            error: result.success,
-                            message: result.details.join(", "),
-                        },
-                        "error"
-                    );
-                }
-            },
-        });
+                    const formData = new FormData();
+                    formData.append("id", admin.id);
+
+                    Object.entries(data).forEach(([key, value]) => {
+                        if (value !== null) {
+                            formData.append(key, value);
+                        }
+                    });
+
+                    const result = await changePassword(formData);
+                    setState(result);
+                    if (result.success) {
+                        notify(
+                            {
+                                error: result.success,
+                                message:
+                                    "Admin credentials updated successfully!",
+                            },
+                            "success"
+                        );
+                        onSave();
+                        onClose();
+                        // if (isCurrentUser) {
+                        //     signOut({ callbackUrl: "/" });
+                        // }
+                    } else if (result.details?.length) {
+                        notify(
+                            {
+                                error: result.success,
+                                message: result.details.join(", "),
+                            },
+                            "error"
+                        );
+                    }
+                },
+            });
+        }
     };
 
     return (
@@ -125,7 +192,7 @@ export default function Password({ admin }) {
                 </CardDescription>
             </CardHeader>
             <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)}>
+                <form id="form-modal" onSubmit={form.handleSubmit(onSubmit)}>
                     <CardContent className="space-y-2">
                         <FormField
                             control={form.control}
@@ -152,6 +219,7 @@ export default function Password({ admin }) {
                                     <FormLabel>Password *</FormLabel>
                                     <FormControl>
                                         <Input
+                                            type="password"
                                             placeholder="New Password"
                                             {...field}
                                         />
@@ -169,6 +237,7 @@ export default function Password({ admin }) {
                                     <FormLabel>Confirm Password *</FormLabel>
                                     <FormControl>
                                         <Input
+                                            type="password"
                                             placeholder="Cofirm your new password"
                                             {...field}
                                         />
