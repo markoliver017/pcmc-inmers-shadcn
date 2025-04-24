@@ -6,8 +6,11 @@ import { auth } from "@lib/auth";
 
 export default async function Page() {
     const session = await auth();
+
+    if (!session) return;
+
     const { user } = session;
-    const admin = await getAdmin(user.email);
+    const admin = await getAdmin(user?.email);
 
     // console.log("session>>>>>>>", session)
 

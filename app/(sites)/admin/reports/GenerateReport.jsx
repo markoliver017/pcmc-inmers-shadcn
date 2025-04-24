@@ -36,7 +36,7 @@ export default function GenerateReport({ data, onLoad, onDataChange }) {
     }
 
     useEffect(() => {
-        console.log("data", data);
+        // console.log("data", data);
         const start_date = moment(dateRange[0].startDate).format("MMMM DD - ");
         const end_date = moment(dateRange[0].endDate).format("MMMM DD, YYYY");
 
@@ -140,15 +140,15 @@ export default function GenerateReport({ data, onLoad, onDataChange }) {
                     </thead>
                     <tbody>
                         ${reports
-                            .map(
-                                (row) => `
+                .map(
+                    (row) => `
                                 <tr>
                                     <td>${moment(row.report_date).format(
-                                        "MMM. DD, YYYY"
-                                    )}</td>
+                        "MMM. DD, YYYY"
+                    )}</td>
                                     <td>${moment(row.error_date).format(
-                                        "MMM. DD, YYYY"
-                                    )}</td>
+                        "MMM. DD, YYYY"
+                    )}</td>
                                     <td>${row.error_type_name || ""}</td>
                                     <td>${row.patient_sex || ""}</td>
                                     <td>${row.patient_weight || ""}</td>
@@ -161,8 +161,8 @@ export default function GenerateReport({ data, onLoad, onDataChange }) {
                                     <td>${row.preventive_actions || ""}</td>
                                 </tr>
                             `
-                            )
-                            .join("")}
+                )
+                .join("")}
                     </tbody>
                 </table>
             </body>

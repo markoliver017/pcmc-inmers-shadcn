@@ -11,11 +11,11 @@ import { auth } from '@lib/auth'
 
 export async function middleware(request) {
     // const token = await getToken({ req: request, secret })
-    const token = await auth()
+    const token = await auth();
+    console.log("middleware token:", token)
 
     const { pathname } = request.nextUrl
 
-    console.log("middleware token:", token)
 
     const isAdminRoute = pathname.startsWith('/admin');
 

@@ -10,7 +10,6 @@ import { ThemeProvider } from "next-themes";
 import { ToastContainer } from "react-toastify";
 import Preloader from "@components/layout/Preloader";
 import Providers from "./AuthProvider";
-// import { getServerSession } from "next-auth/next";
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
@@ -29,8 +28,8 @@ export const metadata = {
 };
 
 export default async function RootLayout({ children }) {
-    // const session = await getServerSession();
-    // console.log("getServerSession", session)
+
+
     return (
         <html lang="en" suppressHydrationWarning={true}>
             <body

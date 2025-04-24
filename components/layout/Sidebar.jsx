@@ -7,6 +7,7 @@ import Image from "next/image";
 import SideNavLink from "./SideNavLink";
 import clsx from "clsx";
 import { usePagesStore } from "@/store/pagesStore";
+import { redirect, usePathname } from "next/navigation";
 
 const Sidebar = ({
     admin = {
@@ -18,10 +19,15 @@ const Sidebar = ({
     const { data: session, status } = useSession();
     const [isCollapsed, setIsCollapsed] = useState(false);
     const menus = usePagesStore((state) => state.pages);
+    const currentRoute = usePathname();
+    const isAdminRoute = currentRoute.startsWith('/admin');
 
-    // console.log("session", session)
+    // console.log("sidebar currentRoute", currentRoute)
+    // console.log("sidebar session", session)
+    // console.log("sidebar status", status)
 
     useEffect(() => {
+
         const handleResize = () => {
             if (window.innerWidth < 768) {
                 setIsCollapsed(true);
@@ -34,6 +40,10 @@ const Sidebar = ({
         handleResize();
         return () => window.removeEventListener("resize", handleResize);
     }, []);
+
+    if (isAdminRoute && status == "unauthenticated") {
+        redirect('/');
+    }
 
     if (status != "authenticated") {
         return;

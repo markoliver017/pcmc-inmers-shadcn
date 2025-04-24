@@ -45,7 +45,7 @@ export default function LoginForm() {
         });
 
         setIsLoading(false);
-        console.log("res>>>>>>>>>", res)
+        // console.log("res>>>>>>>>>", res)
         if (res.ok && res.error == undefined) {
             toast.success("Login successful!", {
                 message: "Login successful!",

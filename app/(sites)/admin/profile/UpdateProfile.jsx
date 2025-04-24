@@ -92,7 +92,7 @@ export default function UpdateProfile({
             // email: admin.email,
         },
     });
-    console.log(form.watch())
+    // console.log(form.watch())
 
     const onSubmit = async (data) => {
         setState({ isSubmitting: true, error: null, success: false });
