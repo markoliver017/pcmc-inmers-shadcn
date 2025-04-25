@@ -79,7 +79,7 @@ CMD ["npm", "start"]
 #docker exec -it pcmc-inmers-shadcn-db-1 mysql -uroot -proot
 #docker exec -it pcmc-inmers-shadcn-app-1 node lib/sync.js
 
-#docker exec -it pcmc-inmers-shadcn-app-1 npx sequelize-cli db:seed:all
+#docker exec -it pcmc-inmers-shadcn_app_1 npx sequelize-cli db:seed:all
 
 # PS C:\nextJs\pcmc-inmers-shadcn> docker save -o pcmc-inmers-shadcn.tar pcmc-inmers-shadcn-app mysql:8.0
 
