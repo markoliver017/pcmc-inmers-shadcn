@@ -1,24 +1,23 @@
-
 module.exports = {
     development: {
         username: "root",
-        password: process.env.DB_PASSWORD,
+        password: "root",
         database: "inmers",
-        host: "127.0.0.1",
+        host: "db",
         dialect: "mysql",
     },
     test: {
         username: "root",
-        password: null,
-        database: "database_test",
-        host: "127.0.0.1",
+        password: "root",
+        database: "inmers",
+        host: "db",
         dialect: "mysql",
     },
     production: {
         username: "root",
-        password: null,
-        database: "database_production",
-        host: "127.0.0.1",
+        password: "root",
+        database: "inmers",
+        host: "db",
         dialect: "mysql",
     },
 };

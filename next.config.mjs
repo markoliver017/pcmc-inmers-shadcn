@@ -6,8 +6,8 @@ const nextConfig = {
         SESSION_PASSWORD: "this-is-a-very-long-super-secret-password-123",
         NEXTAUTH_URL: "http://localhost:3000",
         NEXTAUTH_SECRET: "this-is-a-very-long-super-secret-password-123",
-        DB_PASSWORD: "",
-        AUTH_SECRET: "aw3UOdK3jUmLJGgbx3lMIczkKnOVFS/06Sk84l5+N2k="
+        DB_PASSWORD: "root",
+        AUTH_SECRET: "aw3UOdK3jUmLJGgbx3lMIczkKnOVFS/06Sk84l5+N2k=",
     },
     images: {
         remotePatterns: [
@@ -20,7 +20,7 @@ const nextConfig = {
     },
     experimental: {
         serverActions: {
-            bodySizeLimit: '2mb',
+            bodySizeLimit: "2mb",
         },
     },
     // productionBrowserSourceMaps: true,

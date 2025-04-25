@@ -9,7 +9,7 @@ export async function up(queryInterface) {
     const startDate = new Date("2025-01-01");
     const endDate = new Date("2025-12-31");
 
-    for (let i = 0; i < 380; i++) {
+    for (let i = 0; i < 50; i++) {
         const errorDate = faker.date.between({ from: startDate, to: endDate });
 
         reports.push({

@@ -1,0 +1,32 @@
+services:
+    db:
+        image: mysql:5.7
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_DATABASE: inmers
+        volumes:
+            - db-data:/var/lib/mysql
+        ports:
+            - "33060:3306"
+        healthcheck:
+            test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+            interval: 10s
+            timeout: 10s
+            retries: 5
+
+    app:
+        build: .
+        environment:
+            DB_HOST: db
+            DB_PORT: 3306
+            DB_USER: root
+            DB_PASSWORD: root
+            DB_NAME: inmers
+        ports:
+            - "3000:3000"
+        depends_on:
+            db:
+                condition: service_healthy
+
+volumes:
+    db-data:

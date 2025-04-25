@@ -211,7 +211,7 @@ export default function CreateForm({ onSave, closeModal }) {
                             render={({
                                 field: { onChange, value, ...field },
                             }) => (
-                                <FormItem>
+                                <FormItem className="hidden">
                                     <FormLabel>
                                         Profile Photo{" "}
                                         <sup>
