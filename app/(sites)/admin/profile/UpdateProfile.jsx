@@ -230,7 +230,7 @@ export default function UpdateProfile({
                                 render={({
                                     field: { onChange, value, ...field },
                                 }) => (
-                                    <FormItem className="hidden">
+                                    <FormItem>
                                         <FormLabel>
                                             New Profile Picture
                                         </FormLabel>

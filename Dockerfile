@@ -1,5 +1,5 @@
 # Use an official Node.js runtime as the base image
-FROM node:22-alpine
+FROM node:22-slim
 
 # Set the working directory in the container
 WORKDIR /app
@@ -12,6 +12,28 @@ RUN npm install
 
 # Copy the application code to the working directory
 COPY . .
+
+RUN apt-get update && apt-get install -y \
+    libnss3 \
+    libatk1.0-0 \
+    libatk-bridge2.0-0 \
+    libx11-xcb1 \
+    libdrm2 \
+    libxcomposite1 \
+    libxdamage1 \
+    libxrandr2 \
+    libgbm1 \
+    libasound2 \
+    libpangocairo-1.0-0 \
+    libpango-1.0-0 \
+    libcairo2 \
+    libcups2 \
+    libxshmfence1 \
+    libgtk-3-0 \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN npm install puppeteer
 
 # Build the Next.js application
 RUN npm run build
@@ -63,7 +85,7 @@ CMD ["npm", "start"]
 #docker-compose up -d - If you want to run it in detached mode (i.e., in the background), you can use the -d flag:
 #docker-compose up --build - If it's the first time you're running docker-compose up, it will build your images and start the containers. If you've made changes to your docker-compose.yml file or Dockerfile, you may need to rebuild your images using:
 
-    #
+#
 #docker-compose exec db mysql -uroot -pyour_password -e "SHOW DATABASES;"
 #docker-compose logs db
 

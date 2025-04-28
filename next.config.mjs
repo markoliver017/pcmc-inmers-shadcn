@@ -1,14 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     devIndicators: false,
-    env: {
-        host: "http://localhost:3000",
-        SESSION_PASSWORD: "this-is-a-very-long-super-secret-password-123",
-        NEXTAUTH_URL: "http://localhost:3000",
-        NEXTAUTH_SECRET: "this-is-a-very-long-super-secret-password-123",
-        DB_PASSWORD: "root",
-        AUTH_SECRET: "aw3UOdK3jUmLJGgbx3lMIczkKnOVFS/06Sk84l5+N2k=",
-    },
     images: {
         remotePatterns: [
             {
@@ -23,6 +15,14 @@ const nextConfig = {
             bodySizeLimit: "2mb",
         },
     },
+    // env: {
+    //     host: "http://localhost:3000",
+    //     SESSION_PASSWORD: "this-is-a-very-long-super-secret-password-123",
+    //     NEXTAUTH_URL: "http://localhost:3000",
+    //     NEXTAUTH_SECRET: "this-is-a-very-long-super-secret-password-123",
+    //     DB_PASSWORD: "root",
+    //     AUTH_SECRET: "aw3UOdK3jUmLJGgbx3lMIczkKnOVFS/06Sk84l5+N2k=",
+    // },
     // productionBrowserSourceMaps: true,
     // compiler: {
     //     removeConsole: false,

@@ -1,3 +1,5 @@
+"use server";
+
 export async function fetchReports(start, end) {
     let url = new URL(`/api/reports`, process.env.host);
     if (start && end) {

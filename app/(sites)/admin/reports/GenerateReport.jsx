@@ -1,7 +1,7 @@
 "use client";
 
 import DateRangePickerComponent from "@components/reusable_components/DateRangePickerComponent";
-import { Filter } from "lucide-react";
+import { Calendar, Filter } from "lucide-react";
 import moment from "moment";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
@@ -233,7 +233,7 @@ export default function GenerateReport({ data, onLoad, onDataChange }) {
         <div className="flex items-center justify-end gap-1">
             <form className="flex justify-end items-center">
                 {/* Input field to display selected date range */}
-                <Filter className="mr-1" />
+                <Calendar className="mr-1" />
                 <DateRangePickerComponent
                     state={dateRange}
                     handleSelect={handleDateRangeChange}
