@@ -8,8 +8,8 @@ import { set, useForm } from "react-hook-form";
 import notify from "@components/ui/notify";
 import { toast } from "react-toastify";
 // import { signIn } from "@lib/auth";
-import { signIn } from "next-auth/react"
-import { redirect } from "next/navigation";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 const credentials = {
     email: "admin@email.com",
@@ -17,6 +17,7 @@ const credentials = {
 };
 
 export default function LoginForm() {
+    const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
     const {
         register,
@@ -51,17 +52,14 @@ export default function LoginForm() {
                 message: "Login successful!",
                 position: "top-right",
             });
-            setTimeout(() => {
-                redirect(res.url)
-            }, 1000);
 
+            router.push(res.url);
         } else {
             setError("password", {
                 type: "manual",
                 message: "Invalid email or password!",
             });
         }
-
 
         // setTimeout(() => {
         //     // Perform login logic here
@@ -128,7 +126,7 @@ export default function LoginForm() {
                             },
                         })}
                         placeholder="mail@site.com"
-                    // required
+                        // required
                     />
                 </label>
                 <p className="text-red-500 text-sm">

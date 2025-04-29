@@ -12,4 +12,5 @@ VALUES
   ('Incorrect Administration - Wrong route', TRUE, NOW(), NOW()),
   ('Incorrect Administration - Wrong form of medication', TRUE, NOW(), NOW()),
   ('Incorrect Administration - Omission (medication is not given)', TRUE, NOW(), NOW()),
+  ('Near-miss', TRUE, NOW(), NOW()),
   ('Others', TRUE, NOW(), NOW());

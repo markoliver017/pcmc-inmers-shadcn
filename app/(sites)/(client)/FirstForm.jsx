@@ -8,14 +8,14 @@ import { MdNextPlan } from "react-icons/md";
 import notify from "@components/ui/notify";
 import { GiCancel } from "react-icons/gi";
 
-export default function FirstForm({ setIsProceedForm, setIsSecondPage }) {
+export default function FirstForm({ setIsProceedForm, onNext }) {
     const {
         register,
         trigger,
         formState: { errors },
     } = useFormContext();
 
-    const handleNext = async () => {
+    const onSubmitNext = async () => {
         const valid = await trigger([
             "report_date",
             "error_date",
@@ -24,7 +24,7 @@ export default function FirstForm({ setIsProceedForm, setIsSecondPage }) {
             "patient_height",
         ]);
         if (valid) {
-            setIsSecondPage(true);
+            onNext(1);
         } else {
             notify(
                 {
@@ -42,6 +42,24 @@ export default function FirstForm({ setIsProceedForm, setIsSecondPage }) {
                 <h2 className="card-title text-2xl">Patient Details</h2>
                 <div className="text-orange-600 italic">* required fields</div>
             </div>
+
+            <div className="card-actions justify-between mt-10">
+                <button
+                    onClick={() => setIsProceedForm(false)}
+                    className="btn btn-default"
+                    tabIndex={-1}
+                >
+                    <GiCancel /> Cancel
+                </button>
+                <button
+                    type="button"
+                    className="btn btn-primary"
+                    onClick={onSubmitNext}
+                >
+                    <MdNextPlan /> Next
+                </button>
+            </div>
+
             <div className="mt-5 hidden">
                 <FormLabel labelText="Report Date: <sup>default now</sup>" />
                 <label className="input mt-1 border border-gray-300 dark:text-white">
@@ -153,7 +171,17 @@ export default function FirstForm({ setIsProceedForm, setIsSecondPage }) {
                         })}
                         placeholder=""
                     />
-                    <span className="label">CM</span>
+
+                    <select
+                        {...register("height_unit", {
+                            required: "Height unit measure is required.",
+                        })}
+                        name="height_unit"
+                    >
+                        <option value="cm">CM</option>
+                        <option value="Inches">Inches</option>
+                        <option value="feet">Feet</option>
+                    </select>
                 </label>
             </div>
             <div className="flex">
@@ -165,23 +193,6 @@ export default function FirstForm({ setIsProceedForm, setIsSecondPage }) {
                         {errors.patient_height?.message}
                     </p>
                 )}
-            </div>
-
-            <div className="card-actions justify-between mt-10">
-                <button
-                    onClick={() => setIsProceedForm(false)}
-                    className="btn btn-default"
-                    tabIndex={-1}
-                >
-                    <GiCancel /> Cancel
-                </button>
-                <button
-                    type="button"
-                    className="btn btn-primary"
-                    onClick={handleNext}
-                >
-                    <MdNextPlan /> Next
-                </button>
             </div>
         </section>
     );

@@ -28,8 +28,6 @@ export const metadata = {
 };
 
 export default async function RootLayout({ children }) {
-
-
     return (
         <html lang="en" suppressHydrationWarning={true}>
             <body
@@ -47,9 +45,7 @@ export default async function RootLayout({ children }) {
                             >
                                 <Header />
                                 <WrapperHead />
-                                <main className="flex-1 p-4">
-                                    {children}
-                                </main>
+                                <main className="flex-1 p-4">{children}</main>
                                 <Footer />
                             </div>
                         </div>

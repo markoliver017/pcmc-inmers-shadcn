@@ -1,4 +1,5 @@
-import parse from "html-react-parser";
+// "use server";
+
 import moment from "moment";
 
 export const downloadReport = async (data, error_type) => {
@@ -141,7 +142,7 @@ export const downloadReport = async (data, error_type) => {
                                     Type
                                 </th>
                                 <td>
-                                    ${parse(error_type)}
+                                    ${error_type}
                                 </td>
                             </tr>
                             <tr>
@@ -213,7 +214,7 @@ export const downloadReport = async (data, error_type) => {
             </html>
         `;
 
-    const apiUrl = new URL(`/api/generate-pdf`, process.env.host);
+    const apiUrl = new URL(`/api/generate-pdf`, process.env.NEXT_PUBLIC_DOMAIN);
     const res = await fetch(apiUrl, {
         method: "POST",
         headers: {
@@ -236,4 +237,15 @@ export const downloadReport = async (data, error_type) => {
     a.click();
     a.remove();
     window.URL.revokeObjectURL(url);
+    return "Done!";
+};
+
+export const fetchErrorTypes = async () => {
+    const url = new URL(`/api/error_types`, process.env.NEXT_PUBLIC_DOMAIN);
+    const res = await fetch(url, {
+        method: "GET",
+        cache: "no-store",
+    });
+
+    return res.json();
 };

@@ -1,28 +1,18 @@
-"use client";
-import { useState } from "react";
-import ReportForm from "./ReportForm";
+import { Suspense } from "react";
+import { fetchErrorTypes } from "./action";
+import Skeleton from "@components/ui/skeleton";
 import Terms from "./Terms";
 // import { useSession } from "next-auth/react";
 
 export default function Page() {
+    const fetch_error_types = fetchErrorTypes();
     // const { data: session, status } = useSession();
-    const [isAccepted, setIsAccepted] = useState(false);
-    const [isProceedForm, setIsProceedForm] = useState(false);
-
     // if (status === "loading") return <p>Loading...</p>;
     // if (!session) return <p>You are not signed in.</p>;
 
     return (
-        <div className="flex justify-center items-center">
-            {isProceedForm === false ? (
-                <Terms
-                    isAccepted={isAccepted}
-                    setIsAccepted={setIsAccepted}
-                    setIsProceedForm={setIsProceedForm}
-                />
-            ) : (
-                <ReportForm setIsProceedForm={setIsProceedForm} />
-            )}
-        </div>
+        <Suspense fallback={<Skeleton />}>
+            <Terms fetch_error_types={fetch_error_types} />;
+        </Suspense>
     );
 }
