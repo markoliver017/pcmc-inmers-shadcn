@@ -65,14 +65,7 @@ export default function SecondForm({ errorTypeOptions, onNext }) {
     // console.log("watch:", watch());
 
     return (
-        <section className="dark:text-white min-h-[300px]">
-            <div className="flex gap-5">
-                <h2 className="card-title text-2xl">
-                    Medication Error Details
-                </h2>
-
-                <div className="text-orange-600 italic">* required fields</div>
-            </div>
+        <section className="dark:text-white">
             <div className="card-actions justify-between mt-5">
                 <button
                     type="button"
@@ -89,6 +82,13 @@ export default function SecondForm({ errorTypeOptions, onNext }) {
                 >
                     <MdDone /> Next
                 </button>
+            </div>
+            <div className="flex gap-5">
+                <h2 className="card-title text-2xl">
+                    Medication Error Details
+                </h2>
+
+                <div className="text-orange-600 italic">* required fields</div>
             </div>
             <div className="mt-5">
                 <FormLabel labelText="Type of Medication Error: *" />

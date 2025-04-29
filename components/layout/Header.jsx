@@ -47,7 +47,7 @@ const Header = ({
     };
     return (
         <>
-            <header className="flex gap-10 justify-between items-center border-b border-gray-200 p-2 bg-gradient-to-r from-violet-600 to-indigo-600 text-white">
+            <header className="flex-none flex gap-10 justify-between items-center border-b border-gray-200 p-2 bg-gradient-to-r from-violet-600 to-indigo-600 text-white">
                 <Link
                     href="/"
                     className="flex-none flex gap-2 items-center hover:ring rounded-xl p-2"

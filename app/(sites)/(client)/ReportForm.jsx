@@ -66,6 +66,8 @@ export default function ReportForm({ error_types, setIsProceedForm }) {
     });
     const { watch, reset } = methods;
 
+    console.log(watch())
+
     const [errorTypeOptions, setErrorTypeOptions] = useState([]);
     const [sectionNo, setSectionNo] = useState(0);
 
@@ -101,8 +103,8 @@ export default function ReportForm({ error_types, setIsProceedForm }) {
     const error_type =
         selected_error_type?.value == "Others"
             ? `${selected_error_type?.label} <i>(${watch(
-                  "other_error_type"
-              )})</i>`
+                "other_error_type"
+            )})</i>`
             : selected_error_type?.label;
 
     return (
@@ -120,7 +122,7 @@ export default function ReportForm({ error_types, setIsProceedForm }) {
                                     "step px-2",
                                     i <= sectionNo && sec.class
                                 )}
-                                // onClick={() => setSectionNo(i)}
+                            // onClick={() => setSectionNo(i)}
                             >
                                 <small>{sec.title}</small>
                             </li>
@@ -129,7 +131,7 @@ export default function ReportForm({ error_types, setIsProceedForm }) {
                 </div>
                 <div className="card-body">
                     <FormProvider {...methods}>
-                        <form className="px-5 rounded-lg p-5">
+                        <form className="px-5 rounded-lg">
                             {sectionNo == 0 ? (
                                 <FirstForm
                                     setIsProceedForm={setIsProceedForm}

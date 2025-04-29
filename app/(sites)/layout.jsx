@@ -41,7 +41,7 @@ export default async function RootLayout({ children }) {
                             <Sidebar />
                             <div
                                 id="main-container"
-                                className="flex flex-col flex-1 max-h-screen overflow-y-scroll"
+                                className="flex flex-col flex-1 min-h-screen overflow-y-scroll"
                             >
                                 <Header />
                                 <WrapperHead />

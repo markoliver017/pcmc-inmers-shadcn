@@ -12,7 +12,7 @@ export default function Page() {
 
     return (
         <Suspense fallback={<Skeleton />}>
-            <Terms fetch_error_types={fetch_error_types} />;
+            <Terms fetch_error_types={fetch_error_types} />
         </Suspense>
     );
 }

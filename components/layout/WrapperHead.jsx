@@ -15,7 +15,7 @@ export default function WrapperHead() {
     const pageTitle = currentPage ? currentPage.title : "INMERS Form";
 
     return (
-        <div className="flex justify-between items-center p-4 shadow">
+        <div className="flex-none flex justify-between items-center p-4 shadow">
             <h1
                 className="text-3xl font-bold"
                 style={{ fontFamily: "var(--font-geist-sans)" }}
