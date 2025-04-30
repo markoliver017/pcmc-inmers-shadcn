@@ -1,4 +1,4 @@
-import { forwardRef } from 'react';
+import { forwardRef } from "react";
 
 /*
     menu: This refers to the dropdown menu that appears when you click on the select input. You can customize its appearance, such as padding and background color.
@@ -258,25 +258,25 @@ export const getSingleStyle = (mode) => {
         menu: (provided) => ({
             //dropdown menu options container
             ...provided,
-            padding: '5px',
-            backgroundColor: mode === 'light' ? '#F9FAFB' : '#374151',
+            padding: "5px",
+            backgroundColor: mode === "light" ? "#F9FAFB" : "#374151",
         }),
         control: (provided) => ({
             //select input where u type
             ...provided,
-            color: 'green',
-            backgroundColor: mode === 'light' ? '#F9FAFB' : '#1D232A',
+            color: "green",
+            backgroundColor: mode === "light" ? "#F9FAFB" : "#1D232A",
         }),
         singleValue: (provided, { data }) => {
             //selected value displayed in the select input
             return {
                 ...provided,
                 // backgroundColor: data?.color,
-                color: mode === 'light' ? '#000' : '#fff',
-                maxWidth: '100%',
-                padding: '3px 8px',
-                borderRadius: '10px',
-                border: '1px solid gray',
+                color: mode === "light" ? "#000" : "#fff",
+                maxWidth: "100%",
+                padding: "3px 8px",
+                borderRadius: "10px",
+                border: "1px solid gray",
             };
         },
         option: (provided, { data, isFocused, isSelected }) => {
@@ -284,40 +284,40 @@ export const getSingleStyle = (mode) => {
                 ...provided,
                 // borderRadius: '10px',
                 color:
-                    mode === 'light'
+                    mode === "light"
                         ? isFocused
-                            ? '#000'
-                            : 'black'
+                            ? "#000"
+                            : "black"
                         : isFocused
-                            ? '#fff'
-                            : '#fff',
+                        ? "#fff"
+                        : "#fff",
                 backgroundColor:
-                    mode === 'light'
+                    mode === "light"
                         ? isFocused
-                            ? '#D0EFFF' // Light blue for focused option
-                            : '#fff'
+                            ? "#D0EFFF" // Light blue for focused option
+                            : "#fff"
                         : isFocused
-                            ? '#3A3A3A' // Dark gray for focused option
-                            : '#2C2C2C',
-                ':hover': {
-                    backgroundColor: mode === 'light' ? '#E0E0E0' : '#1E1E1E', // Light gray for light mode, dark gray for dark mode
+                        ? "#3A3A3A" // Dark gray for focused option
+                        : "#2C2C2C",
+                ":hover": {
+                    backgroundColor: mode === "light" ? "#E0E0E0" : "#1E1E1E", // Light gray for light mode, dark gray for dark mode
                 },
-                ':hover div': {
-                    backgroundColor: 'inherit', // Ensure the label background color matches the option background color on hover
+                ":hover div": {
+                    backgroundColor: "inherit", // Ensure the label background color matches the option background color on hover
                 },
                 ...(isSelected && {
-                    backgroundColor: mode === 'light' ? '#C8E6C9' : '#388E3C', // Light green for light mode, dark green for dark mode
-                    color: mode === 'light' ? '#000' : '#fff', // Dark text for light mode, light text for dark mode
+                    backgroundColor: mode === "light" ? "#C8E6C9" : "#388E3C", // Light green for light mode, dark green for dark mode
+                    color: mode === "light" ? "#000" : "#fff", // Dark text for light mode, light text for dark mode
                 }),
                 ...(isFocused && {
-                    backgroundColor: mode === 'light' ? '#D0EFFF' : '#3A3A3A', // Light blue for light mode, dark gray for dark mode
-                    color: mode === 'light' ? '#000' : '#fff', // Dark text for light mode, light text for dark mode
+                    backgroundColor: mode === "light" ? "#D0EFFF" : "#3A3A3A", // Light blue for light mode, dark gray for dark mode
+                    color: mode === "light" ? "#000" : "#fff", // Dark text for light mode, light text for dark mode
                 }),
             };
         },
         input: (provided) => ({
             ...provided,
-            color: mode === 'light' ? 'black' : 'white', // Set the input text color based on the mode
+            color: mode === "light" ? "black" : "white", // Set the input text color based on the mode
         }),
     };
 };

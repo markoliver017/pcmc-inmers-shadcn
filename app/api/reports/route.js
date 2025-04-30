@@ -62,25 +62,9 @@ export async function POST(request) {
         await new Promise((resolve) => setTimeout(resolve, 2000));
 
         const body = await request.json(); // Parse the request body
-
+        console.log("reports body", body);
         // Create new report in the database
-        const newReport = await Report.create({
-            report_date: body.report_date || null,
-            error_date: body.error_date || null,
-            patient_sex: body.patient_sex || null,
-            patient_weight: body.patient_weight || null,
-            patient_height: body.patient_height || null,
-            exact_prescription: body.exact_prescription || null,
-            error_type_id: body.error_type_id || null,
-            other_error_type: body.other_error_type || null,
-            incident_description: body.incident_description || null,
-            workplace_environment: body.workplace_environment || null,
-            patient_condition: body.patient_condition || null,
-            immediate_actions: body.immediate_actions || null,
-            corrective_actions: body.corrective_actions || null,
-            preventive_actions: body.preventive_actions || null,
-            is_verified: body.is_verified || false,
-        });
+        const newReport = await Report.create(body);
 
         return NextResponse.json(
             { success: true, report: newReport },

@@ -7,7 +7,6 @@ import { BiError, BiMaleFemale } from "react-icons/bi";
 import { MdNextPlan } from "react-icons/md";
 import notify from "@components/ui/notify";
 import { GiCancel } from "react-icons/gi";
-import { GrTooltip } from "react-icons/gr";
 import clsx from "clsx";
 import { useEffect } from "react";
 
@@ -16,7 +15,14 @@ const height_units = {
     m: 100,
     in: 0.393701,
     ft: 0.0328084,
-}
+};
+
+const weight_units = {
+    kg: 1,
+    lb: 2.20462,
+};
+
+const age_units = ["Year", "Month", "Week", "Day", "Hour"];
 
 export default function FirstForm({ setIsProceedForm, onNext }) {
     const {
@@ -25,20 +31,21 @@ export default function FirstForm({ setIsProceedForm, onNext }) {
         watch,
         setValue,
         formState: { errors },
-    } = useFormContext({
-        defaultValues: {
-            height_unit: "cm",
-            weight_unit: "kg"
-        }
-    });
+    } = useFormContext();
 
     const onSubmitNext = async () => {
         const valid = await trigger([
             "report_date",
             "error_date",
             "patient_sex",
+            "patient_age",
             "patient_weight",
             "patient_height",
+            "age_unit",
+            "weight_unit",
+            "height_unit",
+            "converted_height",
+            "converted_weight",
         ]);
         if (valid) {
             onNext(1);
@@ -53,19 +60,35 @@ export default function FirstForm({ setIsProceedForm, onNext }) {
         }
     };
 
-    const height = watch('patient_height');
-    const heightUnitKey = watch('height_unit');
+    const height = watch("patient_height");
+    const heightUnitKey = watch("height_unit");
     const heightUnit = height_units[heightUnitKey];
 
-    let converted = 0;
+    let converted = height || 0;
     if (!isNaN(height) && Number(height) > 0 && heightUnitKey != "cm") {
-        converted = (height * heightUnit);
+        converted = height * heightUnit;
     }
-    const convertedHeightToolTip = converted != 0 ? `${converted} in cm` : "";
+    const convertedHeightToolTip =
+        heightUnitKey != "cm" ? `${converted} in cm` : "";
+
+    const weight = watch("patient_weight");
+    const weightUnitKey = watch("weight_unit");
+    const weightUnit = weight_units[weightUnitKey];
+
+    let convertedWeight = weight || 0;
+    if (!isNaN(weight) && Number(weight) > 0 && weightUnitKey != "kg") {
+        convertedWeight = weight * weightUnit;
+    }
+    const convertedWeightToolTip =
+        weightUnitKey != "kg" ? `${convertedWeight} in kg` : "";
 
     useEffect(() => {
         setValue("converted_height", converted);
-    }, [watch('patient_height'), watch('height_unit')])
+    }, [watch("patient_height"), watch("height_unit")]);
+
+    useEffect(() => {
+        setValue("converted_weight", convertedWeight);
+    }, [watch("patient_weight"), watch("weight_unit")]);
 
     return (
         <section>
@@ -75,17 +98,20 @@ export default function FirstForm({ setIsProceedForm, onNext }) {
                     className="btn btn-default"
                     tabIndex={-1}
                 >
-                    <GiCancel /> Cancel
+                    <GiCancel />{" "}
+                    <span className="hidden sm:inline-block">Cancel</span>
                 </button>
                 <button
                     type="button"
                     className="btn btn-primary"
                     onClick={onSubmitNext}
+                    tabIndex="6"
                 >
-                    <MdNextPlan /> Next
+                    <MdNextPlan />{" "}
+                    <span className="hidden sm:inline-block">Next</span>
                 </button>
             </div>
-            <div className="flex gap-5">
+            <div className="flex flex-wrap sm:gap-5">
                 <h2 className="card-title text-2xl">Patient Details</h2>
                 <div className="text-orange-600 italic">* required fields</div>
             </div>
@@ -96,7 +122,6 @@ export default function FirstForm({ setIsProceedForm, onNext }) {
                     <Calendar className="h-3" />
                     <input
                         type="date"
-                        name="report_date"
                         {...register("report_date", {
                             required: "Report date is required.",
                         })}
@@ -116,12 +141,12 @@ export default function FirstForm({ setIsProceedForm, onNext }) {
                 <label className="input validator mt-1 border w-full lg:w-96 border-gray-300 dark:text-white">
                     <Calendar className="h-3" />
                     <input
-                        name="error_date"
                         {...register("error_date", {
                             required: "Medication error date is required.",
                         })}
                         defaultValue={new Date().toISOString().slice(0, 10)}
                         type="date"
+                        tabIndex="1"
                     />
                 </label>
             </div>
@@ -145,7 +170,7 @@ export default function FirstForm({ setIsProceedForm, onNext }) {
                             {...register("patient_sex", {
                                 required: "Patient sex is required.",
                             })}
-                            name="patient_sex"
+                            tabIndex="2"
                         >
                             <option value="">Select here</option>
                             <option value="male">Male</option>
@@ -164,34 +189,102 @@ export default function FirstForm({ setIsProceedForm, onNext }) {
                     </p>
                 )}
             </div>
+
+            {/****** Age ******/}
             <div className="mt-5 flex items-center flex-wrap">
-                <FormLabel labelText="Weight of the patient: *" />
+                <FormLabel labelText="Age of the patient: *" />
                 <div className="w-full lg:w-96">
                     <label className="input w-full border border-gray-300 dark:text-white">
                         <input
                             type="number"
-                            name="patient_weight"
-                            {...register("patient_weight", {
-                                required: "Patient weight is required.",
+                            {...register("patient_age", {
+                                required: "Age is required.",
+                                min: {
+                                    value: 1,
+                                    message:
+                                        "Please enter a valid age. Must be atleast 1f.",
+                                },
                             })}
-                            placeholder=""
+                            placeholder="Enter age"
+                            tabIndex="3"
+                            min={0}
                         />
                         <select
-                            {...register("weight_unit", {
-                                required: "Weight unit measure is required.",
+                            {...register("age_unit", {
+                                required: "Age unit measure is required.",
                             })}
-                            name="height_unit"
                             className="dark:bg-inherit"
+                            tabIndex={-1}
                         >
-                            <option value="1">(KG)</option>
-                            <option value="2.20462">(LB)</option>
+                            {age_units.map((u, i) => (
+                                <option key={i} value={u}>
+                                    {u.toUpperCase()}
+                                </option>
+                            ))}
                         </select>
                     </label>
                 </div>
             </div>
             <div className="flex">
                 <FormLabel labelText="" />
+                {errors.patient_age && (
+                    <p className="text-red-500 text-sm flex-items-center">
+                        <BiError />
+                        {errors.patient_age?.message}
+                    </p>
+                )}
+            </div>
 
+            {/******* * Weight *********/}
+            <div
+                className={clsx(
+                    "flex flex-wrap items-center",
+                    convertedWeightToolTip && "tooltip"
+                )}
+                data-tip={convertedWeightToolTip}
+            >
+                <div className="mt-5 flex items-center flex-wrap">
+                    <FormLabel labelText="Weight of the patient: *" />
+                    <div className="w-full lg:w-96">
+                        <label className="input w-full border border-gray-300 dark:text-white">
+                            <input
+                                type="number"
+                                {...register("patient_weight", {
+                                    required: "Patient weight is required.",
+                                    min: {
+                                        value: 1,
+                                        message:
+                                            "Please enter a valid weight. Must be atleast 1.",
+                                    },
+                                })}
+                                placeholder="Enter weight"
+                                tabIndex="4"
+                                min={0}
+                            />
+                            <select
+                                {...register("weight_unit", {
+                                    required: "Weight unit is required.",
+                                })}
+                                className="dark:bg-inherit"
+                                tabIndex={-1}
+                            >
+                                {Object.keys(weight_units).map((w, i) => (
+                                    <option key={i} value={w}>
+                                        ({w.toUpperCase()})
+                                    </option>
+                                ))}
+                            </select>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <input
+                type="hidden"
+                {...register("converted_weight")}
+                value={convertedWeight}
+            />
+            <div className="flex">
+                <FormLabel labelText="" />
                 {errors.patient_weight && (
                     <p className="text-red-500 text-sm flex-items-center">
                         <BiError />
@@ -200,10 +293,12 @@ export default function FirstForm({ setIsProceedForm, onNext }) {
                 )}
             </div>
 
-            <div className={clsx(
-                "mt-5 flex flex-wrap items-center",
-                convertedHeightToolTip && "tooltip"
-            )}
+            {/******* * Height *********/}
+            <div
+                className={clsx(
+                    "mt-5 flex flex-wrap items-center",
+                    convertedHeightToolTip && "tooltip"
+                )}
                 data-tip={convertedHeightToolTip}
             >
                 <div>
@@ -213,10 +308,10 @@ export default function FirstForm({ setIsProceedForm, onNext }) {
                 <label className="input border border-gray-300 w-full lg:w-96 dark:text-white">
                     <input
                         type="text"
-                        name="patient_height"
+                        tabIndex="5"
                         {...register("patient_height", {
                             validate: (value) => {
-                                console.log(value)
+                                console.log(value);
                                 if (!value || value.trim() === "") {
                                     return "Please enter a height or type 'N/A'.";
                                 }
@@ -229,7 +324,7 @@ export default function FirstForm({ setIsProceedForm, onNext }) {
 
                                 // Optional: Add more complex validation for actual height values
                                 return "Please enter a valid height or type 'N/A' if not applicable.";
-                            }
+                            },
                         })}
                         placeholder="Enter height or 'N/A' if not applicable."
                     />
@@ -238,18 +333,22 @@ export default function FirstForm({ setIsProceedForm, onNext }) {
                         {...register("height_unit", {
                             required: "Height unit measure is required.",
                         })}
-                        name="height_unit"
                         className="dark:bg-inherit"
-
+                        tabIndex={-1}
                     >
                         {Object.keys(height_units).map((u, i) => (
-                            <option key={i} value={u}>({u.toUpperCase()})</option>
+                            <option key={i} value={u}>
+                                ({u.toUpperCase()})
+                            </option>
                         ))}
                     </select>
                 </label>
             </div>
-            <input type="hidden" {...register("converted_height")} value={converted} />
-
+            <input
+                type="hidden"
+                {...register("converted_height")}
+                value={converted}
+            />
             <div className="flex">
                 <FormLabel labelText="" />
                 {errors.patient_height && (
@@ -259,7 +358,6 @@ export default function FirstForm({ setIsProceedForm, onNext }) {
                     </p>
                 )}
             </div>
-
-        </section >
+        </section>
     );
 }

@@ -1,17 +1,17 @@
-import { ErrorType } from "@lib/models";
+import { RouteMedicine } from "@lib/models";
 import { NextResponse } from "next/server";
 
 export async function GET() {
     try {
-        const error_types = await ErrorType.findAll({
-            attributes: ["id", "name", "is_medicine_needed"],
+        const routes = await RouteMedicine.findAll({
+            attributes: ["id", "name"],
         });
-        return NextResponse.json(error_types, { status: 200 });
+        return NextResponse.json(routes, { status: 200 });
     } catch (error) {
         return NextResponse.json(
             {
                 error: true,
-                message: "Failed to retrieve medication error types.",
+                message: "Failed to retrieve medicine routes.",
                 details: error,
             },
             { status: 500 }

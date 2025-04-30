@@ -7,9 +7,16 @@ import React, { use, useState } from "react";
 import { FaWpforms } from "react-icons/fa";
 import { HiMiniInformationCircle } from "react-icons/hi2";
 import ReportForm from "./ReportForm";
+import { FileArchive } from "lucide-react";
 
-export default function Terms({ fetch_error_types }) {
+export default function Terms({
+    fetch_error_types,
+    fetch_generic_medicines,
+    fetch_medicine_routes,
+}) {
     const error_types = use(fetch_error_types);
+    const generic_medicines = use(fetch_generic_medicines);
+    const medicine_routes = use(fetch_medicine_routes);
     const [isAccepted, setIsAccepted] = useState(false);
     const [isProceedForm, setIsProceedForm] = useState(false);
 
@@ -18,85 +25,43 @@ export default function Terms({ fetch_error_types }) {
             {isProceedForm === false ? (
                 // Terms Section
                 <Card className="w-3/4 min-h-[30vh]">
-                    <div className="card-body">
-                        <h2 className="card-title">Terms and Conditions</h2>
-                        <p>
-                            Lorem ipsum dolor sit amet consectetur adipisicing
-                            elit. Voluptatum quam sint alias odit explicabo
-                            temporibus autem magni animi, optio illum laborum
-                            voluptates nostrum itaque nihil quibusdam rerum,
-                            fugiat, modi nobis?
-                        </p>
-                        <p>
-                            Lorem ipsum dolor sit amet consectetur adipisicing
-                            elit. Voluptatum quam sint alias odit explicabo
-                            temporibus autem magni animi, optio illum laborum
-                            voluptates nostrum itaque nihil quibusdam rerum,
-                            fugiat, modi nobis?
-                        </p>
-                        <p>
-                            Lorem ipsum dolor sit amet consectetur adipisicing
-                            elit. Voluptatum quam sint alias odit explicabo
-                            temporibus autem magni animi, optio illum laborum
-                            voluptates nostrum itaque nihil quibusdam rerum,
-                            fugiat, modi nobis?
-                        </p>
-                        <p>
-                            Lorem ipsum dolor sit amet consectetur adipisicing
-                            elit.
-                        </p>
-                        <h2 className="card-title">Confidentiality.</h2>
+                    <div className="card-body text-lg">
+                        <h2 className="card-title text-2xl">
+                            <FileArchive /> Confidentiality
+                        </h2>
 
                         <p>
-                            Lorem ipsum dolor sit amet, consectetur adipisicing
-                            elit. Dolorem nisi consequatur voluptates odio, quod
-                            porro? Obcaecati dolor magnam iste aspernatur nobis
-                            maiores vel laudantium quas quo perferendis totam
-                            distinctio aliquid quae nihil accusamus assumenda
-                            omnis id saepe, consectetur sint nulla incidunt
-                            dolorum minus quibusdam! Necessitatibus quo quae
-                            perspiciatis, explicabo magnam repellendus itaque
-                            dolorem consequuntur labore doloremque dolorum,
-                            nesciunt rerum aut.
+                            Please be assured that all information submitted to
+                            the{" "}
+                            <b className="italic font-semibold">
+                                PCMC Integrated National Medication Error
+                                Reporting System
+                            </b>{" "}
+                            will be kept strictly confidential. We do not
+                            collect sensitive personal identifiers of the
+                            reporter, the patient, or PCMC. The data you provide
+                            will be securely protected and accessible only to
+                            authorized personnel involved in analyzing and
+                            following up on reported incidents. The information
+                            collected is used solely to improve medication
+                            safety and prevent future errors. Reports will never
+                            be used for punitive actions against healthcare
+                            professionals or patients. We encourage open and
+                            honest reporting in a safe environment to promote a
+                            culture of safety and continuous improvement.
                         </p>
                         <p>
-                            Lorem ipsum dolor sit amet consectetur adipisicing
-                            elit. Voluptatum quam sint alias odit explicabo
-                            temporibus autem magni animi, optio illum laborum
-                            voluptates nostrum itaque nihil quibusdam rerum,
-                            fugiat, modi nobis?
+                            If you require medication error data for academic,
+                            quality improvement, or patient safety purposes, you
+                            will need to provide some personal and professional
+                            information. Please visit{" "}
+                            <span className="link link-primary">
+                                sample.com
+                            </span>{" "}
+                            and wait for our response to your request. Thank
+                            you.
                         </p>
-                        <p>
-                            Lorem ipsum dolor sit amet consectetur adipisicing
-                            elit. Voluptatum quam sint alias odit explicabo
-                            temporibus autem magni animi, optio illum laborum
-                            voluptates nostrum itaque nihil quibusdam rerum,
-                            fugiat, modi nobis?
-                        </p>
-                        <p>
-                            Lorem ipsum dolor sit amet consectetur adipisicing
-                            elit. Voluptatum quam sint alias odit explicabo
-                            temporibus autem magni animi, optio illum laborum
-                            voluptates nostrum itaque nihil quibusdam rerum,
-                            fugiat, modi nobis?
-                        </p>
-                        <h2 className="card-title">Disclaimer</h2>
-                        <p>
-                            Lorem ipsum dolor sit amet consectetur adipisicing
-                            elit.
-                        </p>
-                        <p>
-                            Lorem ipsum dolor sit amet, consectetur adipisicing
-                            elit. Dolorem nisi consequatur voluptates odio, quod
-                            porro? Obcaecati dolor magnam iste aspernatur nobis
-                            maiores vel laudantium quas quo perferendis totam
-                            distinctio aliquid quae nihil accusamus assumenda
-                            omnis id saepe, consectetur sint nulla incidunt
-                            dolorum minus quibusdam! Necessitatibus quo quae
-                            perspiciatis, explicabo magnam repellendus itaque
-                            dolorem consequuntur labore doloremque dolorum,
-                            nesciunt rerum aut.
-                        </p>
+
                         <p className="mt-5">
                             <label className="label cursor-pointer font-semibold">
                                 <input
@@ -107,7 +72,7 @@ export default function Terms({ fetch_error_types }) {
                                         setIsAccepted(e.target.checked);
                                     }}
                                 />
-                                I accept the terms and conditions
+                                I accept the confidentiality agreement
                             </label>
                         </p>
                         <div className="card-actions justify-center">
@@ -123,8 +88,8 @@ export default function Terms({ fetch_error_types }) {
                                 onClick={() => {
                                     if (!isAccepted) {
                                         SweetAlert({
-                                            title: "Terms and Conditions",
-                                            text: "Please accept the terms and conditions to proceed.",
+                                            title: "Confidentiality Agreement",
+                                            text: "Please accept the confidentiality agreement to proceed.",
                                             icon: "warning",
                                         });
                                         return;
@@ -139,7 +104,8 @@ export default function Terms({ fetch_error_types }) {
                                 ) : (
                                     <>
                                         <HiMiniInformationCircle /> Please agree
-                                        to the terms to continue.
+                                        to the Confidentiality agreement to
+                                        continue.
                                     </>
                                 )}
                             </button>
@@ -149,6 +115,8 @@ export default function Terms({ fetch_error_types }) {
             ) : (
                 <ReportForm
                     error_types={error_types}
+                    generic_medicines={generic_medicines}
+                    medicine_routes={medicine_routes}
                     setIsProceedForm={setIsProceedForm}
                 />
             )}

@@ -7,6 +7,7 @@ import parse from "html-react-parser";
 import SweetAlert from "@components/ui/SweetAlert";
 import clsx from "clsx";
 import Preloader2 from "@components/layout/Preloader2";
+import notify from "@components/ui/notify";
 
 export default function ConfirmationPage({
     onNext,
@@ -59,7 +60,7 @@ export default function ConfirmationPage({
                                         error_type
                                     );
                                     setIsDownLoading(false);
-                                    resetForm();
+                                    // resetForm();
                                 },
                                 onCancel: () => resetForm(),
                             });
@@ -135,12 +136,26 @@ export default function ConfirmationPage({
                                 <td>{watch("patient_sex").toUpperCase()}</td>
                             </tr>
                             <tr className="hover:bg-base-300">
+                                <th>Patient Age</th>
+                                <td>
+                                    {watch("patient_age")} {watch("age_unit")}
+                                    (s)
+                                </td>
+                            </tr>
+                            <tr className="hover:bg-base-300">
                                 <th>Patient Weight</th>
-                                <td>{watch("patient_weight")} kg</td>
+                                <td>
+                                    {watch("patient_weight")} (
+                                    {watch("weight_unit")})
+                                </td>
                             </tr>
                             <tr className="hover:bg-base-300">
                                 <th>Patient Height</th>
-                                <td>{watch("patient_height")} cm</td>
+                                <td>
+                                    {watch("patient_height")}{" "}
+                                    {!isNaN(watch("patient_height")) &&
+                                        `(${watch("height_unit")})`}
+                                </td>
                             </tr>
                             <tr className="bg-gray-200 dark:bg-gray-900 border-b border-gray-300">
                                 <th colSpan={2}>Medication Error Details</th>

@@ -99,10 +99,19 @@ export const downloadReport = async (data, error_type) => {
                             <tr>
                                 <th>
                                     Patient
+                                    Age
+                                </th>
+                                <td>
+                                ${data.patient_age} ${data.age_unit}(s)
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    Patient
                                     Weight
                                 </th>
                                 <td>
-                                ${data.patient_weight} kg
+                                ${data.patient_weight} (${data.weight_unit})
                                 </td>
                             </tr>
                             <tr>
@@ -112,7 +121,11 @@ export const downloadReport = async (data, error_type) => {
                                 </th>
                                 <td>
                                     ${data.patient_height}
-                                    cm
+                                    ${
+                                        !isNaN(data.patient_height)
+                                            ? `(${data.height_unit})`
+                                            : ""
+                                    }
                                 </td>
                             </tr>
                             <tr>
@@ -242,6 +255,29 @@ export const downloadReport = async (data, error_type) => {
 
 export const fetchErrorTypes = async () => {
     const url = new URL(`/api/error_types`, process.env.NEXT_PUBLIC_DOMAIN);
+    const res = await fetch(url, {
+        method: "GET",
+        cache: "no-store",
+    });
+
+    return res.json();
+};
+
+export const fetchGenericMedicines = async () => {
+    const url = new URL(
+        `/api/generic_medicines`,
+        process.env.NEXT_PUBLIC_DOMAIN
+    );
+    const res = await fetch(url, {
+        method: "GET",
+        cache: "no-store",
+    });
+
+    return res.json();
+};
+
+export const fetchMedicineRoutes = async () => {
+    const url = new URL(`/api/route_medicines`, process.env.NEXT_PUBLIC_DOMAIN);
     const res = await fetch(url, {
         method: "GET",
         cache: "no-store",

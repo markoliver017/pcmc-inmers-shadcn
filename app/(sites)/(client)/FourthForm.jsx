@@ -44,7 +44,7 @@ export default function FourthForm({ onNext }) {
 
     return (
         <section className="dark:text-white">
-            <div className="flex gap-5">
+            <div className="flex flex-wrap sm:gap-5">
                 <h2 className="card-title text-2xl">
                     Medication Error Details
                 </h2>
@@ -59,14 +59,16 @@ export default function FourthForm({ onNext }) {
                     className="btn btn-default"
                     tabIndex={-1}
                 >
-                    <IoArrowUndoCircle /> Back
+                    <IoArrowUndoCircle />{" "}
+                    <span className="hidden sm:inline-block">Back</span>
                 </button>
                 <button
                     type="button"
                     onClick={handleNext}
                     className="btn btn-primary"
                 >
-                    <MdDone /> Next
+                    <MdDone />{" "}
+                    <span className="hidden sm:inline-block">Next</span>
                 </button>
             </div>
 

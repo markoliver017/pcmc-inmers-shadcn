@@ -44,7 +44,12 @@ const form_sections = [
     },
 ];
 
-export default function ReportForm({ error_types, setIsProceedForm }) {
+export default function ReportForm({
+    error_types,
+    generic_medicines,
+    medicine_routes,
+    setIsProceedForm,
+}) {
     const methods = useForm({
         mode: "onChange",
         defaultValues: {
@@ -62,13 +67,28 @@ export default function ReportForm({ error_types, setIsProceedForm }) {
                 "The storage area for medications was reorganized to ensure clear labeling of all drugs. Staff received additional training on medication verification processes to prevent future errors.",
             preventive_actions:
                 "Introduced a barcode scanning system to verify medications before administration, ensuring the correct match between prescription and drug. Conducted regular audits of medication storage and administration procedures.",
+            height_unit: "cm",
+            weight_unit: "kg",
+            patient_age: "",
+            patient_weight: "",
+            patient_height: "",
+            converted_weight: "",
+            converted_height: "",
+            medicines: [
+                {
+                    medicine_generic_id: null,
+                    medicine_route_id: null,
+                },
+            ],
         },
     });
     const { watch, reset } = methods;
 
-    console.log(watch())
+    console.log(watch());
 
     const [errorTypeOptions, setErrorTypeOptions] = useState([]);
+    const [genericMedicineOptions, setGenericMedicineOptions] = useState([]);
+    const [medicineRouteOptions, setMedicineRouteOptions] = useState([]);
     const [sectionNo, setSectionNo] = useState(0);
 
     const handleNext = (n) => {
@@ -87,14 +107,46 @@ export default function ReportForm({ error_types, setIsProceedForm }) {
                     value: type.name,
                     label: type.name,
                     id: type.id,
+                    is_medicine_needed: type.is_medicine_needed,
                 }))
             );
             return;
         }
         notify({ error: true, message: error_types.message }, "error");
         setIsProceedForm(false);
-    }, []);
+    }, [error_types]);
 
+    useEffect(() => {
+        if (generic_medicines && !generic_medicines.error) {
+            setGenericMedicineOptions(
+                generic_medicines.map((type) => ({
+                    value: type.name,
+                    label: type.name,
+                    id: type.id,
+                }))
+            );
+            return;
+        }
+        notify({ error: true, message: generic_medicines.message }, "error");
+        setIsProceedForm(false);
+    }, [generic_medicines]);
+
+    useEffect(() => {
+        if (medicine_routes && !medicine_routes.error) {
+            setMedicineRouteOptions(
+                medicine_routes.map((type) => ({
+                    value: type.name,
+                    label: type.name,
+                    id: type.id,
+                }))
+            );
+            return;
+        }
+        notify({ error: true, message: medicine_routes.message }, "error");
+        setIsProceedForm(false);
+    }, [medicine_routes]);
+
+    /** labeling in report generation for error type ***/
     const selected_error_type =
         errorTypeOptions.find(
             (option) => option.id === watch("error_type_id")
@@ -103,8 +155,8 @@ export default function ReportForm({ error_types, setIsProceedForm }) {
     const error_type =
         selected_error_type?.value == "Others"
             ? `${selected_error_type?.label} <i>(${watch(
-                "other_error_type"
-            )})</i>`
+                  "other_error_type"
+              )})</i>`
             : selected_error_type?.label;
 
     return (
@@ -113,7 +165,7 @@ export default function ReportForm({ error_types, setIsProceedForm }) {
                 id="form-container"
                 className="card w-full sm:w-3/4 shadow-[5px_5px_0px_0px_rgba(0,_0,_0,_0.5),inset_0px_2px_4px_0px_rgba(0,_0,_0,_0.3)]"
             >
-                <div className="flex pt-2 justify-center items-center dark:bg-slate-800 dark:p-2 ">
+                <div className="flex pt-2 justify-center items-center dark:bg-slate-800 ">
                     <ul className="steps ">
                         {form_sections.map((sec, i) => (
                             <li
@@ -122,16 +174,16 @@ export default function ReportForm({ error_types, setIsProceedForm }) {
                                     "step px-2",
                                     i <= sectionNo && sec.class
                                 )}
-                            // onClick={() => setSectionNo(i)}
+                                // onClick={() => setSectionNo(i)}
                             >
-                                <small>{sec.title}</small>
+                                <small className="italic">{sec.title}</small>
                             </li>
                         ))}
                     </ul>
                 </div>
                 <div className="card-body">
                     <FormProvider {...methods}>
-                        <form className="px-5 rounded-lg">
+                        <form className="sm:px-5 rounded-lg">
                             {sectionNo == 0 ? (
                                 <FirstForm
                                     setIsProceedForm={setIsProceedForm}
@@ -144,6 +196,10 @@ export default function ReportForm({ error_types, setIsProceedForm }) {
                             {sectionNo == 1 ? (
                                 <SecondForm
                                     errorTypeOptions={errorTypeOptions}
+                                    genericMedicineOptions={
+                                        genericMedicineOptions
+                                    }
+                                    medicineRouteOptions={medicineRouteOptions}
                                     onNext={handleNext}
                                 />
                             ) : (
