@@ -9,6 +9,7 @@ import notify from "@components/ui/notify";
 import { GiCancel } from "react-icons/gi";
 import clsx from "clsx";
 import { useEffect } from "react";
+import { createReportsSchema } from "@lib/reportSchema";
 
 const height_units = {
     cm: 1,
@@ -25,6 +26,7 @@ const weight_units = {
 const age_units = ["Year", "Month", "Week", "Day", "Hour"];
 
 export default function FirstForm({ setIsProceedForm, onNext }) {
+
     const {
         register,
         trigger,
@@ -122,11 +124,8 @@ export default function FirstForm({ setIsProceedForm, onNext }) {
                     <Calendar className="h-3" />
                     <input
                         type="date"
-                        {...register("report_date", {
-                            required: "Report date is required.",
-                        })}
+                        {...register("report_date")}
                         readOnly
-                        value={new Date().toISOString().slice(0, 10)}
                     />
                 </label>
                 <p className="text-red-500 text-sm">
@@ -141,10 +140,7 @@ export default function FirstForm({ setIsProceedForm, onNext }) {
                 <label className="input validator mt-1 border w-full lg:w-96 border-gray-300 dark:text-white">
                     <Calendar className="h-3" />
                     <input
-                        {...register("error_date", {
-                            required: "Medication error date is required.",
-                        })}
-                        defaultValue={new Date().toISOString().slice(0, 10)}
+                        {...register("error_date")}
                         type="date"
                         tabIndex="1"
                     />
@@ -197,14 +193,7 @@ export default function FirstForm({ setIsProceedForm, onNext }) {
                     <label className="input w-full border border-gray-300 dark:text-white">
                         <input
                             type="number"
-                            {...register("patient_age", {
-                                required: "Age is required.",
-                                min: {
-                                    value: 1,
-                                    message:
-                                        "Please enter a valid age. Must be atleast 1f.",
-                                },
-                            })}
+                            {...register("patient_age")}
                             placeholder="Enter age"
                             tabIndex="3"
                             min={0}
@@ -243,22 +232,16 @@ export default function FirstForm({ setIsProceedForm, onNext }) {
                 )}
                 data-tip={convertedWeightToolTip}
             >
-                <div className="mt-5 flex items-center flex-wrap">
+                <div className="mt-5 w-full flex items-center flex-wrap ">
                     <FormLabel labelText="Weight of the patient: *" />
-                    <div className="w-full lg:w-96">
+                    <div className="w-full lg:w-96 ">
                         <label className="input w-full border border-gray-300 dark:text-white">
                             <input
                                 type="number"
-                                {...register("patient_weight", {
-                                    required: "Patient weight is required.",
-                                    min: {
-                                        value: 1,
-                                        message:
-                                            "Please enter a valid weight. Must be atleast 1.",
-                                    },
-                                })}
+                                {...register("patient_weight")}
                                 placeholder="Enter weight"
                                 tabIndex="4"
+                                className="w-full"
                                 min={0}
                             />
                             <select
@@ -309,23 +292,7 @@ export default function FirstForm({ setIsProceedForm, onNext }) {
                     <input
                         type="text"
                         tabIndex="5"
-                        {...register("patient_height", {
-                            validate: (value) => {
-                                console.log(value);
-                                if (!value || value.trim() === "") {
-                                    return "Please enter a height or type 'N/A'.";
-                                }
-                                if (value.trim().toLowerCase() === "n/a") {
-                                    return true;
-                                }
-                                if (!isNaN(value) && Number(value) > 0) {
-                                    return true;
-                                }
-
-                                // Optional: Add more complex validation for actual height values
-                                return "Please enter a valid height or type 'N/A' if not applicable.";
-                            },
-                        })}
+                        {...register("patient_height")}
                         placeholder="Enter height or 'N/A' if not applicable."
                     />
 

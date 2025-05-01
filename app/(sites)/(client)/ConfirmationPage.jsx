@@ -1,13 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { downloadReport } from "./action";
+// import { downloadReport } from "./action";
 import { FormInputIcon, Pencil, Send } from "lucide-react";
 import parse from "html-react-parser";
 import SweetAlert from "@components/ui/SweetAlert";
 import clsx from "clsx";
 import Preloader2 from "@components/layout/Preloader2";
 import notify from "@components/ui/notify";
+import { downloadReport } from "./report.utils";
 
 export default function ConfirmationPage({
     onNext,
@@ -59,6 +60,7 @@ export default function ConfirmationPage({
                                         data,
                                         error_type
                                     );
+                                    if (!res) alert("Failed to download report.");
                                     setIsDownLoading(false);
                                     // resetForm();
                                 },

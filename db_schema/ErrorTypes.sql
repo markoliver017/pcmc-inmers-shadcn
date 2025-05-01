@@ -8,7 +8,7 @@ VALUES
   ('Incorrect Administration - Wrong patient', FALSE, TRUE, NOW(), NOW()),
   ('Incorrect Administration - Wrong medication', TRUE, TRUE, NOW(), NOW()),
   ('Incorrect Administration - Wrong dose/ dosage', TRUE, TRUE, NOW(), NOW()),
-  ('Incorrect Administration - Wrong time', NO, TRUE, NOW(), NOW()),
+  ('Incorrect Administration - Wrong time', FALSE, TRUE, NOW(), NOW()),
   ('Incorrect Administration - Wrong route', TRUE, TRUE, NOW(), NOW()),
   ('Incorrect Administration - Wrong form of medication', TRUE, TRUE, NOW(), NOW()),
   ('Incorrect Administration - Omission (medication is not given)', TRUE, TRUE, NOW(), NOW()),

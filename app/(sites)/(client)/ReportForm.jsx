@@ -3,44 +3,50 @@
 import { useEffect, useState } from "react";
 
 import { useForm, FormProvider } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { createReportsSchema } from "@lib/reportSchema";
 
 import FirstForm from "./FirstForm";
-
 import SecondForm from "./SecondForm";
-
-import clsx from "clsx";
-
-import notify from "@components/ui/notify";
-import { Card } from "@components/ui/card";
-import ConfirmationPage from "./ConfirmationPage";
 import ThirdForm from "./ThirdForm";
 import FourthForm from "./FourthForm";
 import FifthForm from "./FifthForm";
+import ConfirmationPage from "./ConfirmationPage";
+
+import clsx from "clsx";
+import notify from "@components/ui/notify";
+import { Card } from "@components/ui/card";
 
 const form_sections = [
     {
         title: "Patient Details",
         class: "step-primary",
+        percent: 10,
     },
     {
         title: "Medication Error Details 1",
         class: "step-primary",
+        percent: 30,
     },
     {
         title: "Medication Error Details 2",
         class: "step-primary",
+        percent: 50,
     },
     {
         title: "Medication Error Details 3",
         class: "step-primary",
+        percent: 70,
     },
     {
         title: "Medication Error Details 4",
         class: "step-primary",
+        percent: 90,
     },
     {
         title: "Confirm",
         class: "step-warning",
+        percent: 100,
     },
 ];
 
@@ -52,7 +58,19 @@ export default function ReportForm({
 }) {
     const methods = useForm({
         mode: "onChange",
+        resolver: zodResolver(createReportsSchema),
         defaultValues: {
+            report_date: new Date().toISOString().slice(0, 10),
+            error_date: new Date().toISOString().slice(0, 10),
+            error_type_id: "",
+            other_error_type: "",
+            patient_age: "",
+            patient_weight: "",
+            patient_height: "",
+            height_unit: "cm",
+            weight_unit: "kg",
+            converted_weight: "",
+            converted_height: "",
             exact_prescription:
                 "The doctor prescribed Amoxicillin 500 mg tablets to be taken twice daily for 7 days to treat a bacterial infection.",
             incident_description:
@@ -67,26 +85,64 @@ export default function ReportForm({
                 "The storage area for medications was reorganized to ensure clear labeling of all drugs. Staff received additional training on medication verification processes to prevent future errors.",
             preventive_actions:
                 "Introduced a barcode scanning system to verify medications before administration, ensuring the correct match between prescription and drug. Conducted regular audits of medication storage and administration procedures.",
-            height_unit: "cm",
-            weight_unit: "kg",
-            patient_age: "",
-            patient_weight: "",
-            patient_height: "",
-            converted_weight: "",
-            converted_height: "",
             medicines: [
                 {
                     medicine_generic_id: null,
                     medicine_route_id: null,
                 },
             ],
+            form_2_details: {
+                error_type_id: "",
+                other_error_type: "",
+                medicines: [
+                    {
+                        medicine_generic_id: null,
+                        medicine_route_id: null,
+                    },
+                ],
+            },
         },
     });
-    const { watch, reset } = methods;
+    const { watch, reset, formState: { errors } } = methods;
+    const validInput = {
+        report_date: "2025-05-01",
+        error_date: "2025-05-01",
+        patient_age: 30,
+        patient_sex: "male",
+        patient_weight: 70,
+        patient_height: "170",
+        age_unit: "Year",
+        weight_unit: "kg",
+        height_unit: "cm",
+        exact_prescription: "Amoxicillin 500mg",
+        error_type_id: 1,
+        selected_error_type: `{"value":"Others","label":"Others","id":13,"is_medicine_needed":false}`,
+        incident_description: "Incorrect dosage administered.",
+        workplace_environment: "Busy hospital ward.",
+        patient_condition: "Stable.",
+        immediate_actions: "Stopped medication.",
+        corrective_actions: "Correct dosage administered.",
+        // preventive_actions: "Staff training.",
+        medicines: [{ medicine_generic_id: 1, medicine_route_id: 1 }],
+    };
 
-    console.log(watch());
+    const invalidInput = {
+        ...validInput,
+        error_type_id: "13", // "Other" error type
+        other_error_type: "", // Should trigger superRefine error
+    };
+
+    // const result = createReportsSchema.safeParse(invalidInput);
+    // console.log("debug errorsssssss", result?.error?.flatten().fieldErrors);
+    // useEffect(() => {
+    // console.log("watch>>>>>>>>>", watch());
+    // console.log("errors>>>>>>>>>", errors);
+    // console.log("createReportsSchema", result.error.format());
+    // console.log("createReportsSchema", result.error.format());
+    // }, [watch(), errors]);
 
     const [errorTypeOptions, setErrorTypeOptions] = useState([]);
+    const [selectedErrorType, setSelectedErrorType] = useState({});
     const [genericMedicineOptions, setGenericMedicineOptions] = useState([]);
     const [medicineRouteOptions, setMedicineRouteOptions] = useState([]);
     const [sectionNo, setSectionNo] = useState(0);
@@ -155,8 +211,8 @@ export default function ReportForm({
     const error_type =
         selected_error_type?.value == "Others"
             ? `${selected_error_type?.label} <i>(${watch(
-                  "other_error_type"
-              )})</i>`
+                "other_error_type"
+            )})</i>`
             : selected_error_type?.label;
 
     return (
@@ -165,7 +221,20 @@ export default function ReportForm({
                 id="form-container"
                 className="card w-full sm:w-3/4 shadow-[5px_5px_0px_0px_rgba(0,_0,_0,_0.5),inset_0px_2px_4px_0px_rgba(0,_0,_0,_0.3)]"
             >
-                <div className="flex pt-2 justify-center items-center dark:bg-slate-800 ">
+                <div className="relative p-5 pb-0 w-3/4 mx-auto">
+                    <progress
+                        className={clsx(
+                            "progress h-5",
+                            form_sections[sectionNo].class
+                        )}
+                        value={form_sections[sectionNo].percent}
+                        max="100"
+                    ></progress>
+                    {/* <span className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2  font-bold">
+                        {form_sections[sectionNo].percent}%
+                    </span> */}
+                </div>
+                {/* <div className="flex pt-2 justify-center items-center dark:bg-slate-800 ">
                     <ul className="steps ">
                         {form_sections.map((sec, i) => (
                             <li
@@ -174,13 +243,13 @@ export default function ReportForm({
                                     "step px-2",
                                     i <= sectionNo && sec.class
                                 )}
-                                // onClick={() => setSectionNo(i)}
+                            // onClick={() => setSectionNo(i)}
                             >
                                 <small className="italic">{sec.title}</small>
                             </li>
                         ))}
                     </ul>
-                </div>
+                </div> */}
                 <div className="card-body">
                     <FormProvider {...methods}>
                         <form className="sm:px-5 rounded-lg">
@@ -196,6 +265,8 @@ export default function ReportForm({
                             {sectionNo == 1 ? (
                                 <SecondForm
                                     errorTypeOptions={errorTypeOptions}
+                                    selectedErrorType={selectedErrorType}
+                                    setSelectedErrorType={setSelectedErrorType}
                                     genericMedicineOptions={
                                         genericMedicineOptions
                                     }

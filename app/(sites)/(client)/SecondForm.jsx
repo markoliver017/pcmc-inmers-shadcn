@@ -24,6 +24,8 @@ import { Delete, Plus, RemoveFormatting } from "lucide-react";
 
 export default function SecondForm({
     errorTypeOptions,
+    selectedErrorType,
+    setSelectedErrorType,
     genericMedicineOptions,
     medicineRouteOptions,
     onNext,
@@ -44,12 +46,23 @@ export default function SecondForm({
     });
 
     const handleNext = async () => {
+        register("form_2_details");
+        setValue("form_2_details", {
+            error_type_id: watch("error_type_id"),
+            is_medicine_needed: selectedErrorType?.is_medicine_needed,
+            other_error_type: watch("other_error_type"),
+            medicines: watch("medicines"),
+        });
         const valid = await trigger([
             "error_type_id",
             "other_error_type",
-            "medicines",
+            // "medicines",
+            "form_2_details",
         ]);
+        console.log("error_id", watch("error_type_id"));
+        console.log("validation errors", errors);
         if (valid) {
+            // unregister("other_error_type_validation", { keepValue: false });
             onNext(1);
         } else {
             notify(
@@ -64,11 +77,8 @@ export default function SecondForm({
 
     const error_type_id = watch("error_type_id");
 
-    const selected_error_type =
-        errorTypeOptions.find((option) => option.id === error_type_id) || null;
-
     useEffect(() => {
-        if (selected_error_type?.value == "Others") {
+        if (selectedErrorType?.value == "Others") {
             setValue("other_error_type", "");
         }
     }, [error_type_id]);
@@ -107,9 +117,6 @@ export default function SecondForm({
                     <Controller
                         control={control}
                         name="error_type_id"
-                        rules={{
-                            required: "Types of Medication Error is required.",
-                        }}
                         render={({ field: { onChange, value, name, ref } }) => {
                             const selectedOption =
                                 errorTypeOptions.find(
@@ -123,6 +130,8 @@ export default function SecondForm({
                                     placeholder="Type of medication error * (required)"
                                     value={selectedOption}
                                     onChange={(selectedOption) => {
+                                        setValue("selected_error_type", JSON.stringify(selectedOption))
+                                        setSelectedErrorType(selectedOption);
                                         onChange(
                                             selectedOption
                                                 ? selectedOption.id
@@ -139,6 +148,11 @@ export default function SecondForm({
                         }}
                     />
                 </fieldset>
+                <input
+                    type="text"
+                    className="input w-full border"
+                    {...register("selected_error_type")}
+                />
                 {errors.error_type_id && (
                     <p className="text-red-500 text-sm flex-items-center">
                         <BiError />
@@ -148,188 +162,190 @@ export default function SecondForm({
             </div>
 
             {/****** Medicine Details  *********/}
-            <Card className="mt-5">
-                <CardTitle className="p-5 pb-2">Medicine Details</CardTitle>
-                <CardDescription className="px-10 pb-2">
-                    Select the generic name and routes. Click on “Add another
-                    medicine” for each new medicine you need to describe.
-                </CardDescription>
-                <CardContent>
-                    {fields.map((item, index) => (
-                        <Card
-                            key={item.id}
-                            className="p-5 mb-2 border-l-2 border-l-blue-900 dark:border-l-blue-600"
-                        >
-                            <CardTitle>
-                                <div className="flex justify-between">
-                                    <p>Medicine {index + 1}</p>
-                                    <div className="flex justify-end mt-2">
-                                        <button
-                                            type="button"
-                                            disabled={index == 0}
-                                            onClick={() => remove(index)}
-                                            className="btn btn-error btn-sm btn-outline"
-                                        >
-                                            <MdDeleteForever />
-                                        </button>
+            {selectedErrorType && selectedErrorType.is_medicine_needed && (
+                <Card className="mt-5">
+                    <CardTitle className="p-5 pb-2">Medicine Details</CardTitle>
+                    <CardDescription className="px-10 pb-2">
+                        Select the generic name and routes. Click on “Add another
+                        medicine” for each new medicine you need to describe.
+                    </CardDescription>
+                    <CardContent>
+                        {fields.map((item, index) => (
+                            <Card
+                                key={item.id}
+                                className="p-5 mb-2 border-l-2 border-l-blue-900 dark:border-l-blue-600"
+                            >
+                                <CardTitle>
+                                    <div className="flex justify-between">
+                                        <p>Medicine {index + 1}</p>
+                                        <div className="flex justify-end mt-2">
+                                            <button
+                                                type="button"
+                                                disabled={index == 0}
+                                                onClick={() => remove(index)}
+                                                className="btn btn-error btn-sm btn-outline"
+                                            >
+                                                <MdDeleteForever />
+                                            </button>
+                                        </div>
                                     </div>
-                                </div>
-                            </CardTitle>
-                            <CardContent className="pb-0">
-                                <div>
-                                    <FormLabel labelText="Generic Name: *" />
-                                    <fieldset className="fieldset w-full">
-                                        <Controller
-                                            control={control}
-                                            name={`medicines.${index}.medicine_generic_id`}
-                                            rules={{
-                                                required:
-                                                    "Generic name is required.",
-                                            }}
-                                            render={({
-                                                field: {
-                                                    onChange,
-                                                    value,
-                                                    name,
-                                                    ref,
-                                                },
-                                            }) => {
-                                                const selectedOption =
-                                                    genericMedicineOptions.find(
-                                                        (option) =>
-                                                            option.id === value
-                                                    ) || null;
-                                                return (
-                                                    <CreatableSelectNoSSR
-                                                        name={name}
-                                                        ref={ref}
-                                                        placeholder="Generic name * (required)"
-                                                        value={selectedOption}
-                                                        onChange={(
-                                                            selectedOption
-                                                        ) => {
-                                                            onChange(
+                                </CardTitle>
+                                <CardContent className="pb-0">
+                                    <div>
+                                        <FormLabel labelText="Generic Name: *" />
+                                        <fieldset className="fieldset w-full">
+                                            <Controller
+                                                control={control}
+                                                name={`medicines.${index}.medicine_generic_id`}
+                                                rules={{
+                                                    required:
+                                                        "Generic name is required.",
+                                                }}
+                                                render={({
+                                                    field: {
+                                                        onChange,
+                                                        value,
+                                                        name,
+                                                        ref,
+                                                    },
+                                                }) => {
+                                                    const selectedOption =
+                                                        genericMedicineOptions.find(
+                                                            (option) =>
+                                                                option.id === value
+                                                        ) || null;
+                                                    return (
+                                                        <CreatableSelectNoSSR
+                                                            name={name}
+                                                            ref={ref}
+                                                            placeholder="Generic name * (required)"
+                                                            value={selectedOption}
+                                                            onChange={(
                                                                 selectedOption
-                                                                    ? selectedOption.id
-                                                                    : null
-                                                            );
-                                                        }}
-                                                        isValidNewOption={() =>
-                                                            false
-                                                        }
-                                                        options={
-                                                            genericMedicineOptions
-                                                        }
-                                                        styles={getSingleStyle(
-                                                            resolvedTheme
-                                                        )}
-                                                        className="sm:text-lg"
-                                                        isClearable
-                                                    />
-                                                );
-                                            }}
-                                        />
-                                    </fieldset>
-                                    {errors?.medicines?.[index]
-                                        ?.medicine_generic_id && (
-                                        <p className="text-red-500 text-sm flex-items-center">
-                                            <BiError />
-                                            {
-                                                errors.medicines[index]
-                                                    .medicine_generic_id.message
-                                            }
-                                        </p>
-                                    )}
-                                </div>
+                                                            ) => {
+                                                                onChange(
+                                                                    selectedOption
+                                                                        ? selectedOption.id
+                                                                        : null
+                                                                );
+                                                            }}
+                                                            isValidNewOption={() =>
+                                                                false
+                                                            }
+                                                            options={
+                                                                genericMedicineOptions
+                                                            }
+                                                            styles={getSingleStyle(
+                                                                resolvedTheme
+                                                            )}
+                                                            className="sm:text-lg"
+                                                            isClearable
+                                                        />
+                                                    );
+                                                }}
+                                            />
+                                        </fieldset>
+                                        {errors?.medicines?.[index]
+                                            ?.medicine_generic_id && (
+                                                <p className="text-red-500 text-sm flex-items-center">
+                                                    <BiError />
+                                                    {
+                                                        errors.medicines[index]
+                                                            .medicine_generic_id.message
+                                                    }
+                                                </p>
+                                            )}
+                                    </div>
 
-                                <div>
-                                    <FormLabel labelText="Route: *" />
-                                    <fieldset className="fieldset w-full">
-                                        <Controller
-                                            control={control}
-                                            name={`medicines.${index}.medicine_route_id`}
-                                            rules={{
-                                                required: "Route is required.",
-                                            }}
-                                            render={({
-                                                field: {
-                                                    onChange,
-                                                    value,
-                                                    name,
-                                                    ref,
-                                                },
-                                            }) => {
-                                                const selectedOption =
-                                                    medicineRouteOptions.find(
-                                                        (option) =>
-                                                            option.id === value
-                                                    ) || null;
-                                                return (
-                                                    <CreatableSelectNoSSR
-                                                        name={name}
-                                                        ref={ref}
-                                                        placeholder="Route * (required)"
-                                                        value={selectedOption}
-                                                        onChange={(
-                                                            selectedOption
-                                                        ) => {
-                                                            onChange(
+                                    <div>
+                                        <FormLabel labelText="Route: *" />
+                                        <fieldset className="fieldset w-full">
+                                            <Controller
+                                                control={control}
+                                                name={`medicines.${index}.medicine_route_id`}
+                                                rules={{
+                                                    required: "Route is required.",
+                                                }}
+                                                render={({
+                                                    field: {
+                                                        onChange,
+                                                        value,
+                                                        name,
+                                                        ref,
+                                                    },
+                                                }) => {
+                                                    const selectedOption =
+                                                        medicineRouteOptions.find(
+                                                            (option) =>
+                                                                option.id === value
+                                                        ) || null;
+                                                    return (
+                                                        <CreatableSelectNoSSR
+                                                            name={name}
+                                                            ref={ref}
+                                                            placeholder="Route * (required)"
+                                                            value={selectedOption}
+                                                            onChange={(
                                                                 selectedOption
-                                                                    ? selectedOption.id
-                                                                    : null
-                                                            );
-                                                        }}
-                                                        isValidNewOption={() =>
-                                                            false
-                                                        }
-                                                        options={
-                                                            medicineRouteOptions
-                                                        }
-                                                        styles={getSingleStyle(
-                                                            resolvedTheme
-                                                        )}
-                                                        className="sm:text-lg"
-                                                        isClearable
-                                                    />
-                                                );
-                                            }}
-                                        />
-                                    </fieldset>
-                                    {errors?.medicines?.[index]
-                                        ?.medicine_route_id && (
-                                        <p className="text-red-500 text-sm flex-items-center">
-                                            <BiError />
-                                            {
-                                                errors.medicines[index]
-                                                    .medicine_route_id.message
-                                            }
-                                        </p>
-                                    )}
-                                </div>
-                            </CardContent>
-                        </Card>
-                    ))}
-                    <div className="flex justify-end mt-2">
-                        <button
-                            type="button"
-                            onClick={() =>
-                                append({
-                                    medicine_generic_id: null,
-                                    medicine_route_id: null,
-                                })
-                            }
-                            className="btn btn-neutral btn-wide btn-outline dark:text-slate-200"
-                        >
-                            <Plus />{" "}
-                            <span className="hidden sm:inline-block">
-                                Add another medicine
-                            </span>
-                        </button>
-                    </div>
-                </CardContent>
-            </Card>
+                                                            ) => {
+                                                                onChange(
+                                                                    selectedOption
+                                                                        ? selectedOption.id
+                                                                        : null
+                                                                );
+                                                            }}
+                                                            isValidNewOption={() =>
+                                                                false
+                                                            }
+                                                            options={
+                                                                medicineRouteOptions
+                                                            }
+                                                            styles={getSingleStyle(
+                                                                resolvedTheme
+                                                            )}
+                                                            className="sm:text-lg"
+                                                            isClearable
+                                                        />
+                                                    );
+                                                }}
+                                            />
+                                        </fieldset>
+                                        {errors?.medicines?.[index]
+                                            ?.medicine_route_id && (
+                                                <p className="text-red-500 text-sm flex-items-center">
+                                                    <BiError />
+                                                    {
+                                                        errors.medicines[index]
+                                                            .medicine_route_id.message
+                                                    }
+                                                </p>
+                                            )}
+                                    </div>
+                                </CardContent>
+                            </Card>
+                        ))}
+                        <div className="flex justify-end mt-2">
+                            <button
+                                type="button"
+                                onClick={() =>
+                                    append({
+                                        medicine_generic_id: null,
+                                        medicine_route_id: null,
+                                    })
+                                }
+                                className="btn btn-neutral btn-wide btn-outline dark:text-slate-200"
+                            >
+                                <Plus />{" "}
+                                <span className="hidden sm:inline-block">
+                                    Add another medicine
+                                </span>
+                            </button>
+                        </div>
+                    </CardContent>
+                </Card>
+            )}
 
-            {selected_error_type?.value == "Others" && (
+            {selectedErrorType?.value == "Others" && (
                 <div className="mt-5 ">
                     {/* <FormLabel labelText="Exact medication prescription as ordered for the patient:" /> */}
                     <label className="floating-label border border-gray-300 dark:text-white">
@@ -338,7 +354,7 @@ export default function SecondForm({
                             name="other_error_type"
                             {...register("other_error_type", {
                                 required:
-                                    selected_error_type?.value == "Others"
+                                    selectedErrorType?.value == "Others"
                                         ? "Specify other medication error"
                                         : false,
                             })}
@@ -347,10 +363,10 @@ export default function SecondForm({
                         />
                         <span>Other medication error</span>
                     </label>
-                    {errors.other_error_type && (
+                    {errors?.form_2_details && (
                         <p className="text-red-500 text-sm flex-items-center">
                             <BiError />
-                            {errors.other_error_type?.message}
+                            {errors.form_2_details.other_error_type?.message}
                         </p>
                     )}
                 </div>
