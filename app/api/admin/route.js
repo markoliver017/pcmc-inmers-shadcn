@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 // POST handler for report submission
 export async function POST(request) {
     try {
-        await new Promise((resolve) => setTimeout(resolve, 2000));
+        // await new Promise((resolve) => setTimeout(resolve, 2000));
 
         const body = await request.json(); // Parse the request body
 

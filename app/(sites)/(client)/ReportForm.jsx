@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 
 import { useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { createReportsSchema } from "@lib/reportSchema";
+import { createReportsSchema } from "@lib/zod/reportSchema";
 
 import FirstForm from "./FirstForm";
 import SecondForm from "./SecondForm";
@@ -89,57 +89,61 @@ export default function ReportForm({
                 {
                     medicine_generic_id: null,
                     medicine_route_id: null,
+                    // other_generic_medicine: "",
+                    // other_medicine_route: "",
                 },
             ],
-            form_2_details: {
-                error_type_id: "",
-                other_error_type: "",
-                medicines: [
-                    {
-                        medicine_generic_id: null,
-                        medicine_route_id: null,
-                    },
-                ],
-            },
         },
     });
-    const { watch, reset, formState: { errors } } = methods;
-    const validInput = {
-        report_date: "2025-05-01",
-        error_date: "2025-05-01",
-        patient_age: 30,
-        patient_sex: "male",
-        patient_weight: 70,
-        patient_height: "170",
-        age_unit: "Year",
-        weight_unit: "kg",
-        height_unit: "cm",
-        exact_prescription: "Amoxicillin 500mg",
-        error_type_id: 1,
-        selected_error_type: `{"value":"Others","label":"Others","id":13,"is_medicine_needed":false}`,
-        incident_description: "Incorrect dosage administered.",
-        workplace_environment: "Busy hospital ward.",
-        patient_condition: "Stable.",
-        immediate_actions: "Stopped medication.",
-        corrective_actions: "Correct dosage administered.",
-        // preventive_actions: "Staff training.",
-        medicines: [{ medicine_generic_id: 1, medicine_route_id: 1 }],
-    };
+    const {
+        watch,
+        reset,
+        formState: { errors },
+    } = methods;
 
-    const invalidInput = {
-        ...validInput,
-        error_type_id: "13", // "Other" error type
-        other_error_type: "", // Should trigger superRefine error
-    };
+    // const validInput = {
+    //     report_date: "2025-05-01",
+    //     error_date: "2025-05-01",
+    //     patient_age: 30,
+    //     patient_sex: "male",
+    //     patient_weight: 70,
+    //     patient_height: "170",
+    //     age_unit: "Year",
+    //     weight_unit: "kg",
+    //     height_unit: "cm",
+    //     exact_prescription: "Amoxicillin 500mg",
+    //     error_type_id: 1,
+    //     selected_error_type: `{"value":"Others","label":"Others","id":13,"is_medicine_needed":false}`,
+    //     incident_description: "Incorrect dosage administered.",
+    //     workplace_environment: "Busy hospital ward.",
+    //     patient_condition: "Stable.",
+    //     immediate_actions: "Stopped medication.",
+    //     corrective_actions: "Correct dosage administered.",
+    //     // preventive_actions: "Staff training.",
+    //     medicines: [
+    //         {
+    //             medicine_generic_id: null,
+    //             medicine_route_id: null,
+    //             other_generic_medicine: "",
+    //             other_medicine_route: "",
+    //         },
+    //     ],
+    // };
+
+    // const invalidInput = {
+    //     ...validInput,
+    //     error_type_id: "13", // "Other" error type
+    //     other_error_type: "", // Should trigger superRefine error
+    // };
 
     // const result = createReportsSchema.safeParse(invalidInput);
     // console.log("debug errorsssssss", result?.error?.flatten().fieldErrors);
-    // useEffect(() => {
-    // console.log("watch>>>>>>>>>", watch());
-    // console.log("errors>>>>>>>>>", errors);
-    // console.log("createReportsSchema", result.error.format());
-    // console.log("createReportsSchema", result.error.format());
-    // }, [watch(), errors]);
+    useEffect(() => {
+        console.log("global watch>>>>>>>>>", watch());
+        console.log("global errors>>>>>>>>>", errors);
+        // console.log("createReportsSchema", result.error.format());
+        // console.log("createReportsSchema", result.error.format());
+    }, [watch()]);
 
     const [errorTypeOptions, setErrorTypeOptions] = useState([]);
     const [selectedErrorType, setSelectedErrorType] = useState({});
@@ -201,19 +205,6 @@ export default function ReportForm({
         notify({ error: true, message: medicine_routes.message }, "error");
         setIsProceedForm(false);
     }, [medicine_routes]);
-
-    /** labeling in report generation for error type ***/
-    const selected_error_type =
-        errorTypeOptions.find(
-            (option) => option.id === watch("error_type_id")
-        ) || null;
-
-    const error_type =
-        selected_error_type?.value == "Others"
-            ? `${selected_error_type?.label} <i>(${watch(
-                "other_error_type"
-            )})</i>`
-            : selected_error_type?.label;
 
     return (
         <>
@@ -300,7 +291,10 @@ export default function ReportForm({
                                     onNext={handleNext}
                                     resetForm={handleReset}
                                     methods={methods}
-                                    error_type={error_type}
+                                    genericMedicineOptions={
+                                        genericMedicineOptions
+                                    }
+                                    medicineRouteOptions={medicineRouteOptions}
                                 />
                             ) : (
                                 ""

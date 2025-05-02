@@ -8,6 +8,7 @@ import { FaWpforms } from "react-icons/fa";
 import { HiMiniInformationCircle } from "react-icons/hi2";
 import ReportForm from "./ReportForm";
 import { FileArchive } from "lucide-react";
+import Link from "next/link";
 
 export default function Terms({
     fetch_error_types,
@@ -54,12 +55,12 @@ export default function Terms({
                             If you require medication error data for academic,
                             quality improvement, or patient safety purposes, you
                             will need to provide some personal and professional
-                            information. Please visit{" "}
-                            <span className="link link-primary">
-                                sample.com
-                            </span>{" "}
-                            and wait for our response to your request. Thank
-                            you.
+                            information. Please complete and submit a request on{" "}
+                            <Link href="/request" className="link link-primary">
+                                Medication Error Data Request Form
+                            </Link>
+                            {", "}
+                            then wait for our response. Thank you.
                         </p>
 
                         <p className="mt-5">

@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { Controller, useFieldArray, useFormContext } from "react-hook-form";
 import dynamic from "next/dynamic";
 import { useTheme } from "next-themes";
@@ -20,7 +19,7 @@ import {
     CardDescription,
     CardTitle,
 } from "@components/ui/card";
-import { Delete, Plus, RemoveFormatting } from "lucide-react";
+import { Plus } from "lucide-react";
 
 export default function SecondForm({
     errorTypeOptions,
@@ -46,23 +45,17 @@ export default function SecondForm({
     });
 
     const handleNext = async () => {
+        const otherErrorType = watch("other_error_type");
         register("form_2_details");
         setValue("form_2_details", {
-            error_type_id: watch("error_type_id"),
-            is_medicine_needed: selectedErrorType?.is_medicine_needed,
-            other_error_type: watch("other_error_type"),
+            selected_error_type: selectedErrorType,
+            other_error_type: otherErrorType,
             medicines: watch("medicines"),
         });
-        const valid = await trigger([
-            "error_type_id",
-            "other_error_type",
-            // "medicines",
-            "form_2_details",
-        ]);
-        console.log("error_id", watch("error_type_id"));
-        console.log("validation errors", errors);
+        const valid = await trigger(["error_type_id", "form_2_details"]);
+
         if (valid) {
-            // unregister("other_error_type_validation", { keepValue: false });
+            // unregister("form_2_details", { keepValue: false });
             onNext(1);
         } else {
             notify(
@@ -74,14 +67,6 @@ export default function SecondForm({
             );
         }
     };
-
-    const error_type_id = watch("error_type_id");
-
-    useEffect(() => {
-        if (selectedErrorType?.value == "Others") {
-            setValue("other_error_type", "");
-        }
-    }, [error_type_id]);
 
     return (
         <section className="dark:text-white">
@@ -130,7 +115,10 @@ export default function SecondForm({
                                     placeholder="Type of medication error * (required)"
                                     value={selectedOption}
                                     onChange={(selectedOption) => {
-                                        setValue("selected_error_type", JSON.stringify(selectedOption))
+                                        setValue(
+                                            "selected_error_type",
+                                            selectedOption
+                                        );
                                         setSelectedErrorType(selectedOption);
                                         onChange(
                                             selectedOption
@@ -148,11 +136,11 @@ export default function SecondForm({
                         }}
                     />
                 </fieldset>
-                <input
+                {/* <input
                     type="text"
                     className="input w-full border"
                     {...register("selected_error_type")}
-                />
+                /> */}
                 {errors.error_type_id && (
                     <p className="text-red-500 text-sm flex-items-center">
                         <BiError />
@@ -166,8 +154,9 @@ export default function SecondForm({
                 <Card className="mt-5">
                     <CardTitle className="p-5 pb-2">Medicine Details</CardTitle>
                     <CardDescription className="px-10 pb-2">
-                        Select the generic name and routes. Click on “Add another
-                        medicine” for each new medicine you need to describe.
+                        Select the generic name and routes. Click on “Add
+                        another medicine” for each new medicine you need to
+                        describe.
                     </CardDescription>
                     <CardContent>
                         {fields.map((item, index) => (
@@ -212,14 +201,17 @@ export default function SecondForm({
                                                     const selectedOption =
                                                         genericMedicineOptions.find(
                                                             (option) =>
-                                                                option.id === value
+                                                                option.id ===
+                                                                value
                                                         ) || null;
                                                     return (
                                                         <CreatableSelectNoSSR
                                                             name={name}
                                                             ref={ref}
                                                             placeholder="Generic name * (required)"
-                                                            value={selectedOption}
+                                                            value={
+                                                                selectedOption
+                                                            }
                                                             onChange={(
                                                                 selectedOption
                                                             ) => {
@@ -245,16 +237,19 @@ export default function SecondForm({
                                                 }}
                                             />
                                         </fieldset>
-                                        {errors?.medicines?.[index]
-                                            ?.medicine_generic_id && (
-                                                <p className="text-red-500 text-sm flex-items-center">
-                                                    <BiError />
-                                                    {
-                                                        errors.medicines[index]
-                                                            .medicine_generic_id.message
-                                                    }
-                                                </p>
-                                            )}
+                                        {errors?.form_2_details?.medicines?.[
+                                            index
+                                        ]?.medicine_generic_id && (
+                                            <p className="text-red-500 text-sm flex-items-center">
+                                                <BiError />
+                                                {
+                                                    errors?.form_2_details
+                                                        ?.medicines[index]
+                                                        .medicine_generic_id
+                                                        .message
+                                                }
+                                            </p>
+                                        )}
                                     </div>
 
                                     <div>
@@ -264,7 +259,8 @@ export default function SecondForm({
                                                 control={control}
                                                 name={`medicines.${index}.medicine_route_id`}
                                                 rules={{
-                                                    required: "Route is required.",
+                                                    required:
+                                                        "Route is required.",
                                                 }}
                                                 render={({
                                                     field: {
@@ -277,14 +273,17 @@ export default function SecondForm({
                                                     const selectedOption =
                                                         medicineRouteOptions.find(
                                                             (option) =>
-                                                                option.id === value
+                                                                option.id ===
+                                                                value
                                                         ) || null;
                                                     return (
                                                         <CreatableSelectNoSSR
                                                             name={name}
                                                             ref={ref}
                                                             placeholder="Route * (required)"
-                                                            value={selectedOption}
+                                                            value={
+                                                                selectedOption
+                                                            }
                                                             onChange={(
                                                                 selectedOption
                                                             ) => {
@@ -310,16 +309,19 @@ export default function SecondForm({
                                                 }}
                                             />
                                         </fieldset>
-                                        {errors?.medicines?.[index]
-                                            ?.medicine_route_id && (
-                                                <p className="text-red-500 text-sm flex-items-center">
-                                                    <BiError />
-                                                    {
-                                                        errors.medicines[index]
-                                                            .medicine_route_id.message
-                                                    }
-                                                </p>
-                                            )}
+                                        {errors?.form_2_details?.medicines?.[
+                                            index
+                                        ]?.medicine_route_id && (
+                                            <p className="text-red-500 text-sm flex-items-center">
+                                                <BiError />
+                                                {
+                                                    errors?.form_2_details
+                                                        ?.medicines[index]
+                                                        .medicine_route_id
+                                                        .message
+                                                }
+                                            </p>
+                                        )}
                                     </div>
                                 </CardContent>
                             </Card>
@@ -331,6 +333,8 @@ export default function SecondForm({
                                     append({
                                         medicine_generic_id: null,
                                         medicine_route_id: null,
+                                        // other_generic_medicine: "",
+                                        // other_medicine_route: "",
                                     })
                                 }
                                 className="btn btn-neutral btn-wide btn-outline dark:text-slate-200"
@@ -346,27 +350,22 @@ export default function SecondForm({
             )}
 
             {selectedErrorType?.value == "Others" && (
-                <div className="mt-5 ">
-                    {/* <FormLabel labelText="Exact medication prescription as ordered for the patient:" /> */}
-                    <label className="floating-label border border-gray-300 dark:text-white">
+                <div className="mt-5">
+                    <FormLabel labelText="Please specify other error type:" />
+                    <label className="floating-label border border-gray-300 dark:text-white rounded">
                         <input
                             type="text"
                             name="other_error_type"
-                            {...register("other_error_type", {
-                                required:
-                                    selectedErrorType?.value == "Others"
-                                        ? "Specify other medication error"
-                                        : false,
-                            })}
+                            {...register("other_error_type")}
                             placeholder="Specify other medication error"
                             className="input input-md w-full"
                         />
                         <span>Other medication error</span>
                     </label>
-                    {errors?.form_2_details && (
+                    {errors?.form_2_details?.other_error_type && (
                         <p className="text-red-500 text-sm flex-items-center">
                             <BiError />
-                            {errors.form_2_details.other_error_type?.message}
+                            {errors?.form_2_details?.other_error_type?.message}
                         </p>
                     )}
                 </div>

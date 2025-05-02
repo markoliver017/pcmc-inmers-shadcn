@@ -1,11 +1,6 @@
-import {
-    ErrorType,
-    GenericMedicine,
-    Report,
-    ReportMedicineRoute,
-    RouteMedicine,
-} from "@lib/models";
-import { createReportsSchema } from "@lib/zod/reportSchema";
+import { ReportRequest } from "@lib/models";
+import { requestSchema } from "@lib/zod/requestSchema";
+
 import { NextResponse } from "next/server";
 import { Sequelize } from "sequelize";
 
@@ -34,36 +29,20 @@ export async function GET(request) {
     console.log("endDate", endDate);
 
     try {
-        const reports = await Report.findAll({
+        const request = await ReportRequest.findAll({
             where: {
-                error_date: {
+                request_date: {
                     [Op.gte]: startDate,
                     [Op.lte]: endDate,
                 },
             },
-            include: [
-                {
-                    attributes: ["id", "name"],
-                    model: ErrorType,
-                    as: "error_type",
-                    required: false,
-                },
-                {
-                    model: ReportMedicineRoute,
-                    attributes: ["id"],
-                    include: [
-                        { model: GenericMedicine, attributes: ["name"] },
-                        { model: RouteMedicine, attributes: ["name"] },
-                    ],
-                },
-            ],
         });
-        return NextResponse.json({ success: true, reports }, { status: 200 });
+        return NextResponse.json({ success: true, request }, { status: 200 });
     } catch (error) {
         return NextResponse.json(
             {
                 error: true,
-                message: "Failed to retrieve reports.",
+                message: "Failed to retrieve request.",
                 details: error,
             },
             { status: 500 }
@@ -74,11 +53,10 @@ export async function GET(request) {
 // POST handler for report submission
 export async function POST(request) {
     try {
-        await new Promise((resolve) => setTimeout(resolve, 1000));
         const body = await request.json(); // Parse the request body
         // delete body.error_type_id;
 
-        const validationResult = createReportsSchema.safeParse(body);
+        const validationResult = requestSchema.safeParse(body);
         console.log("zod validation validationResult", validationResult);
 
         const error = new Error("Validation failed");
@@ -90,42 +68,12 @@ export async function POST(request) {
             throw error;
         }
 
-        const { medicines, selected_error_type } = validationResult.data;
-        if (selected_error_type?.is_medicine_needed && !medicines?.length) {
-            error.name = "ZodValidationError";
-            error.errors = [
-                "Medicines are required when error type is selected.",
-            ];
-            throw error;
-        }
+        const newRequest = await ReportRequest.create(validationResult.data);
 
-        const newReport = await Report.create(validationResult.data);
-        if (selected_error_type?.is_medicine_needed) {
-            const reportMedicineRoute = medicines.map((med) => ({
-                generic_medicine_id: med.medicine_generic_id,
-                route_medicine_id: med.medicine_route_id,
-                report_id: newReport.id,
-            }));
-            await ReportMedicineRoute.bulkCreate(reportMedicineRoute);
-        }
-
-        await newReport.reload({
-            include: [
-                {
-                    model: ReportMedicineRoute,
-                    attributes: ["id"],
-                    include: [
-                        { model: GenericMedicine, attributes: ["name"] },
-                        { model: RouteMedicine, attributes: ["name"] },
-                    ],
-                },
-            ],
-        });
-
-        console.log("newReport>>>>>>>>>>>>>>>>>", newReport);
+        console.log("newRequest>>>>>>>>>>>>>>>>>", newRequest);
 
         return NextResponse.json(
-            { success: true, report: newReport },
+            { success: true, report: newRequest },
             { status: 200 }
         );
     } catch (error) {
@@ -166,17 +114,8 @@ export async function POST(request) {
         }
 
         return NextResponse.json(
-            { error: true, message: "Failed to submit report." },
+            { error: true, message: "Failed to submit request." },
             { status: 500 }
         );
     }
 }
-
-// const validationErrors = error.errors.reduce((acc, err) => {
-//     if (error.name === "SequelizeUniqueConstraintError") {
-//         acc[err.path] = `${err.path} already exists!`;
-//     } else {
-//         acc[err.path] = err.message;
-//     }
-//     return acc;
-// }, {});

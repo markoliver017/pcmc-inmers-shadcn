@@ -35,16 +35,6 @@ export default function FifthForm({ onNext }) {
         }
     };
 
-    const error_type_id = watch("error_type_id");
-
-    useEffect(() => {
-        if (error_type_id != 12) {
-            setValue("other_error_type", "");
-        }
-    }, [error_type_id]);
-
-    // console.log("watch:", watch());
-
     return (
         <section className="dark:text-white">
             <div className="flex flex-wrap sm:gap-5">

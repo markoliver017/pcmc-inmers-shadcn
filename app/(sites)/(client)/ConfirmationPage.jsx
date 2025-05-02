@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 // import { downloadReport } from "./action";
-import { FormInputIcon, Pencil, Send } from "lucide-react";
+import { Pencil, Send } from "lucide-react";
 import parse from "html-react-parser";
 import SweetAlert from "@components/ui/SweetAlert";
 import clsx from "clsx";
@@ -14,13 +14,15 @@ export default function ConfirmationPage({
     onNext,
     resetForm,
     methods,
-    error_type,
+    genericMedicineOptions,
+    medicineRouteOptions,
 }) {
     const { watch, handleSubmit } = methods;
     const [isConfirmed, setIsConfirmed] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [isDownLoading, setIsDownLoading] = useState(false);
 
+    console.log("medicineRouteOptions", medicineRouteOptions);
     const onFinalSubmit = () => {
         SweetAlert({
             title: "Confirmation",
@@ -58,11 +60,13 @@ export default function ConfirmationPage({
                                     setIsDownLoading(true);
                                     const res = await downloadReport(
                                         data,
-                                        error_type
+                                        genericMedicineOptions,
+                                        medicineRouteOptions
                                     );
-                                    if (!res) alert("Failed to download report.");
+                                    if (!res)
+                                        alert("Failed to download report.");
                                     setIsDownLoading(false);
-                                    // resetForm();
+                                    resetForm();
                                 },
                                 onCancel: () => resetForm(),
                             });
@@ -72,6 +76,37 @@ export default function ConfirmationPage({
                                 Array.isArray(data.details)
                             ) {
                                 const { error, details, message } = data;
+
+                                let detailContent = null;
+
+                                if (Array.isArray(details)) {
+                                    // If it's an array, show a list
+                                    detailContent = (
+                                        <ul className="list-disc list-inside">
+                                            {details.map((err, index) => (
+                                                <li key={index}>{err}</li>
+                                            ))}
+                                        </ul>
+                                    );
+                                } else if (
+                                    typeof details === "object" &&
+                                    details !== null
+                                ) {
+                                    // If it's an object, show key-value pairs
+                                    detailContent = (
+                                        <ul className="list-disc list-inside">
+                                            {Object.entries(details).map(
+                                                ([key, val], index) => (
+                                                    <li key={index}>
+                                                        <strong>{key}:</strong>{" "}
+                                                        {val}
+                                                    </li>
+                                                )
+                                            )}
+                                        </ul>
+                                    );
+                                }
+
                                 notify({
                                     error,
                                     message: (
@@ -84,15 +119,7 @@ export default function ConfirmationPage({
                                                 </small>
                                             </div>
                                             <div className="collapse-content text-sm">
-                                                <ul className="list-disc list-inside">
-                                                    {details.map(
-                                                        (err, index) => (
-                                                            <li key={index}>
-                                                                {err}
-                                                            </li>
-                                                        )
-                                                    )}
-                                                </ul>
+                                                {detailContent}
                                             </div>
                                         </div>
                                     ),
@@ -106,6 +133,15 @@ export default function ConfirmationPage({
             },
         });
     };
+
+    const data = watch();
+    console.log("data", data);
+    const error_type =
+        data.selected_error_type?.value == "Others"
+            ? `${data.selected_error_type?.label} <i>(${watch(
+                  "other_error_type"
+              )})</i>`
+            : data.selected_error_type?.label;
 
     return (
         <div>
@@ -134,14 +170,14 @@ export default function ConfirmationPage({
                             </tr>
 
                             <tr className="hover:bg-base-300">
-                                <th>Patient Sex</th>
+                                <th width="20%">Patient Sex</th>
                                 <td>{watch("patient_sex").toUpperCase()}</td>
                             </tr>
                             <tr className="hover:bg-base-300">
                                 <th>Patient Age</th>
                                 <td>
                                     {watch("patient_age")} {watch("age_unit")}
-                                    (s)
+                                    (s) old
                                 </td>
                             </tr>
                             <tr className="hover:bg-base-300">
@@ -174,6 +210,54 @@ export default function ConfirmationPage({
                                 <th>Medication error Type</th>
                                 <td>{parse(error_type)}</td>
                             </tr>
+                            {data.selected_error_type?.is_medicine_needed &&
+                                data.medicines.length && (
+                                    <tr>
+                                        <th>Medicine Details</th>
+                                        <td>
+                                            <table className="table ml-5">
+                                                <thead>
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th>
+                                                            Generic Medicine
+                                                        </th>
+                                                        <th>Route</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {data.medicines.map(
+                                                        (med, index) => (
+                                                            <tr key={index}>
+                                                                <td>
+                                                                    {index + 1}
+                                                                </td>
+                                                                <td>
+                                                                    {genericMedicineOptions.find(
+                                                                        (gen) =>
+                                                                            gen.id ==
+                                                                            med.medicine_generic_id
+                                                                    ).label ||
+                                                                        "N/A"}
+                                                                </td>
+                                                                <td>
+                                                                    {medicineRouteOptions.find(
+                                                                        (
+                                                                            route
+                                                                        ) =>
+                                                                            route.id ==
+                                                                            med.medicine_route_id
+                                                                    ).label ||
+                                                                        "N/A"}
+                                                                </td>
+                                                            </tr>
+                                                        )
+                                                    )}
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                )}
                             <tr className="hover:bg-base-300">
                                 <th>Exact Prescription</th>
                                 <td>{watch("exact_prescription")}</td>

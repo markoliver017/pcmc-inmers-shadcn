@@ -4,4 +4,3 @@ VALUES
   ('Oral', TRUE, NOW(), NOW()),
   ('Injection into vein (Intravenous)', TRUE, NOW(), NOW()),
   ('Injection into muscle (Intramuscular)', TRUE, NOW(), NOW()),
-  ('Others', TRUE, NOW(), NOW());

@@ -10,7 +10,7 @@ export async function GET() {
         // const year = searchParams.get("year") || currentYear;
         // const startDate = `${year}-01-01`;
         // const endDate = `${year}-12-31`;
-        await new Promise((resolve) => setTimeout(resolve, 5000));
+        // await new Promise((resolve) => setTimeout(resolve, 5000));
         const errorTypeCounts = await ErrorType.findAll({
             attributes: [
                 "id",

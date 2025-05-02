@@ -7,7 +7,7 @@ import { useSession } from "next-auth/react";
 
 export default function WrapperHead() {
     const { status } = useSession();
-    const isLoggedIn = (status == "authenticated");
+    const isLoggedIn = status == "authenticated";
 
     const pages = usePagesStore((state) => state.pages);
     const pathname = usePathname();
@@ -15,7 +15,7 @@ export default function WrapperHead() {
     const pageTitle = currentPage ? currentPage.title : "INMERS Form";
 
     return (
-        <div className="flex-none flex justify-between items-center p-4 shadow">
+        <div className="flex-none flex flex-wrap justify-between items-center p-4 shadow">
             <h1
                 className="text-3xl font-bold"
                 style={{ fontFamily: "var(--font-geist-sans)" }}

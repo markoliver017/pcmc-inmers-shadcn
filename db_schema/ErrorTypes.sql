@@ -14,3 +14,21 @@ VALUES
   ('Incorrect Administration - Omission (medication is not given)', TRUE, TRUE, NOW(), NOW()),
   ('Near-miss', FALSE, TRUE, NOW(), NOW()),
   ('Others', FALSE, TRUE, NOW(), NOW());
+
+
+  INSERT INTO generic_medicines (name, is_active, createdAt, updatedAt)
+VALUES
+  ('Paracetamol', TRUE, NOW(), NOW()),
+  ('Metformin', TRUE, NOW(), NOW()),
+  ('Ibuprofen', TRUE, NOW(), NOW()),
+  ('Diazepam', TRUE, NOW(), NOW()),
+  ('Haloperidol', TRUE, NOW(), NOW()),
+  ('Others', TRUE, NOW(), NOW());
+
+
+  INSERT INTO route_medicines (name, is_active, createdAt, updatedAt)
+VALUES
+  ('Oral', TRUE, NOW(), NOW()),
+  ('Injection into vein (Intravenous)', TRUE, NOW(), NOW()),
+  ('Injection into muscle (Intramuscular)', TRUE, NOW(), NOW()),
+  ('Others', TRUE, NOW(), NOW());

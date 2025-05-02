@@ -1,7 +1,17 @@
-
 import moment from "moment";
 
-export const downloadReport = async (data, error_type) => {
+export const downloadReport = async (
+    data,
+    genericMedicineOptions,
+    medicineRouteOptions
+) => {
+    const error_type =
+        data.selected_error_type?.value == "Others"
+            ? `${data.selected_error_type?.label} <i>(${watch(
+                  "other_error_type"
+              )})</i>`
+            : data.selected_error_type?.label;
+
     const html = `
             <!DOCTYPE html>
                 <html lang='en'>
@@ -101,7 +111,7 @@ export const downloadReport = async (data, error_type) => {
                                     Age
                                 </th>
                                 <td>
-                                ${data.patient_age} ${data.age_unit}(s)
+                                ${data.patient_age} ${data.age_unit}(s) old
                                 </td>
                             </tr>
                             <tr>
@@ -120,10 +130,11 @@ export const downloadReport = async (data, error_type) => {
                                 </th>
                                 <td>
                                     ${data.patient_height}
-                                    ${!isNaN(data.patient_height)
-            ? `(${data.height_unit})`
-            : ""
-        }
+                                    ${
+                                        !isNaN(data.patient_height)
+                                            ? `(${data.height_unit})`
+                                            : ""
+                                    }
                                 </td>
                             </tr>
                             <tr>
@@ -156,6 +167,58 @@ export const downloadReport = async (data, error_type) => {
                                     ${error_type}
                                 </td>
                             </tr>
+                            ${
+                                data.selected_error_type?.is_medicine_needed &&
+                                data.medicines.length
+                                    ? `
+                                    <tr>
+                                        <th>Medicine Details</th>
+                                        <td>
+                                            <table class="table ml-5" style="margin-left: 1rem;">
+                                                <thead>
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th>Generic Medicine</th>
+                                                        <th>Route</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    ${data.medicines
+                                                        .map((med, index) => {
+                                                            const genericLabel =
+                                                                genericMedicineOptions.find(
+                                                                    (gen) =>
+                                                                        gen.id ==
+                                                                        med.medicine_generic_id
+                                                                )?.label ||
+                                                                "N/A";
+
+                                                            const routeLabel =
+                                                                medicineRouteOptions.find(
+                                                                    (route) =>
+                                                                        route.id ==
+                                                                        med.medicine_route_id
+                                                                )?.label ||
+                                                                "N/A";
+
+                                                            return `
+                                                            <tr>
+                                                            <td>${
+                                                                index + 1
+                                                            }</td>
+                                                            <td>${genericLabel}</td>
+                                                            <td>${routeLabel}</td>
+                                                            </tr>
+                                                        `;
+                                                        })
+                                                        .join("")}
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                `
+                                    : ""
+                            }
                             <tr>
                                 <th>
                                     Exact

@@ -11,7 +11,15 @@ import {
     DropdownMenuTrigger,
 } from "@components/ui/dropdown-menu";
 import { Button } from "@components/ui/button";
-import { Command, Eye, LogOut, MoreHorizontal } from "lucide-react";
+import {
+    Command,
+    Database,
+    Eye,
+    File,
+    FileSliders,
+    LogOut,
+    MoreHorizontal,
+} from "lucide-react";
 import SweetAlert from "@components/ui/SweetAlert";
 import { useSession } from "next-auth/react";
 import { signOut } from "next-auth/react";
@@ -69,17 +77,19 @@ const Header = ({
                             <li>
                                 <Link
                                     href="/"
-                                    className="p-3 hover:ring rounded-xl"
+                                    className="p-3 hover:ring rounded-xl flex-items-center shadow-[-11px_4px_6px_0px_rgba(0,_0,_0,_0.1)]"
                                 >
+                                    <FileSliders className="h-4" />
                                     Home
                                 </Link>
                             </li>
                             <li>
                                 <Link
-                                    href="/about"
-                                    className="p-3 hover:ring rounded-xl"
+                                    href="/request"
+                                    className="p-3 hover:ring rounded-xl flex-items-center shadow-[-11px_4px_6px_0px_rgba(0,_0,_0,_0.1)]"
                                 >
-                                    About
+                                    <FileSliders className="h-4" />
+                                    Data Request Form
                                 </Link>
                             </li>
                         </ul>

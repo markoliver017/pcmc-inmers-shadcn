@@ -9,7 +9,7 @@ import notify from "@components/ui/notify";
 import { GiCancel } from "react-icons/gi";
 import clsx from "clsx";
 import { useEffect } from "react";
-import { createReportsSchema } from "@lib/reportSchema";
+import { createReportsSchema } from "@lib/zod/reportSchema";
 
 const height_units = {
     cm: 1,
@@ -26,7 +26,6 @@ const weight_units = {
 const age_units = ["Year", "Month", "Week", "Day", "Hour"];
 
 export default function FirstForm({ setIsProceedForm, onNext }) {
-
     const {
         register,
         trigger,
@@ -122,11 +121,7 @@ export default function FirstForm({ setIsProceedForm, onNext }) {
                 <FormLabel labelText="Report Date: <sup>default now</sup>" />
                 <label className="input mt-1 border border-gray-300 dark:text-white">
                     <Calendar className="h-3" />
-                    <input
-                        type="date"
-                        {...register("report_date")}
-                        readOnly
-                    />
+                    <input type="date" {...register("report_date")} readOnly />
                 </label>
                 <p className="text-red-500 text-sm">
                     {errors.report_date && (

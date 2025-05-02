@@ -4,7 +4,7 @@ import { Sequelize } from "sequelize";
 
 export async function GET(request) {
     try {
-        await new Promise((resolve) => setTimeout(resolve, 3000));
+        // await new Promise((resolve) => setTimeout(resolve, 3000));
 
         const Op = Sequelize.Op;
         const searchParams = request.nextUrl.searchParams;

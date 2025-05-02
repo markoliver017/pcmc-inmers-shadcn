@@ -1,7 +1,6 @@
 "use server";
 
-import { createReportsSchema } from "@lib/reportSchema";
-
+import { createReportsSchema } from "@lib/zod/reportSchema";
 
 export async function submitForm(data) {
     const result = createReportsSchema.safeParse(data);

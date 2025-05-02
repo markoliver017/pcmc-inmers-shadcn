@@ -6,4 +6,3 @@ VALUES
   ('Ibuprofen', TRUE, NOW(), NOW()),
   ('Diazepam', TRUE, NOW(), NOW()),
   ('Haloperidol', TRUE, NOW(), NOW()),
-  ('Others', TRUE, NOW(), NOW());

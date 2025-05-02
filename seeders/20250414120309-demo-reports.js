@@ -18,6 +18,7 @@ export async function up(queryInterface) {
             patient_sex: ["male", "female", "unknown"][
                 Math.floor(Math.random() * 3)
             ],
+            patient_age: parseInt(Math.random() * 50 + 40),
             patient_weight: parseFloat((Math.random() * 50 + 40).toFixed(2)),
             patient_height: parseFloat((Math.random() * 50 + 140).toFixed(2)),
             exact_prescription: faker.lorem.sentence(),
