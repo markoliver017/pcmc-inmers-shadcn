@@ -22,7 +22,7 @@ export function DataTableViewOptions({ table, toggleLabels }) {
                     View
                 </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-[150px]">
+            <DropdownMenuContent align="end" className="w-[250px]">
                 <DropdownMenuLabel>Toggle columns</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 {table
@@ -41,6 +41,7 @@ export function DataTableViewOptions({ table, toggleLabels }) {
                                 onCheckedChange={(value) =>
                                     column.toggleVisibility(!!value)
                                 }
+                                onSelect={(event) => event.preventDefault()}
                             >
                                 {(toggleLabels && toggleLabels[column.id]) ||
                                     column.id}

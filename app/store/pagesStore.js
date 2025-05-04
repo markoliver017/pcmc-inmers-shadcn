@@ -1,4 +1,4 @@
-import { Users } from "lucide-react";
+import { FileQuestion, Users } from "lucide-react";
 import { create } from "zustand";
 
 export const usePagesStore = create((set) => ({
@@ -19,6 +19,12 @@ export const usePagesStore = create((set) => ({
             title: "Form Responses",
             path: "/admin/reports",
             icon: "📄",
+            has_child: false,
+        },
+        {
+            title: "Data Requests",
+            path: "/admin/requests",
+            icon: <FileQuestion />,
             has_child: false,
         },
         {

@@ -1,0 +1,41 @@
+[2025-05-04T04:13:36.420Z] ✅ SUCCESS (send-email): Email sent to markoliver01728@gmail.com with subject "Sample Email". Message ID: <ee36593f-9901-a31b-71d6-675ba93d3654@pcmc.gov.ph>
+[2025-05-04T04:14:38.013Z] ✅ SUCCESS (send-email): Email sent to markoliver01728@gmaicom with subject "Sample Email". Message ID: <db5d2040-c85c-c8c6-1a34-53e28e99b131@pcmc.gov.ph>
+[2025-05-04T04:15:27.827Z] ❌ ERROR (send-email): Error: connect ECONNREFUSED 127.0.0.1:587
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1634:16)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17)
+[2025-05-04T04:56:04.294Z] ✅ SUCCESS (send-email): Email sent to markoliver01728@gmail.com with subject "Sample Email". Message ID: <f285756a-b473-2a12-115c-696e9ad64f35@pcmc.gov.ph>
+[2025-05-04T04:58:08.257Z] ✅ SUCCESS (send-email): Email sent to markoliver01728@gmail.com with subject "Sample Email". Message ID: <c159a566-4456-1e82-6d07-e9a0ec4d4831@pcmc.gov.ph>
+[2025-05-04T10:46:49.696Z] ✅ SUCCESS (send-email): Email sent to markoliver01728@gmail.com with subject "Sample Email". Message ID: <bdd61da7-fbaa-401d-a773-123d8f24a5b8@pcmc.gov.ph>
+[2025-05-04T10:47:10.039Z] ✅ SUCCESS (send-email): Email sent to markoliver01728@gmail.com with subject "Sample Email". Message ID: <86246e2c-5750-8935-a496-59ffe7a2c799@pcmc.gov.ph>
+[2025-05-04T12:36:31.698Z] ✅ SUCCESS (send-email): Email sent to example@email.com with subject "INMERS Data Request Acknowledgment". Message ID: <d2cd2157-7573-27de-2e5c-84842d656ea7@pcmc.gov.ph>
+[2025-05-04T12:37:52.306Z] ✅ SUCCESS (send-email): Email sent to markoliver01728@gmail.com with subject "INMERS Data Request Acknowledgment". Message ID: <c31ee8b0-0f04-53d6-4470-076841a34083@pcmc.gov.ph>
+[2025-05-04T14:55:34.919Z] ❌ ERROR (send-email): Error: No recipients defined
+    at SMTPConnection._formatError (C:\nextJs\pcmc-inmers-shadcn\.next\server\chunks\node_modules_nodemailer_a9f338b9._.js:15501:19)
+    at SMTPConnection._setEnvelope (C:\nextJs\pcmc-inmers-shadcn\.next\server\chunks\node_modules_nodemailer_a9f338b9._.js:15683:34)
+    at SMTPConnection.send (C:\nextJs\pcmc-inmers-shadcn\.next\server\chunks\node_modules_nodemailer_a9f338b9._.js:15360:14)
+    at sendMessage (C:\nextJs\pcmc-inmers-shadcn\.next\server\chunks\node_modules_nodemailer_a9f338b9._.js:17564:28)
+    at C:\nextJs\pcmc-inmers-shadcn\.next\server\chunks\node_modules_nodemailer_a9f338b9._.js:17607:25
+    at SMTPConnection._actionAUTHComplete (C:\nextJs\pcmc-inmers-shadcn\.next\server\chunks\node_modules_nodemailer_a9f338b9._.js:16124:9)
+    at SMTPConnection.<anonymous> (C:\nextJs\pcmc-inmers-shadcn\.next\server\chunks\node_modules_nodemailer_a9f338b9._.js:15309:26)
+    at SMTPConnection._processResponse (C:\nextJs\pcmc-inmers-shadcn\.next\server\chunks\node_modules_nodemailer_a9f338b9._.js:15642:20)
+    at SMTPConnection._onData (C:\nextJs\pcmc-inmers-shadcn\.next\server\chunks\node_modules_nodemailer_a9f338b9._.js:15474:14)
+    at SMTPConnection._onSocketData (C:\nextJs\pcmc-inmers-shadcn\.next\server\chunks\node_modules_nodemailer_a9f338b9._.js:15020:48)
+    at TLSSocket.emit (node:events:518:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5)
+    at TLSWrap.onStreamRead (node:internal/stream_base_commons:189:23)
+    at TLSWrap.callbackTrampoline (node:internal/async_hooks:130:17)
+[2025-05-04T14:59:53.652Z] ✅ SUCCESS (send-email): Email sent to markoliver01728@gmail.com with subject "INMERS Data Request Notification". Message ID: <e2f79280-f74c-bdb0-0fba-9018d96b3100@pcmc.gov.ph>
+[2025-05-04T15:13:22.659Z] ✅ SUCCESS (send-email): Email sent to markoliver01728@gmail.com with subject "INMERS Data Request Notification". Message ID: <6e28502f-2315-0f09-65d5-1c26d720c4f6@pcmc.gov.ph>
+[2025-05-04T15:14:51.909Z] ✅ SUCCESS (send-email): Email sent to markoliver01728@gmail.com with subject "INMERS Data Request Notification". Message ID: <14bd75b7-c439-7e12-fe5b-d4369d79b485@pcmc.gov.ph>
+[2025-05-04T15:16:42.827Z] ✅ SUCCESS (send-email): Email sent to markoliver01728@gmail.com with subject "INMERS Data Request Notification". Message ID: <ee6689a0-8bc9-a6a4-9025-6a8d3e488222@pcmc.gov.ph>
+[2025-05-04T15:28:07.691Z] ✅ SUCCESS (send-email): Email sent to markoliver01728@gmail.com with subject "INMERS Data Request Notification". Message ID: <406fc4aa-8816-d4f7-5b60-dc51c6c7d31e@pcmc.gov.ph>
+[2025-05-04T15:30:44.392Z] ✅ SUCCESS (send-email): Email sent to markoliver01728@gmail.com with subject "INMERS Data Request Notification". Message ID: <9bc123d8-2228-2747-4b48-8fc5625bdd68@pcmc.gov.ph>
+[2025-05-04T15:32:04.433Z] ✅ SUCCESS (send-email): Email sent to markoliver01728@gmail.com with subject "INMERS Data Request Notification". Message ID: <45a7ab4f-e9bd-950a-7064-c1c93e967231@pcmc.gov.ph>
+[2025-05-04T15:33:19.566Z] ✅ SUCCESS (send-email): Email sent to markoliver01728@gmail.com with subject "INMERS Data Request Notification". Message ID: <df6891be-1e13-dece-11d8-6d2e559efddc@pcmc.gov.ph>
+[2025-05-04T15:34:11.632Z] ✅ SUCCESS (send-email): Email sent to markoliver01728@gmail.com with subject "INMERS Data Request Notification". Message ID: <5dab39bf-7b16-5dd8-1c1f-6895ab7f12e0@pcmc.gov.ph>
+[2025-05-04T15:40:05.920Z] ✅ SUCCESS (send-email): Email sent to markoliver01728@gmail.com with subject "INMERS Data Request Notification". Message ID: <218bfcde-9749-7ff3-9e4a-21f6ef42c85d@pcmc.gov.ph>
+[2025-05-04T15:43:13.844Z] ✅ SUCCESS (send-email): Email sent to markoliver01728@gmail.com with subject "INMERS Data Request Notification". Message ID: <6f931378-1ab1-4657-8969-3e5a898db953@pcmc.gov.ph>
+[2025-05-04T15:45:05.253Z] ✅ SUCCESS (send-email): Email sent to markoliver01728@gmail.com with subject "INMERS Data Request Notification". Message ID: <58aef020-e5ea-72dd-e807-0391985fa5eb@pcmc.gov.ph>
+[2025-05-04T15:46:30.541Z] ✅ SUCCESS (send-email): Email sent to markoliver01728@gmail.com with subject "INMERS Data Request Notification". Message ID: <8e39f9eb-74ff-ba53-3a40-058587e3cda2@pcmc.gov.ph>

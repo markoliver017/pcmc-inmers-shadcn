@@ -19,6 +19,7 @@ export async function submitForm(data) {
 }
 
 export const fetchErrorTypes = async () => {
+
     const url = new URL(`/api/error_types`, process.env.NEXT_PUBLIC_DOMAIN);
     const res = await fetch(url, {
         method: "GET",

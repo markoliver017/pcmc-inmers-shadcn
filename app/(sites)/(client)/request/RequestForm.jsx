@@ -36,10 +36,6 @@ export default function RequestForm() {
 
     const onSubmit = async (data) => {
         setIsLoading(true);
-        setTimeout(() => {
-            setIsLoading(false);
-        }, [2000]);
-        console.log("data", data);
 
         SweetAlert({
             title: "Confirmation",
@@ -52,7 +48,7 @@ export default function RequestForm() {
                 setIsLoading(true);
 
                 try {
-                    const response = await fetch("/api/request", {
+                    const response = await fetch("/api/requests", {
                         method: "POST",
                         body: JSON.stringify(data),
                         headers: { "Content-Type": "application/json" },
@@ -66,10 +62,11 @@ export default function RequestForm() {
 
                     SweetAlert({
                         title: "Request Submitted",
-                        text: "Your request has been successfully submitted.",
+                        text: "Your request has been received and is now pending approval. You will be notified once it has been reviewed.",
                         icon: "success",
-                        confirmButtonText: "Done",
+                        confirmButtonText: "OK",
                     });
+
                     reset();
                 } catch (err) {
                     if (
@@ -142,9 +139,9 @@ export default function RequestForm() {
     return (
         <Card className="p-5 bg-gray-100">
             <CardHeader className="text-2xl font-bold">
-                <CardTitle>Request Page</CardTitle>
-                <CardDescription className="px-5 pt-1">
-                    This is the request page.
+                <CardTitle>Data Request Form</CardTitle>
+                <CardDescription className="text-justify pt-1">
+                    If you are requesting medication error data for academic research, quality improvement, or patient safety purposes, please provide your personal and professional details. Kindly note that all requests are subject to approval. Once approved, the requested data will be forwarded to you.
                 </CardDescription>
             </CardHeader>
             <CardContent>

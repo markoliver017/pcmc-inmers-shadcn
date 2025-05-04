@@ -49,8 +49,8 @@ export async function GET(request) {
                     required: false,
                 },
                 {
-                    model: ReportMedicineRoute,
                     attributes: ["id"],
+                    model: ReportMedicineRoute,
                     include: [
                         { model: GenericMedicine, attributes: ["name"] },
                         { model: RouteMedicine, attributes: ["name"] },

@@ -13,103 +13,6 @@ import { Command, Eye, MoreHorizontal } from "lucide-react";
 import Link from "next/link";
 export function getColumns() {
     return [
-        // {
-        //     id: "select",
-        //     header: ({ table }) => (
-        //         <Checkbox
-        //             checked={
-        //                 table.getIsAllPageRowsSelected() ||
-        //                 (table.getIsSomePageRowsSelected() && "indeterminate")
-        //             }
-        //             onCheckedChange={(value) =>
-        //                 table.toggleAllPageRowsSelected(!!value)
-        //             }
-        //             aria-label="Select all"
-        //         />
-        //     ),
-        //     cell: ({ row }) => (
-        //         <Checkbox
-        //             checked={row.getIsSelected()}
-        //             onCheckedChange={(value) => row.toggleSelected(!!value)}
-        //             aria-label="Select row"
-        //         />
-        //     ),
-        //     enableSorting: false,
-        //     enableHiding: false,
-        // },
-        {
-            accessorKey: "report_date",
-            header: ({ column }) => (
-                <DataTableColumnHeader column={column} title="Report Date" />
-            ),
-            filterFn: "columnFilter",
-        },
-        {
-            id: "error_type",
-            accessorKey: "error_type.name",
-            header: ({ column }) => (
-                <DataTableColumnHeader
-                    column={column}
-                    title="Medication Error Type"
-                />
-            ),
-            cell: ({ row }) => {
-                const data = row.original;
-                const errorType = data.error_type.name;
-                const otherErrorType = data.other_error_type;
-                if (errorType === "Others" && otherErrorType) {
-                    return (
-                        <div>
-                            {errorType} <i>({otherErrorType})</i>
-                        </div>
-                    );
-                } else {
-                    return <div className="flex items-center">{errorType}</div>;
-                }
-            },
-            filterFn: "columnFilter",
-        },
-        {
-            accessorKey: "error_date",
-            header: ({ column }) => (
-                <DataTableColumnHeader
-                    column={column}
-                    title="Medication Error Date"
-                />
-            ),
-            filterFn: "columnFilter",
-        },
-        {
-            accessorKey: "patient_sex",
-            header: ({ column }) => (
-                <DataTableColumnHeader column={column} title="Patient Sex" />
-            ),
-            filterFn: "columnFilter",
-        },
-        {
-            accessorKey: "patient_weight",
-            header: ({ column }) => (
-                <DataTableColumnHeader column={column} title="Patient Weight" />
-            ),
-            filterFn: "columnFilter",
-        },
-        {
-            accessorKey: "patient_height",
-            header: ({ column }) => (
-                <DataTableColumnHeader column={column} title="Patient Height" />
-            ),
-            filterFn: "columnFilter",
-        },
-        // {
-        //     accessorKey: "exact_prescription",
-        //     header: ({ column }) => (
-        //         <DataTableColumnHeader
-        //             column={column}
-        //             title="Exact Prescription"
-        //         />
-        //     ),
-        //     filterFn: "columnFilter",
-        // },
         {
             id: "actions",
             header: ({ column }) => (
@@ -144,6 +47,143 @@ export function getColumns() {
                 );
             },
         },
+        {
+            id: "medication_error_date",
+            accessorKey: "error_date",
+            header: ({ column }) => (
+                <DataTableColumnHeader
+                    column={column}
+                    title="Medication Error Date"
+                />
+            ),
+            filterFn: "columnFilter",
+        },
+        {
+            id: "date_reported",
+            accessorKey: "report_date",
+            header: ({ column }) => (
+                <DataTableColumnHeader column={column} title="Date Reported" />
+            ),
+            filterFn: "columnFilter",
+        },
+        {
+            id: "error_type",
+            accessorKey: "error_type.name",
+            header: ({ column }) => (
+                <DataTableColumnHeader
+                    column={column}
+                    title="Medication Error Type"
+                />
+            ),
+            cell: ({ row }) => {
+                const data = row.original;
+                const errorType = data.error_type.name;
+                const otherErrorType = data.other_error_type;
+                if (errorType === "Others" && otherErrorType) {
+                    return (
+                        <div>
+                            {errorType} <i>({otherErrorType})</i>
+                        </div>
+                    );
+                } else {
+                    return <div className="flex items-center">{errorType}</div>;
+                }
+            },
+            filterFn: "columnFilter",
+        },
+
+        {
+            accessorKey: "patient_sex",
+            header: ({ column }) => (
+                <DataTableColumnHeader column={column} title="Patient Sex" />
+            ),
+            filterFn: "columnFilter",
+        },
+        {
+            accessorKey: "patient_weight",
+            header: ({ column }) => (
+                <DataTableColumnHeader column={column} title="Patient Weight" />
+            ),
+            filterFn: "columnFilter",
+        },
+        {
+            accessorKey: "patient_height",
+            header: ({ column }) => (
+                <DataTableColumnHeader column={column} title="Patient Height" />
+            ),
+            filterFn: "columnFilter",
+        },
+        {
+            accessorKey: "exact_prescription",
+            header: ({ column }) => (
+                <DataTableColumnHeader
+                    column={column}
+                    title="Exact Prescription"
+                />
+            ),
+            filterFn: "columnFilter",
+        },
+        {
+            accessorKey: "incident_description",
+            header: ({ column }) => (
+                <DataTableColumnHeader
+                    column={column}
+                    title="Incident Description"
+                />
+            ),
+            filterFn: "columnFilter",
+        },
+        {
+            accessorKey: "workplace_environment",
+            header: ({ column }) => (
+                <DataTableColumnHeader
+                    column={column}
+                    title="Workplace Environment"
+                />
+            ),
+            filterFn: "columnFilter",
+        },
+        {
+            accessorKey: "patient_condition",
+            header: ({ column }) => (
+                <DataTableColumnHeader
+                    column={column}
+                    title="Patient Condition"
+                />
+            ),
+            filterFn: "columnFilter",
+        },
+        {
+            accessorKey: "immediate_actions",
+            header: ({ column }) => (
+                <DataTableColumnHeader
+                    column={column}
+                    title="Immediate Action"
+                />
+            ),
+            filterFn: "columnFilter",
+        },
+        {
+            accessorKey: "corrective_actions",
+            header: ({ column }) => (
+                <DataTableColumnHeader
+                    column={column}
+                    title="Corrective Action"
+                />
+            ),
+            filterFn: "columnFilter",
+        },
+        {
+            accessorKey: "preventive_actions",
+            header: ({ column }) => (
+                <DataTableColumnHeader
+                    column={column}
+                    title="Preventive Action"
+                />
+            ),
+            filterFn: "columnFilter",
+        },
+
 
         // {
         //     accessorKey: 'patient_sex',

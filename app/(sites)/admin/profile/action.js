@@ -81,7 +81,7 @@ export async function createAdmin(formData) {
 
 export async function updateAdmin(formData) {
     try {
-        await new Promise((resolve) => setTimeout(resolve, 2000));
+        await new Promise((resolve) => setTimeout(resolve, 1000));
         // Handle form data here
         const data = Object.fromEntries(formData);
         console.log("updateAdminnnnnnnnnnn", data);

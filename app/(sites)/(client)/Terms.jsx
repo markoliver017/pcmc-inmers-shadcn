@@ -22,7 +22,7 @@ export default function Terms({
     const [isProceedForm, setIsProceedForm] = useState(false);
 
     return (
-        <div className="flex justify-center items-center">
+        <div className="h-full flex justify-center items-center">
             {isProceedForm === false ? (
                 // Terms Section
                 <Card className="w-3/4 min-h-[30vh]">

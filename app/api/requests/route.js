@@ -1,8 +1,13 @@
+import { send_mail } from "@lib/mail.utils";
 import { ReportRequest } from "@lib/models";
 import { requestSchema } from "@lib/zod/requestSchema";
 
 import { NextResponse } from "next/server";
 import { Sequelize } from "sequelize";
+
+import { promises as fs } from 'fs';
+import path from 'path';
+
 
 export async function GET(request) {
     // await new Promise((resolve) => setTimeout(resolve, 2000));
@@ -29,15 +34,17 @@ export async function GET(request) {
     console.log("endDate", endDate);
 
     try {
-        const request = await ReportRequest.findAll({
+        const requests = await ReportRequest.findAll({
             where: {
                 request_date: {
                     [Op.gte]: startDate,
                     [Op.lte]: endDate,
                 },
             },
+            order: [["createdAt", "DESC"]]
         });
-        return NextResponse.json({ success: true, request }, { status: 200 });
+
+        return NextResponse.json({ success: true, requests }, { status: 200 });
     } catch (error) {
         return NextResponse.json(
             {
@@ -72,10 +79,25 @@ export async function POST(request) {
 
         console.log("newRequest>>>>>>>>>>>>>>>>>", newRequest);
 
+        if (!newRequest) {
+            return NextResponse.json(
+                { success: false, message: "Failed to create request." },
+                { status: 500 }
+            );
+        }
+
+        const { email } = body;
+        const subject = "INMERS Data Request Acknowledgment";
+        const text = await getAcknowledgeText();
+        const html = await getAcknowledgeHtml();
+        const emailStatus = await send_mail(email, subject, text, html);
+
+
         return NextResponse.json(
-            { success: true, report: newRequest },
+            { success: true, report: newRequest, email: emailStatus },
             { status: 200 }
         );
+
     } catch (error) {
         console.error("Error handling report submission:", error);
 
@@ -118,4 +140,17 @@ export async function POST(request) {
             { status: 500 }
         );
     }
+}
+
+
+async function getAcknowledgeText() {
+    const filePath = path.join(process.cwd(), 'public', 'acknowledge.txt');
+
+    return await fs.readFile(filePath, 'utf-8');
+}
+
+async function getAcknowledgeHtml() {
+    const filePath = path.join(process.cwd(), 'public', 'acknowledge-email.html');
+
+    return await fs.readFile(filePath, 'utf-8');
 }

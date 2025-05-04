@@ -6,12 +6,15 @@ import moment from "moment";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { fetchReports } from "./action";
-import { FaFilePdf } from "react-icons/fa";
+import { FaFileExcel, FaFilePdf } from "react-icons/fa";
+import { exportToExcel } from "@lib/export-to-excel";
 
-export default function GenerateReport({ data, onLoad, onDataChange }) {
+export default function GenerateReport({ data, onLoad, onDataChange, visibleData }) {
     const searchParams = useSearchParams();
     const start_date = searchParams.get("start_date");
     const end_date = searchParams.get("end_date");
+
+    // console.log("current visibleData", visibleData);
 
     const [htmlReport, setHtmlReport] = useState();
     const [isGenerating, setIsGenerating] = useState();
@@ -202,6 +205,10 @@ export default function GenerateReport({ data, onLoad, onDataChange }) {
         filterReports();
     }, [dateRange]);
 
+    const handleExport = (exportData) => {
+        exportToExcel(exportData, 'INMERS_Report');
+    };
+
     const generateReport = async () => {
         setIsGenerating(true);
         const res = await fetch("/api/generate-pdf", {
@@ -255,6 +262,22 @@ export default function GenerateReport({ data, onLoad, onDataChange }) {
                         Export
                     </>
                 )}
+            </button>
+            <button
+                onClick={() => handleExport(visibleData)}
+                className="btn btn-neutral hover:bg-neutral-800 hover:text-green-300"
+            >
+                {/* {isGenerating ? (
+                    <>
+                        <span className="loading loading-bars loading-xs"></span>
+                        Generating...
+                    </>
+                ) : ( */}
+                <>
+                    <FaFileExcel />
+                    Excel
+                </>
+                {/* )} */}
             </button>
         </div>
     );

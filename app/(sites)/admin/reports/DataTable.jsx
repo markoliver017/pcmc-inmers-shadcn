@@ -23,12 +23,15 @@ import { DataTableViewOptions } from "@components/reusable_components/DataTableV
 import { Building, Filter, User, UserCog2 } from "lucide-react";
 import MultiSelect from "@components/reusable_components/MultiSelect";
 import { getColumns } from "./columns";
-import GenerateReport from "./GenerateReport";
+import GenerateReport from "./GenerateReportComponent";
 import Skeleton from "@components/ui/skeleton";
 
 export function DataTable({ get_reports, get_error_types }) {
     const fetch_errors = use(get_reports);
     const error_types = use(get_error_types);
+
+    // console.log("error_types", error_types)
+    // console.log("reports>>>>>>>>", fetch_errors)
 
     const [data, setData] = useState(fetch_errors.reports);
     const [isLoading, setIsLoading] = useState(false);
@@ -38,7 +41,11 @@ export function DataTable({ get_reports, get_error_types }) {
     const [sorting, setSorting] = useState([]);
     const [columnFilters, setColumnFilters] = useState([]);
     const [globalFilter, setGlobalFilter] = useState([]);
-    const [columnVisibility, setColumnVisibility] = useState([]);
+    const [columnVisibility, setColumnVisibility] = useState({
+        id: false,
+        date_reported: false,
+
+    });
     const [rowSelection, setRowSelection] = useState({});
     // const [userOptions, setUserOptions] = useState([]);
 
@@ -74,21 +81,6 @@ export function DataTable({ get_reports, get_error_types }) {
         },
     });
 
-    // useEffect(() => {
-    //     setUserOptions(() => {
-    //         return data.map((element, index) => ({
-    //             label: element.full_name,
-    //             value: element.full_name,
-    //             icon: User,
-    //             number: table
-    //                 .getFilteredRowModel()
-    //                 .rows.filter(
-    //                     (row) => row.original.full_name === element.full_name
-    //                 ).length,
-    //             key: index,
-    //         }));
-    //     });
-    // }, [data, table]);
 
     const handleChangeData = (newData) => {
         setData(newData);
@@ -100,13 +92,36 @@ export function DataTable({ get_reports, get_error_types }) {
         return selectedRows.map((row) => row.original);
     };
 
+    function getVisibleData(data, columns, columnVisibility) {
+        // Flatten columns with accessorKey only
+        const visibleKeys = columns
+            .filter((col) => col.accessorKey && columnVisibility[col.accessorKey] !== false)
+            .map((col) => col.accessorKey);
+
+        return data.map((row) => {
+            const filteredRow = {};
+            visibleKeys.forEach((key) => {
+                const keys = key.split('.');
+                let value = row;
+                for (const k of keys) {
+                    if (value && k in value) {
+                        value = value[k];
+                    } else {
+                        value = null;
+                        break;
+                    }
+                }
+                filteredRow[key] = value;
+            });
+            return filteredRow;
+        });
+    }
+
     const errorTypeOptions = error_types.map((type) => ({
         id: type.id,
         label: type.name,
         value: type.name,
-        number: table
-            .getFilteredRowModel()
-            .rows.filter((row) => row.original.error_type.id == type.id).length,
+        number: data.filter((row) => row.error_type.id == type.id).length,
     }));
 
     return (
@@ -115,45 +130,9 @@ export function DataTable({ get_reports, get_error_types }) {
                 data={data}
                 onLoad={() => setIsLoading(true)}
                 onDataChange={handleChangeData}
+                visibleData={getVisibleData(data, columns, columnVisibility)}
             />
-            {/* <div>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Report Date</th>
-                            <th>Medication Error Date</th>
-                            <th>Error Type</th>
-                            <th>Patient Sex</th>
-                            <th>Patient Weight</th>
-                            <th>Patient Height</th>
-                            <th>Exact Prescription</th>
-                            <th>Incident Description</th>
-                            <th>Workplace Environment</th>
-                            <th>Immediate Actions</th>
-                            <th>Corrective Actions</th>
-                            <th>Preventive Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {data.map((row, i) => (
-                            <tr key={i}>
-                                <td>{row.report_date}</td>
-                                <td>{row.error_date}</td>
-                                <td>{row.error_type.name}</td>
-                                <td>{row.patient_sex}</td>
-                                <td>{row.patient_weight}</td>
-                                <td>{row.patient_height}</td>
-                                <td>{row.exact_prescription}</td>
-                                <td>{row.incident_description}</td>
-                                <td>{row.workplace_environment}</td>
-                                <td>{row.immediate_actions}</td>
-                                <td>{row.corrective_actions}</td>
-                                <td>{row.preventive_actions}</td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div> */}
+
             {isLoading ? (
                 <Skeleton className="w-full h-80 rounded-xl" />
             ) : (
@@ -260,7 +239,7 @@ export function DataTable({ get_reports, get_error_types }) {
                         </div>
                     </div>
 
-                    <div id="user_datatable" className="rounded-md">
+                    <div className="rounded-md max-w-screen overflow-x-scroll">
                         <Table className="dark:bg-slate-700 dark:text-slate-200">
                             <TableHeader>
                                 {table.getHeaderGroups().map((headerGroup) => (
@@ -273,10 +252,10 @@ export function DataTable({ get_reports, get_error_types }) {
                                                 {header.isPlaceholder
                                                     ? null
                                                     : flexRender(
-                                                          header.column
-                                                              .columnDef.header,
-                                                          header.getContext()
-                                                      )}
+                                                        header.column
+                                                            .columnDef.header,
+                                                        header.getContext()
+                                                    )}
                                             </TableHead>
                                         ))}
                                     </TableRow>

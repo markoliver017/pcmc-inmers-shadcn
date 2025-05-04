@@ -3,9 +3,7 @@ import { NextResponse } from "next/server";
 
 export async function GET() {
     try {
-        const error_types = await ErrorType.findAll({
-            attributes: ["id", "name", "is_medicine_needed"],
-        });
+        const error_types = await ErrorType.findAll();
         return NextResponse.json(error_types, { status: 200 });
     } catch (error) {
         return NextResponse.json(

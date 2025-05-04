@@ -210,7 +210,7 @@ export default function ReportForm({
         <>
             <Card
                 id="form-container"
-                className="card w-full sm:w-3/4 shadow-[5px_5px_0px_0px_rgba(0,_0,_0,_0.5),inset_0px_2px_4px_0px_rgba(0,_0,_0,_0.3)]"
+                className="card w-full h-full sm:w-3/4 shadow-[5px_5px_0px_0px_rgba(0,_0,_0,_0.5),inset_0px_2px_4px_0px_rgba(0,_0,_0,_0.3)]"
             >
                 <div className="relative p-5 pb-0 w-3/4 mx-auto">
                     <progress
@@ -243,7 +243,7 @@ export default function ReportForm({
                 </div> */}
                 <div className="card-body">
                     <FormProvider {...methods}>
-                        <form className="sm:px-5 rounded-lg">
+                        <form className="sm:px-5 rounded-lg h-full">
                             {sectionNo == 0 ? (
                                 <FirstForm
                                     setIsProceedForm={setIsProceedForm}
