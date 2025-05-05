@@ -1,0 +1,134 @@
+[2025-05-05T00:47:46.451Z] ✅ SUCCESS (send-email): Email sent to markoliver01728@gmail.com with subject "INMERS Data Request Acknowledgment". Message ID: <f9e47db4-24d7-470e-e0f9-ebd31989ea85@pcmc.gov.ph>
+[2025-05-05T01:32:59.660Z] ✅ SUCCESS (send-email): Email sent to markoliver01728@gmail.com with subject "INMERS Data Request Notification". Message ID: <77bf0756-fd83-2eb1-b620-82b04c50a4fe@pcmc.gov.ph>
+[2025-05-05T01:36:40.792Z] ✅ SUCCESS (send-email): Email sent to markoliver01728@gmail.com with subject "INMERS Data Request Notification". Message ID: <4b7f3839-3887-5a22-0baa-3cf98bea8010@pcmc.gov.ph>
+[2025-05-05T01:52:42.606Z] ✅ SUCCESS (send-email): Email sent to markoliver01728@gmail.com with subject "INMERS Data Request Notification". Message ID: <380261fc-953f-1473-f712-af39f5a05c18@pcmc.gov.ph>
+[2025-05-05T02:11:51.357Z] ✅ SUCCESS (send-email): Email sent to markoliver01728@gmail.com with subject "INMERS Data Request Notification". Message ID: <4d6e56a5-d350-9b12-3346-7912372a976f@pcmc.gov.ph>
+[2025-05-05T02:18:41.056Z] ✅ SUCCESS (send-email): Email sent to markoliver01728@gmail.com with subject "INMERS Data Request Notification". Message ID: <9c1c361d-241e-cc5a-3599-8f8171049690@pcmc.gov.ph>
+[2025-05-05T02:22:31.014Z] ✅ SUCCESS (send-email): Email sent to markoliver01728@gmail.com with subject "INMERS Data Request Notification". Message ID: <07d6a1d7-0068-ceca-dd32-3503b669164b@pcmc.gov.ph>
+[2025-05-05T02:25:42.257Z] ✅ SUCCESS (send-email): Email sent to markoliver01728@gmail.com with subject "INMERS Data Request Notification". Message ID: <9d8cbdbd-60f2-b8ce-970b-268857f7e424@pcmc.gov.ph>
+[2025-05-05T02:47:58.444Z] ✅ SUCCESS (send-email): Email sent to markoliver01728@gmail.com with subject "INMERS Data Request Notification". Message ID: <10b77393-bb4c-e299-bfa3-0545f12e585d@pcmc.gov.ph>
+[2025-05-05T03:38:58.150Z] ✅ SUCCESS (send-email): Email sent to admin@email.com with subject "INMERS Data Request Notification". Message ID: <da1ecab1-77a9-299c-3665-d9b555f6fb53@pcmc.gov.ph>
+[2025-05-05T03:55:19.381Z] ✅ SUCCESS (send-email): Email sent to markoliver01728@gmail.com with subject "INMERS Data Request Notification". Message ID: <4083de13-8ebc-7f89-e5c7-e7fa3710ff2b@pcmc.gov.ph>
+[2025-05-05T04:11:55.099Z] ✅ SUCCESS (send-email): Email sent to admin@email.com with subject "INMERS Data Request Update". Message ID: <edbe86b1-a53e-5de1-b720-69533b324739@pcmc.gov.ph>
+[2025-05-05T05:32:53.953Z] ❌ ERROR (send-email): Error: Missing credentials for "PLAIN"
+    at SMTPConnection._formatError (C:\nextJs\pcmc-inmers-shadcn\.next\server\chunks\node_modules_nodemailer_a9f338b9._.js:15501:19)
+    at SMTPConnection.login (C:\nextJs\pcmc-inmers-shadcn\.next\server\chunks\node_modules_nodemailer_a9f338b9._.js:15225:38)
+    at C:\nextJs\pcmc-inmers-shadcn\.next\server\chunks\node_modules_nodemailer_a9f338b9._.js:17595:32
+    at SMTPConnection.<anonymous> (C:\nextJs\pcmc-inmers-shadcn\.next\server\chunks\node_modules_nodemailer_a9f338b9._.js:15035:17)
+    at Object.onceWrapper (node:events:632:28)
+    at SMTPConnection.emit (node:events:518:28)
+    at SMTPConnection._actionEHLO (C:\nextJs\pcmc-inmers-shadcn\.next\server\chunks\node_modules_nodemailer_a9f338b9._.js:15951:14)
+    at SMTPConnection._processResponse (C:\nextJs\pcmc-inmers-shadcn\.next\server\chunks\node_modules_nodemailer_a9f338b9._.js:15642:20)
+    at SMTPConnection._onData (C:\nextJs\pcmc-inmers-shadcn\.next\server\chunks\node_modules_nodemailer_a9f338b9._.js:15474:14)
+    at SMTPConnection._onSocketData (C:\nextJs\pcmc-inmers-shadcn\.next\server\chunks\node_modules_nodemailer_a9f338b9._.js:15020:48)
+    at TLSSocket.emit (node:events:518:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5)
+    at TLSWrap.onStreamRead (node:internal/stream_base_commons:189:23)
+    at TLSWrap.callbackTrampoline (node:internal/async_hooks:130:17)
+[2025-05-05T06:14:39.905Z] ❌ ERROR (send-email): Error: Missing credentials for "PLAIN"
+    at SMTPConnection._formatError (C:\nextJs\pcmc-inmers-shadcn\.next\server\chunks\node_modules_nodemailer_a9f338b9._.js:15501:19)
+    at SMTPConnection.login (C:\nextJs\pcmc-inmers-shadcn\.next\server\chunks\node_modules_nodemailer_a9f338b9._.js:15225:38)
+    at C:\nextJs\pcmc-inmers-shadcn\.next\server\chunks\node_modules_nodemailer_a9f338b9._.js:17595:32
+    at SMTPConnection.<anonymous> (C:\nextJs\pcmc-inmers-shadcn\.next\server\chunks\node_modules_nodemailer_a9f338b9._.js:15035:17)
+    at Object.onceWrapper (node:events:632:28)
+    at SMTPConnection.emit (node:events:518:28)
+    at SMTPConnection._actionEHLO (C:\nextJs\pcmc-inmers-shadcn\.next\server\chunks\node_modules_nodemailer_a9f338b9._.js:15951:14)
+    at SMTPConnection._processResponse (C:\nextJs\pcmc-inmers-shadcn\.next\server\chunks\node_modules_nodemailer_a9f338b9._.js:15642:20)
+    at SMTPConnection._onData (C:\nextJs\pcmc-inmers-shadcn\.next\server\chunks\node_modules_nodemailer_a9f338b9._.js:15474:14)
+    at SMTPConnection._onSocketData (C:\nextJs\pcmc-inmers-shadcn\.next\server\chunks\node_modules_nodemailer_a9f338b9._.js:15020:48)
+    at TLSSocket.emit (node:events:518:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5)
+    at TLSWrap.onStreamRead (node:internal/stream_base_commons:189:23)
+    at TLSWrap.callbackTrampoline (node:internal/async_hooks:130:17)
+[2025-05-05T06:16:14.997Z] ❌ ERROR (send-email): Error: Missing credentials for "PLAIN"
+    at SMTPConnection._formatError (C:\nextJs\pcmc-inmers-shadcn\.next\server\chunks\node_modules_nodemailer_a9f338b9._.js:15501:19)
+    at SMTPConnection.login (C:\nextJs\pcmc-inmers-shadcn\.next\server\chunks\node_modules_nodemailer_a9f338b9._.js:15225:38)
+    at C:\nextJs\pcmc-inmers-shadcn\.next\server\chunks\node_modules_nodemailer_a9f338b9._.js:17595:32
+    at SMTPConnection.<anonymous> (C:\nextJs\pcmc-inmers-shadcn\.next\server\chunks\node_modules_nodemailer_a9f338b9._.js:15035:17)
+    at Object.onceWrapper (node:events:632:28)
+    at SMTPConnection.emit (node:events:518:28)
+    at SMTPConnection._actionEHLO (C:\nextJs\pcmc-inmers-shadcn\.next\server\chunks\node_modules_nodemailer_a9f338b9._.js:15951:14)
+    at SMTPConnection._processResponse (C:\nextJs\pcmc-inmers-shadcn\.next\server\chunks\node_modules_nodemailer_a9f338b9._.js:15642:20)
+    at SMTPConnection._onData (C:\nextJs\pcmc-inmers-shadcn\.next\server\chunks\node_modules_nodemailer_a9f338b9._.js:15474:14)
+    at SMTPConnection._onSocketData (C:\nextJs\pcmc-inmers-shadcn\.next\server\chunks\node_modules_nodemailer_a9f338b9._.js:15020:48)
+    at TLSSocket.emit (node:events:518:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5)
+    at TLSWrap.onStreamRead (node:internal/stream_base_commons:189:23)
+    at TLSWrap.callbackTrampoline (node:internal/async_hooks:130:17)
+[2025-05-05T06:17:21.240Z] ❌ ERROR (send-email): Error: Missing credentials for "PLAIN"
+    at SMTPConnection._formatError (C:\nextJs\pcmc-inmers-shadcn\.next\server\chunks\node_modules_nodemailer_a9f338b9._.js:15501:19)
+    at SMTPConnection.login (C:\nextJs\pcmc-inmers-shadcn\.next\server\chunks\node_modules_nodemailer_a9f338b9._.js:15225:38)
+    at C:\nextJs\pcmc-inmers-shadcn\.next\server\chunks\node_modules_nodemailer_a9f338b9._.js:17595:32
+    at SMTPConnection.<anonymous> (C:\nextJs\pcmc-inmers-shadcn\.next\server\chunks\node_modules_nodemailer_a9f338b9._.js:15035:17)
+    at Object.onceWrapper (node:events:632:28)
+    at SMTPConnection.emit (node:events:518:28)
+    at SMTPConnection._actionEHLO (C:\nextJs\pcmc-inmers-shadcn\.next\server\chunks\node_modules_nodemailer_a9f338b9._.js:15951:14)
+    at SMTPConnection._processResponse (C:\nextJs\pcmc-inmers-shadcn\.next\server\chunks\node_modules_nodemailer_a9f338b9._.js:15642:20)
+    at SMTPConnection._onData (C:\nextJs\pcmc-inmers-shadcn\.next\server\chunks\node_modules_nodemailer_a9f338b9._.js:15474:14)
+    at SMTPConnection._onSocketData (C:\nextJs\pcmc-inmers-shadcn\.next\server\chunks\node_modules_nodemailer_a9f338b9._.js:15020:48)
+    at TLSSocket.emit (node:events:518:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5)
+    at TLSWrap.onStreamRead (node:internal/stream_base_commons:189:23)
+    at TLSWrap.callbackTrampoline (node:internal/async_hooks:130:17)
+[2025-05-05T06:17:34.238Z] ❌ ERROR (send-email): Error: Missing credentials for "PLAIN"
+    at SMTPConnection._formatError (C:\nextJs\pcmc-inmers-shadcn\.next\server\chunks\node_modules_nodemailer_a9f338b9._.js:15501:19)
+    at SMTPConnection.login (C:\nextJs\pcmc-inmers-shadcn\.next\server\chunks\node_modules_nodemailer_a9f338b9._.js:15225:38)
+    at C:\nextJs\pcmc-inmers-shadcn\.next\server\chunks\node_modules_nodemailer_a9f338b9._.js:17595:32
+    at SMTPConnection.<anonymous> (C:\nextJs\pcmc-inmers-shadcn\.next\server\chunks\node_modules_nodemailer_a9f338b9._.js:15035:17)
+    at Object.onceWrapper (node:events:632:28)
+    at SMTPConnection.emit (node:events:518:28)
+    at SMTPConnection._actionEHLO (C:\nextJs\pcmc-inmers-shadcn\.next\server\chunks\node_modules_nodemailer_a9f338b9._.js:15951:14)
+    at SMTPConnection._processResponse (C:\nextJs\pcmc-inmers-shadcn\.next\server\chunks\node_modules_nodemailer_a9f338b9._.js:15642:20)
+    at SMTPConnection._onData (C:\nextJs\pcmc-inmers-shadcn\.next\server\chunks\node_modules_nodemailer_a9f338b9._.js:15474:14)
+    at SMTPConnection._onSocketData (C:\nextJs\pcmc-inmers-shadcn\.next\server\chunks\node_modules_nodemailer_a9f338b9._.js:15020:48)
+    at TLSSocket.emit (node:events:518:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5)
+    at TLSWrap.onStreamRead (node:internal/stream_base_commons:189:23)
+    at TLSWrap.callbackTrampoline (node:internal/async_hooks:130:17)
+[2025-05-05T06:19:10.267Z] ❌ ERROR (send-email): Error: Missing credentials for "PLAIN"
+    at SMTPConnection._formatError (C:\nextJs\pcmc-inmers-shadcn\.next\server\chunks\node_modules_nodemailer_a9f338b9._.js:15501:19)
+    at SMTPConnection.login (C:\nextJs\pcmc-inmers-shadcn\.next\server\chunks\node_modules_nodemailer_a9f338b9._.js:15225:38)
+    at C:\nextJs\pcmc-inmers-shadcn\.next\server\chunks\node_modules_nodemailer_a9f338b9._.js:17595:32
+    at SMTPConnection.<anonymous> (C:\nextJs\pcmc-inmers-shadcn\.next\server\chunks\node_modules_nodemailer_a9f338b9._.js:15035:17)
+    at Object.onceWrapper (node:events:632:28)
+    at SMTPConnection.emit (node:events:518:28)
+    at SMTPConnection._actionEHLO (C:\nextJs\pcmc-inmers-shadcn\.next\server\chunks\node_modules_nodemailer_a9f338b9._.js:15951:14)
+    at SMTPConnection._processResponse (C:\nextJs\pcmc-inmers-shadcn\.next\server\chunks\node_modules_nodemailer_a9f338b9._.js:15642:20)
+    at SMTPConnection._onData (C:\nextJs\pcmc-inmers-shadcn\.next\server\chunks\node_modules_nodemailer_a9f338b9._.js:15474:14)
+    at SMTPConnection._onSocketData (C:\nextJs\pcmc-inmers-shadcn\.next\server\chunks\node_modules_nodemailer_a9f338b9._.js:15020:48)
+    at TLSSocket.emit (node:events:518:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5)
+    at TLSWrap.onStreamRead (node:internal/stream_base_commons:189:23)
+    at TLSWrap.callbackTrampoline (node:internal/async_hooks:130:17)
+[2025-05-05T06:19:23.288Z] ❌ ERROR (send-email): Error: Missing credentials for "PLAIN"
+    at SMTPConnection._formatError (C:\nextJs\pcmc-inmers-shadcn\.next\server\chunks\node_modules_nodemailer_a9f338b9._.js:15501:19)
+    at SMTPConnection.login (C:\nextJs\pcmc-inmers-shadcn\.next\server\chunks\node_modules_nodemailer_a9f338b9._.js:15225:38)
+    at C:\nextJs\pcmc-inmers-shadcn\.next\server\chunks\node_modules_nodemailer_a9f338b9._.js:17595:32
+    at SMTPConnection.<anonymous> (C:\nextJs\pcmc-inmers-shadcn\.next\server\chunks\node_modules_nodemailer_a9f338b9._.js:15035:17)
+    at Object.onceWrapper (node:events:632:28)
+    at SMTPConnection.emit (node:events:518:28)
+    at SMTPConnection._actionEHLO (C:\nextJs\pcmc-inmers-shadcn\.next\server\chunks\node_modules_nodemailer_a9f338b9._.js:15951:14)
+    at SMTPConnection._processResponse (C:\nextJs\pcmc-inmers-shadcn\.next\server\chunks\node_modules_nodemailer_a9f338b9._.js:15642:20)
+    at SMTPConnection._onData (C:\nextJs\pcmc-inmers-shadcn\.next\server\chunks\node_modules_nodemailer_a9f338b9._.js:15474:14)
+    at SMTPConnection._onSocketData (C:\nextJs\pcmc-inmers-shadcn\.next\server\chunks\node_modules_nodemailer_a9f338b9._.js:15020:48)
+    at TLSSocket.emit (node:events:518:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5)
+    at TLSWrap.onStreamRead (node:internal/stream_base_commons:189:23)
+    at TLSWrap.callbackTrampoline (node:internal/async_hooks:130:17)
+[2025-05-05T06:21:35.832Z] ✅ SUCCESS (send-email): Email sent to admin@email.com with subject "INMERS Data Request Notification". Message ID: <8e94ae81-f4e9-5522-455b-0d948435ada6@pcmc.gov.ph>
+[2025-05-05T06:28:06.297Z] ✅ SUCCESS (send-email): Email sent to markoliver01728@gmail.com with subject "INMERS Data Request Notification". Message ID: <1da74993-6f08-ffae-4c1b-b44f7aa58a43@pcmc.gov.ph>
+[2025-05-05T06:28:16.155Z] ✅ SUCCESS (send-email): Email sent to mark.roman@pcmc.gov.ph with subject "INMERS Data Request Update". Message ID: <308c324f-4f8c-c86f-d776-1825ad4d880f@pcmc.gov.ph>

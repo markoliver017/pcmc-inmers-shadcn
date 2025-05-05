@@ -11,13 +11,22 @@ const Footer = () => {
                 </p>
                 <p className="text-sm">Follow us on social media</p>
                 <div className="flex justify-center space-x-4 mt-2">
-                    <a href="#" className="flex-items-center text-gray-400 hover:text-white">
+                    <a
+                        href="#"
+                        className="flex-items-center text-gray-400 hover:text-blue-600"
+                    >
                         <FaFacebook /> Facebook
                     </a>
-                    <a href="#" className="flex-items-center text-gray-400 hover:text-white">
+                    <a
+                        href="#"
+                        className="flex-items-center text-gray-400 hover:text-blue-600"
+                    >
                         <FaTwitter /> Twitter
                     </a>
-                    <a href="#" className="flex-items-center text-gray-400 hover:text-white">
+                    <a
+                        href="#"
+                        className="flex-items-center text-gray-400 hover:text-blue-600"
+                    >
                         <FaInstagram /> Instagram
                     </a>
                 </div>

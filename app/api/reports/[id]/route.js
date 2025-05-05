@@ -1,4 +1,10 @@
-import { ErrorType, Report } from "@lib/models";
+import {
+    ErrorType,
+    GenericMedicine,
+    Report,
+    ReportMedicineRoute,
+    RouteMedicine,
+} from "@lib/models";
 import { NextResponse } from "next/server";
 
 export async function GET(request, { params }) {
@@ -8,10 +14,18 @@ export async function GET(request, { params }) {
             where: { id },
             include: [
                 {
-                    attributes: ["id", "name"],
+                    attributes: ["id", "name", "is_medicine_needed"],
                     model: ErrorType,
                     as: "error_type",
                     required: false,
+                },
+                {
+                    attributes: ["id"],
+                    model: ReportMedicineRoute,
+                    include: [
+                        { model: GenericMedicine, attributes: ["name"] },
+                        { model: RouteMedicine, attributes: ["name"] },
+                    ],
                 },
             ],
         });

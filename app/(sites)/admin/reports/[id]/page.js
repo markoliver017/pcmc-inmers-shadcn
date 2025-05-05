@@ -12,6 +12,9 @@ export default async function Page({ params }) {
     const { report } = await response.json();
     if (!report) redirect("/admin/reports");
 
+    console.log("report", report);
+    const formatAge = (age) => (age % 1 === 0 ? `${age | 0}` : `${age}`);
+
     const error_type =
         report.error_type.name == "Others"
             ? `${report.error_type.name} <i>(${report.other_error_type})</i>`
@@ -24,7 +27,7 @@ export default async function Page({ params }) {
             </Link>
             <div className="card shadow-md mt-2">
                 <div className="card-body overflow-x-auto rounded-box border border-base-content/5 bg-base-100">
-                    <table className="table">
+                    <table className="table table-zebra">
                         {/* head */}
                         <thead>
                             <tr>
@@ -37,16 +40,35 @@ export default async function Page({ params }) {
                                 <th colSpan={2}>Patient Details</th>
                             </tr>
                             <tr className="hover:bg-base-300">
+                                <th>ID</th>
+                                <td>{report.id}</td>
+                            </tr>
+                            <tr className="hover:bg-base-300">
                                 <th>Patient Sex</th>
                                 <td>{report.patient_sex.toUpperCase()}</td>
                             </tr>
                             <tr className="hover:bg-base-300">
+                                <th>Patient Age</th>
+                                <td>
+                                    {formatAge(report.patient_age)}{" "}
+                                    {report.age_unit}(s) old
+                                </td>
+                            </tr>
+                            <tr className="hover:bg-base-300">
                                 <th>Patient Height</th>
-                                <td>{report.patient_height} cm</td>
+                                <td>
+                                    {report.patient_height}
+                                    {!isNaN(report.patient_height)
+                                        ? `(${report.height_unit})`
+                                        : ""}
+                                </td>
                             </tr>
                             <tr className="hover:bg-base-300">
                                 <th>Patient Weight</th>
-                                <td>{report.patient_weight} kg</td>
+                                <td>
+                                    {report.patient_weight}({report.weight_unit}
+                                    )
+                                </td>
                             </tr>
                             <tr className="bg-gray-200 border-b border-gray-300">
                                 <th colSpan={2}>Medication Error Details</th>
@@ -63,6 +85,46 @@ export default async function Page({ params }) {
                                 <th>Error Type</th>
                                 <td>{parse(error_type)}</td>
                             </tr>
+                            {report.error_type.is_medicine_needed &&
+                                report.ReportMedicineRoutes.length && (
+                                    <tr>
+                                        <th>Medicine Details</th>
+                                        <td>
+                                            <table className="table table-zebra">
+                                                <thead className="bg-gray-200">
+                                                    <tr>
+                                                        <th>
+                                                            Generic Medicine
+                                                        </th>
+                                                        <th>Route</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {report.ReportMedicineRoutes.map(
+                                                        (med, index) => (
+                                                            <tr key={index}>
+                                                                <td>
+                                                                    {
+                                                                        med
+                                                                            .GenericMedicine
+                                                                            .name
+                                                                    }
+                                                                </td>
+                                                                <td>
+                                                                    {
+                                                                        med
+                                                                            .RouteMedicine
+                                                                            .name
+                                                                    }
+                                                                </td>
+                                                            </tr>
+                                                        )
+                                                    )}
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                )}
                             <tr className="hover:bg-base-300">
                                 <th>Exact Prescription</th>
                                 <td>{report.exact_prescription}</td>

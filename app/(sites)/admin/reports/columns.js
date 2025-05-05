@@ -59,6 +59,13 @@ export function getColumns() {
             filterFn: "columnFilter",
         },
         {
+            accessorKey: "id",
+            header: ({ column }) => (
+                <DataTableColumnHeader column={column} title="ID#" />
+            ),
+            filterFn: "columnFilter",
+        },
+        {
             id: "date_reported",
             accessorKey: "report_date",
             header: ({ column }) => (
@@ -183,7 +190,6 @@ export function getColumns() {
             ),
             filterFn: "columnFilter",
         },
-
 
         // {
         //     accessorKey: 'patient_sex',

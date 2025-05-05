@@ -39,3 +39,19 @@
 [2025-05-04T15:43:13.844Z] ✅ SUCCESS (send-email): Email sent to markoliver01728@gmail.com with subject "INMERS Data Request Notification". Message ID: <6f931378-1ab1-4657-8969-3e5a898db953@pcmc.gov.ph>
 [2025-05-04T15:45:05.253Z] ✅ SUCCESS (send-email): Email sent to markoliver01728@gmail.com with subject "INMERS Data Request Notification". Message ID: <58aef020-e5ea-72dd-e807-0391985fa5eb@pcmc.gov.ph>
 [2025-05-04T15:46:30.541Z] ✅ SUCCESS (send-email): Email sent to markoliver01728@gmail.com with subject "INMERS Data Request Notification". Message ID: <8e39f9eb-74ff-ba53-3a40-058587e3cda2@pcmc.gov.ph>
+[2025-05-04T23:40:07.696Z] ✅ SUCCESS (send-email): Email sent to markoliver01728@gmail.com with subject "Sample Notification". Message ID: <43233448-e4b5-1b00-ace5-9c239e5e6af8@smtp-brevo.com>
+[2025-05-04T23:41:43.132Z] ✅ SUCCESS (send-email): Email sent to markoliver01728@gmail.com with subject "Sample Notification". Message ID: <153b7674-93cd-cfc8-137f-cd16cf0f56c6@smtp-brevo.com>
+[2025-05-04T23:52:14.551Z] ✅ SUCCESS (send-email): Email sent to markoliver01728@gmail.com with subject "Sample Notification". Message ID: <ec0ebda8-0c76-c849-adf3-b9c79ff783c4@smtp-brevo.com>
+[2025-05-04T23:56:09.848Z] ❌ ERROR (send-email): Error: Invalid login: 535 5.7.8 Authentication failed
+    at SMTPConnection._formatError (C:\nextJs\pcmc-inmers-shadcn\.next\server\chunks\node_modules_0dca3c7a._.js:21870:19)
+    at SMTPConnection._actionAUTHComplete (C:\nextJs\pcmc-inmers-shadcn\.next\server\chunks\node_modules_0dca3c7a._.js:22484:34)
+    at SMTPConnection.<anonymous> (C:\nextJs\pcmc-inmers-shadcn\.next\server\chunks\node_modules_0dca3c7a._.js:21678:26)
+    at SMTPConnection._processResponse (C:\nextJs\pcmc-inmers-shadcn\.next\server\chunks\node_modules_0dca3c7a._.js:22011:20)
+    at SMTPConnection._onData (C:\nextJs\pcmc-inmers-shadcn\.next\server\chunks\node_modules_0dca3c7a._.js:21843:14)
+    at SMTPConnection._onSocketData (C:\nextJs\pcmc-inmers-shadcn\.next\server\chunks\node_modules_0dca3c7a._.js:21389:48)
+    at TLSSocket.emit (node:events:518:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5)
+    at TLSWrap.onStreamRead (node:internal/stream_base_commons:189:23)
+    at TLSWrap.callbackTrampoline (node:internal/async_hooks:130:17)

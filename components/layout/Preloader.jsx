@@ -1,5 +1,6 @@
 "use client";
 import { motion } from "framer-motion";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 
 export default function Preloader() {
@@ -34,13 +35,20 @@ export default function Preloader() {
                     />
 
                     {/* Animated Loading Text */}
+
                     <motion.div
                         className="text-2xl font-semibold text-blue-500 relative"
                         initial={{ scale: 1 }}
                         animate={{ scale: [1, 1.2, 1] }}
                         transition={{ repeat: Infinity, duration: 1 }}
                     >
-                        Loading...
+                        {/* Loading... */}
+                        <Image
+                            src="/loader_2.gif"
+                            width={500}
+                            height={500}
+                            alt="Logo"
+                        />
                     </motion.div>
                 </motion.div>
             )}

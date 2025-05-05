@@ -20,14 +20,13 @@ const Sidebar = ({
     const [isCollapsed, setIsCollapsed] = useState(false);
     const menus = usePagesStore((state) => state.pages);
     const currentRoute = usePathname();
-    const isAdminRoute = currentRoute.startsWith('/admin');
+    const isAdminRoute = currentRoute.startsWith("/admin");
 
     // console.log("sidebar currentRoute", currentRoute)
     // console.log("sidebar session", session)
     // console.log("sidebar status", status)
 
     useEffect(() => {
-
         const handleResize = () => {
             if (window.innerWidth < 768) {
                 setIsCollapsed(true);
@@ -42,7 +41,7 @@ const Sidebar = ({
     }, []);
 
     if (isAdminRoute && status == "unauthenticated") {
-        redirect('/');
+        redirect("/");
     }
 
     if (status != "authenticated") {
@@ -52,7 +51,10 @@ const Sidebar = ({
     const { user } = session;
     admin.name = user?.name;
     admin.email = user?.email;
-    admin.avatar = user?.avatar || "https://avatar.iran.liara.run/public/boy";
+    admin.avatar =
+        user?.avatar || user?.gender == "female"
+            ? "https://avatar.iran.liara.run/public/girl"
+            : "https://avatar.iran.liara.run/public/boy";
 
     const handleToggleSidebar = () => {
         setIsCollapsed(!isCollapsed);

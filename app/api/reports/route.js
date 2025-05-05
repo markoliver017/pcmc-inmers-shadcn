@@ -41,9 +41,10 @@ export async function GET(request) {
                     [Op.lte]: endDate,
                 },
             },
+            order: [["createdAt", "DESC"]],
             include: [
                 {
-                    attributes: ["id", "name"],
+                    attributes: ["id", "name", "is_medicine_needed"],
                     model: ErrorType,
                     as: "error_type",
                     required: false,
@@ -58,6 +59,7 @@ export async function GET(request) {
                 },
             ],
         });
+
         return NextResponse.json({ success: true, reports }, { status: 200 });
     } catch (error) {
         return NextResponse.json(

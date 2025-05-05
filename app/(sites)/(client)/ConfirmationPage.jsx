@@ -22,7 +22,7 @@ export default function ConfirmationPage({
     const [isLoading, setIsLoading] = useState(false);
     const [isDownLoading, setIsDownLoading] = useState(false);
 
-    console.log("medicineRouteOptions", medicineRouteOptions);
+    // console.log("medicineRouteOptions", medicineRouteOptions);
     const onFinalSubmit = () => {
         SweetAlert({
             title: "Confirmation",
@@ -135,7 +135,7 @@ export default function ConfirmationPage({
     };
 
     const data = watch();
-    console.log("data", data);
+    // console.log("data", data);
     const error_type =
         data.selected_error_type?.value == "Others"
             ? `${data.selected_error_type?.label} <i>(${watch(

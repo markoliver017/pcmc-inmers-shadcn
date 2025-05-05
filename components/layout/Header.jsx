@@ -40,7 +40,9 @@ const Header = ({
         admin.name = user?.name;
         admin.email = user?.email;
         admin.avatar =
-            user?.avatar || "https://avatar.iran.liara.run/public/boy";
+            user?.avatar || user?.gender == "female"
+                ? "https://avatar.iran.liara.run/public/girl"
+                : "https://avatar.iran.liara.run/public/boy";
     }
 
     const handleLogOut = () => {

@@ -203,11 +203,11 @@ export const downloadReport = async (
 
                                                             return `
                                                             <tr>
-                                                            <td>${
-                                                                index + 1
-                                                            }</td>
-                                                            <td>${genericLabel}</td>
-                                                            <td>${routeLabel}</td>
+                                                                <td>${
+                                                                    index + 1
+                                                                }</td>
+                                                                <td>${genericLabel}</td>
+                                                                <td>${routeLabel}</td>
                                                             </tr>
                                                         `;
                                                         })

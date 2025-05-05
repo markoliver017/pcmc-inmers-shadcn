@@ -138,12 +138,12 @@ export default function ReportForm({
 
     // const result = createReportsSchema.safeParse(invalidInput);
     // console.log("debug errorsssssss", result?.error?.flatten().fieldErrors);
-    useEffect(() => {
-        console.log("global watch>>>>>>>>>", watch());
-        console.log("global errors>>>>>>>>>", errors);
-        // console.log("createReportsSchema", result.error.format());
-        // console.log("createReportsSchema", result.error.format());
-    }, [watch()]);
+    // useEffect(() => {
+    //     console.log("global watch>>>>>>>>>", watch());
+    //     console.log("global errors>>>>>>>>>", errors);
+    // console.log("createReportsSchema", result.error.format());
+    // console.log("createReportsSchema", result.error.format());
+    // }, [watch()]);
 
     const [errorTypeOptions, setErrorTypeOptions] = useState([]);
     const [selectedErrorType, setSelectedErrorType] = useState({});

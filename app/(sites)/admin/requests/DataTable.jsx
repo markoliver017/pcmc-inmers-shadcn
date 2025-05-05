@@ -38,7 +38,16 @@ export function DataTable({ get_requests }) {
     const handleShowRequest = (row) => {
         setSelectedData(row);
         setOpenDialog(true);
-    }
+    };
+
+    const handleChangeData = (updatedRow) => {
+        setData((prev) =>
+            prev.map((item) =>
+                item.id === updatedRow.id ? { ...item, ...updatedRow } : item
+            )
+        );
+        setOpenDialog(false);
+    };
 
     const columns = getColumns(handleShowRequest);
 
@@ -46,7 +55,7 @@ export function DataTable({ get_requests }) {
     const [columnFilters, setColumnFilters] = useState([]);
     const [globalFilter, setGlobalFilter] = useState([]);
     const [columnVisibility, setColumnVisibility] = useState({
-        id: false
+        id: false,
     });
     const [rowSelection, setRowSelection] = useState({});
     // const [userOptions, setUserOptions] = useState([]);
@@ -83,12 +92,6 @@ export function DataTable({ get_requests }) {
         },
     });
 
-
-    const handleChangeData = (newData) => {
-        setData(newData);
-        setIsLoading(false);
-    };
-
     const getSelectedRows = () => {
         const selectedRows = table.getFilteredSelectedRowModel().rows;
         return selectedRows.map((row) => row.original);
@@ -96,8 +99,12 @@ export function DataTable({ get_requests }) {
 
     return (
         <div className="p-2">
-
-            <ShowRequest data={selectedData} open={openDialog} setOpen={setOpenDialog} />
+            <ShowRequest
+                data={selectedData}
+                open={openDialog}
+                setOpen={setOpenDialog}
+                onSave={handleChangeData}
+            />
             {isLoading ? (
                 <Skeleton className="w-full h-80 rounded-xl" />
             ) : (
@@ -113,10 +120,9 @@ export function DataTable({ get_requests }) {
                         />
 
                         <DataTableViewOptions table={table} />
-
                     </div>
 
-                    <div id="user_datatable" className="rounded-md">
+                    <div id="requests_datatable" className="rounded-md">
                         <Table className="dark:bg-slate-700 dark:text-slate-200">
                             <TableHeader>
                                 {table.getHeaderGroups().map((headerGroup) => (
@@ -129,10 +135,10 @@ export function DataTable({ get_requests }) {
                                                 {header.isPlaceholder
                                                     ? null
                                                     : flexRender(
-                                                        header.column
-                                                            .columnDef.header,
-                                                        header.getContext()
-                                                    )}
+                                                          header.column
+                                                              .columnDef.header,
+                                                          header.getContext()
+                                                      )}
                                             </TableHead>
                                         ))}
                                     </TableRow>
