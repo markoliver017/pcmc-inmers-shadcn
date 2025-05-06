@@ -1,10 +1,9 @@
-
 module.exports = {
     development: {
         username: "root",
         password: "root",
         database: "inmers",
-        host: "127.0.0.1",
+        host: "10.0.0.187",
         dialect: "mysql",
     },
     production: {

@@ -48,6 +48,7 @@ export default function Preloader() {
                             width={500}
                             height={500}
                             alt="Logo"
+                            unoptimized
                         />
                     </motion.div>
                 </motion.div>

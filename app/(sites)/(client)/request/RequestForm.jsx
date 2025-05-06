@@ -128,20 +128,24 @@ export default function RequestForm() {
             },
         });
     };
-    useEffect(() => {
-        console.log("errors", errors);
-    }, [errors]);
+    // useEffect(() => {
+    //     console.log("errors", errors);
+    // }, [errors]);
 
-    useEffect(() => {
-        console.log("watchall", watch());
-    }, [watch()]);
+    // useEffect(() => {
+    //     console.log("watchall", watch());
+    // }, [watch()]);
 
     return (
         <Card className="p-5 bg-gray-100">
             <CardHeader className="text-2xl font-bold">
                 <CardTitle>Data Request Form</CardTitle>
                 <CardDescription className="text-justify pt-1">
-                    If you are requesting medication error data for academic research, quality improvement, or patient safety purposes, please provide your personal and professional details. Kindly note that all requests are subject to approval. Once approved, the requested data will be forwarded to you.
+                    If you are requesting medication error data for academic
+                    research, quality improvement, or patient safety purposes,
+                    please provide your personal and professional details.
+                    Kindly note that all requests are subject to approval. Once
+                    approved, the requested data will be forwarded to you.
                 </CardDescription>
             </CardHeader>
             <CardContent>

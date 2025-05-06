@@ -10,7 +10,7 @@ import {
 } from "@components/ui/dropdown-menu";
 import { Button } from "@components/ui/button";
 import { Command, Eye, MoreHorizontal } from "lucide-react";
-import Link from "next/link";
+
 export function getColumns(setSelectedData) {
     return [
         // {
@@ -75,20 +75,14 @@ export function getColumns(setSelectedData) {
         {
             accessorKey: "purpose",
             header: ({ column }) => (
-                <DataTableColumnHeader
-                    column={column}
-                    title="Purpose"
-                />
+                <DataTableColumnHeader column={column} title="Purpose" />
             ),
             filterFn: "columnFilter",
         },
         {
             accessorKey: "status",
             header: ({ column }) => (
-                <DataTableColumnHeader
-                    column={column}
-                    title="Status"
-                />
+                <DataTableColumnHeader column={column} title="Status" />
             ),
             filterFn: "columnFilter",
             cell: ({ row }) => {
@@ -96,16 +90,23 @@ export function getColumns(setSelectedData) {
                 const status = data.status;
                 if (status == "approved") {
                     return (
-                        <div className="badge p-2 font-semibold text-xs badge-success">{status.toUpperCase()}</div>
+                        <div className="badge p-2 font-semibold text-xs badge-success">
+                            {status.toUpperCase()}
+                        </div>
                     );
                 }
                 if (status == "rejected") {
                     return (
-                        <div className="badge p-2 font-semibold text-xs badge-error">{status.toUpperCase()}</div>
+                        <div className="badge p-2 font-semibold text-xs badge-error">
+                            {status.toUpperCase()}
+                        </div>
                     );
                 }
-                return <div className="badge p-2 font-semibold text-xs badge-primary">{status.toUpperCase()}</div>
-
+                return (
+                    <div className="badge p-2 font-semibold text-xs badge-primary">
+                        {status.toUpperCase()}
+                    </div>
+                );
             },
         },
         {
@@ -134,7 +135,8 @@ export function getColumns(setSelectedData) {
                             {/* <Link href={`/admin/reports/${report.id}`}> */}
                             <DropdownMenuItem
                                 onClick={() => setSelectedData(data)}
-                                className="flex items-center space-x-2">
+                                className="flex items-center space-x-2"
+                            >
                                 <Eye className="w-4 h-4" />
                                 <span>Show</span>
                             </DropdownMenuItem>
