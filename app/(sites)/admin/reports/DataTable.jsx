@@ -44,7 +44,6 @@ export function DataTable({ get_reports, get_error_types }) {
     const [columnVisibility, setColumnVisibility] = useState({
         id: false,
         date_reported: false,
-
     });
     const [rowSelection, setRowSelection] = useState({});
     // const [userOptions, setUserOptions] = useState([]);
@@ -81,7 +80,6 @@ export function DataTable({ get_reports, get_error_types }) {
         },
     });
 
-
     const handleChangeData = (newData) => {
         setData(newData);
         setIsLoading(false);
@@ -95,13 +93,17 @@ export function DataTable({ get_reports, get_error_types }) {
     function getVisibleData(data, columns, columnVisibility) {
         // Flatten columns with accessorKey only
         const visibleKeys = columns
-            .filter((col) => col.accessorKey && columnVisibility[col.accessorKey] !== false)
+            .filter(
+                (col) =>
+                    col.accessorKey &&
+                    columnVisibility[col.accessorKey] !== false
+            )
             .map((col) => col.accessorKey);
 
         return data.map((row) => {
             const filteredRow = {};
             visibleKeys.forEach((key) => {
-                const keys = key.split('.');
+                const keys = key.split(".");
                 let value = row;
                 for (const k of keys) {
                     if (value && k in value) {
@@ -179,38 +181,26 @@ export function DataTable({ get_reports, get_error_types }) {
                                         {
                                             label: "male",
                                             value: "male",
-                                            number: table
-                                                .getFilteredRowModel()
-                                                .rows.filter(
-                                                    (row) =>
-                                                        row.original
-                                                            .patient_sex ===
-                                                        "male"
-                                                ).length,
+                                            number: data.filter(
+                                                (row) =>
+                                                    row.patient_sex == "male"
+                                            ).length,
                                         },
                                         {
                                             label: "female",
                                             value: "female",
-                                            number: table
-                                                .getFilteredRowModel()
-                                                .rows.filter(
-                                                    (row) =>
-                                                        row.original
-                                                            .patient_sex ===
-                                                        "female"
-                                                ).length,
+                                            number: data.filter(
+                                                (row) =>
+                                                    row.patient_sex == "female"
+                                            ).length,
                                         },
                                         {
                                             label: "unknown",
                                             value: "unknown",
-                                            number: table
-                                                .getFilteredRowModel()
-                                                .rows.filter(
-                                                    (row) =>
-                                                        row.original
-                                                            .patient_sex ===
-                                                        "unknown"
-                                                ).length,
+                                            number: data.filter(
+                                                (row) =>
+                                                    row.patient_sex == "unknown"
+                                            ).length,
                                         },
                                     ]}
                                     onValueChange={(selectedOptions) => {
@@ -252,10 +242,10 @@ export function DataTable({ get_reports, get_error_types }) {
                                                 {header.isPlaceholder
                                                     ? null
                                                     : flexRender(
-                                                        header.column
-                                                            .columnDef.header,
-                                                        header.getContext()
-                                                    )}
+                                                          header.column
+                                                              .columnDef.header,
+                                                          header.getContext()
+                                                      )}
                                             </TableHead>
                                         ))}
                                     </TableRow>
