@@ -3,6 +3,12 @@ import Skeleton from "@components/ui/skeleton";
 import { fetchAdmins } from "./action";
 import { DataTable } from "./DataTable";
 
+export const metadata = {
+    title: "Inmerse Portal - Users Management",
+    description:
+        "Integrated National Medication Error Reporting System - Users Management",
+};
+
 export default async function Page() {
     const admins = fetchAdmins();
 

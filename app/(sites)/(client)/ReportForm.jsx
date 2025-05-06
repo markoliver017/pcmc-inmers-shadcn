@@ -20,33 +20,39 @@ import { Card } from "@components/ui/card";
 const form_sections = [
     {
         title: "Patient Details",
-        class: "step-primary",
+        class: "progress-info",
         percent: 10,
+        bg: "/bg-3.jpg",
     },
     {
         title: "Medication Error Details 1",
-        class: "step-primary",
+        class: "progress-info",
         percent: 30,
+        bg: "/bg-4.jpg",
     },
     {
         title: "Medication Error Details 2",
-        class: "step-primary",
+        class: "progress-info",
         percent: 50,
+        bg: "/bg-5.jpg",
     },
     {
         title: "Medication Error Details 3",
-        class: "step-primary",
+        class: "progress-info",
         percent: 70,
+        bg: "/bg-6.jpg",
     },
     {
         title: "Medication Error Details 4",
-        class: "step-primary",
+        class: "progress-info",
         percent: 90,
+        bg: "/bg-1.jpg",
     },
     {
         title: "Confirm",
-        class: "step-warning",
+        class: "progress-success",
         percent: 100,
+        bg: "/bg-2.jpg",
     },
 ];
 
@@ -215,10 +221,14 @@ export default function ReportForm({
 
     return (
         <>
-            <Card
-                id="form-container"
-                className="card w-full h-full sm:w-3/4 shadow-[5px_5px_0px_0px_rgba(0,_0,_0,_0.5),inset_0px_2px_4px_0px_rgba(0,_0,_0,_0.3)]"
-            >
+            <div
+                className={`absolute inset-0 bg-no-repeat bg-center bg-cover opacity-50 pointer-events-none z-0 shadow-2xl rounded`}
+                style={{
+                    backgroundImage: `url('${form_sections[sectionNo].bg}')`,
+                }}
+                aria-hidden="true"
+            />
+            <Card className="static card w-full h-full sm:w-3/4 shadow-[5px_5px_0px_0px_rgba(0,_0,_0,_0.5),inset_0px_2px_4px_0px_rgba(0,_0,_0,_0.3)] opacity-85">
                 <div className="relative p-5 pb-0 w-3/4 mx-auto">
                     <progress
                         className={clsx(

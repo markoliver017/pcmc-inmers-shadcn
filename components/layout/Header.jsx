@@ -17,12 +17,15 @@ import {
     Eye,
     File,
     FileSliders,
+    Home,
     LogOut,
     MoreHorizontal,
 } from "lucide-react";
 import SweetAlert from "@components/ui/SweetAlert";
 import { useSession } from "next-auth/react";
 import { signOut } from "next-auth/react";
+import { LiaHamburgerSolid } from "react-icons/lia";
+import { GiHamburgerMenu } from "react-icons/gi";
 
 const Header = ({
     admin = {
@@ -63,25 +66,27 @@ const Header = ({
                     className="flex-none flex gap-2 items-center hover:ring rounded-xl p-2"
                 >
                     <Image
-                        src="/pcmc_logo.png"
+                        src="/inmers-logo.jpg"
                         className="flex-none"
                         width={50}
                         height={50}
-                        alt="Logo"
+                        alt="Integrated National Medication Reporting System"
+                        title="Integrated National Medication Reporting System"
                     />
-                    <h1 className="text-2xl font-bold">INMERS</h1>
+                    <h1 className="text-2xl font-bold text-shadow-lg/30 italic">
+                        INMERS
+                    </h1>
                 </Link>
-                <a id="top"></a>
 
-                <div className="flex-1 flex justify-between items-center">
-                    <nav>
+                <div className="flex-none md:flex-1 flex justify-between gap-2 items-center">
+                    <nav className="hidden md:block">
                         <ul className="flex space-x-4">
                             <li>
                                 <Link
                                     href="/"
                                     className="p-3 hover:ring rounded-xl flex-items-center shadow-[-11px_4px_6px_0px_rgba(0,_0,_0,_0.1)]"
                                 >
-                                    <FileSliders className="h-4" />
+                                    <Home className="h-4" />
                                     Home
                                 </Link>
                             </li>
@@ -96,6 +101,47 @@ const Header = ({
                             </li>
                         </ul>
                     </nav>
+                    <div className="block md:hidden">
+                        <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                                <Button variant="ghost" className="h-8 w-8 p-0">
+                                    <span className="sr-only">Open menu</span>
+                                    <GiHamburgerMenu
+                                        className="inline-block"
+                                        title="Collapse the left navigation pane"
+                                    />
+                                </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end">
+                                <DropdownMenuLabel className="flex items-center gap-2 space-x-2">
+                                    <Command className="w-3 h-3" />
+                                    Menus
+                                </DropdownMenuLabel>
+                                <DropdownMenuSeparator />
+
+                                {/* <Link href={`/`}> */}
+                                <DropdownMenuItem>
+                                    <Link
+                                        href="/"
+                                        className="w-full hover:ring rounded flex-items-center "
+                                    >
+                                        <Home className="h-4" />
+                                        Home
+                                    </Link>
+                                </DropdownMenuItem>
+                                <DropdownMenuItem>
+                                    <Link
+                                        href="/request"
+                                        className="w-full hover:ring rounded flex-items-center "
+                                    >
+                                        <FileSliders className="h-4" />
+                                        Data Request Form
+                                    </Link>
+                                </DropdownMenuItem>
+                                {/* </Link> */}
+                            </DropdownMenuContent>
+                        </DropdownMenu>
+                    </div>
                     {!isLoggedIn ? (
                         <LoginDrawer />
                     ) : (

@@ -21,11 +21,15 @@ export default function Terms({
     const [isAccepted, setIsAccepted] = useState(false);
     const [isProceedForm, setIsProceedForm] = useState(false);
 
-    return (
-        <div className="h-full flex justify-center items-center">
-            {isProceedForm === false ? (
-                // Terms Section
-                <Card className="w-3/4 min-h-[30vh]">
+    if (isProceedForm == false) {
+        return (
+            <div className="h-full flex justify-center items-center relative p-5">
+                <div
+                    className="absolute inset-0 bg-[url('/bg-2.jpg')] bg-no-repeat bg-center bg-cover opacity-50 pointer-events-none z-0 shadow-2xl rounded"
+                    aria-hidden="true"
+                />
+                {/* Terms Section */}
+                <Card className="w-full md:w-3/4 min-h-[30vh] z-10 opacity-85">
                     <div className="card-body text-lg">
                         <h2 className="card-title text-2xl">
                             <FileArchive /> Confidentiality
@@ -64,7 +68,7 @@ export default function Terms({
                         </p>
 
                         <p className="mt-5">
-                            <label className="label cursor-pointer font-semibold">
+                            <label className="label cursor-pointer font-semibold w-full truncate text-xs md:text-base">
                                 <input
                                     type="checkbox"
                                     className="checkbox border-indigo-600 bg-orange-300 checked:bg-green-400 checked:text-green-800 checked:border-green-800"
@@ -80,7 +84,7 @@ export default function Terms({
                             <button
                                 aria-disabled={!isAccepted}
                                 className={clsx(
-                                    "btn",
+                                    "btn w-full truncate text-xs md:text-base",
                                     isAccepted
                                         ? "btn-primary"
                                         : "btn-gray text-gray-500 cursor-not-allowed"
@@ -105,7 +109,7 @@ export default function Terms({
                                 ) : (
                                     <>
                                         <HiMiniInformationCircle /> Please agree
-                                        to the Confidentiality agreement to
+                                        to the Confidentiality Agreement to
                                         continue.
                                     </>
                                 )}
@@ -113,14 +117,18 @@ export default function Terms({
                         </div>
                     </div>
                 </Card>
-            ) : (
+            </div>
+        );
+    } else {
+        return (
+            <div className="h-full flex justify-center items-center relative p-2">
                 <ReportForm
                     error_types={error_types}
                     generic_medicines={generic_medicines}
                     medicine_routes={medicine_routes}
                     setIsProceedForm={setIsProceedForm}
                 />
-            )}
-        </div>
-    );
+            </div>
+        );
+    }
 }

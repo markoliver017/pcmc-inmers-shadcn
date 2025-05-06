@@ -22,14 +22,16 @@ export default function LoginDrawer() {
             >
                 <div className="flex justify-center items-center gap-2">
                     <GrLogin />
-                    <span>Sign In</span>
+                    <span className="hidden md:inline-block">Sign In</span>
                 </div>
             </button>
 
             <Drawer ref={drawerRef} direction="right">
                 <DrawerContent className="dark:bg-neutral-900 dark:text-slate-100">
                     <DrawerHeader>
-                        <DrawerTitle className="dark:text-slate-100">SYSTEM ADMINISTRATOR LOGIN</DrawerTitle>
+                        <DrawerTitle className="dark:text-slate-100">
+                            SYSTEM ADMINISTRATOR LOGIN
+                        </DrawerTitle>
                         {/* <DrawerDescription>
                             Lorem ipsum dolor sit amet consectetur adipisicing
                             elit. Nam veniam reiciendis nulla ducimus fuga ad.

@@ -96,7 +96,7 @@ export default function LoginForm() {
             <legend className="fieldset-legend">INMERS Portal</legend>
             <div className="flex flex-col items-center justify-center mb-4">
                 <Image
-                    src="/pcmc_logo.png"
+                    src="/inmers-logo.jpg"
                     className="flex-none"
                     width={75}
                     height={75}

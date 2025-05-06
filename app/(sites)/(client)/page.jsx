@@ -8,6 +8,12 @@ import Skeleton from "@components/ui/skeleton";
 import Terms from "./Terms";
 // import { useSession } from "next-auth/react";
 
+export const metadata = {
+    title: "Inmerse Portal - Dashboard",
+    description:
+        "Integrated National Medication Error Reporting System - Dashboard",
+};
+
 export default function Page() {
     const fetch_error_types = fetchErrorTypes();
     const fetch_generic_medicines = fetchGenericMedicines();

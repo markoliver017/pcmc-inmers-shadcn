@@ -22,14 +22,19 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-    title: "Inmerse Portal - Administrator",
-    description:
-        "Integrated National Medication Error Reporting System - Administrator",
+    title: "Inmerse Portal",
+    description: "Integrated National Medication Error Reporting System",
+    icons: {
+        icon: "/favicon.ico", // /public path
+    },
 };
 
 export default async function RootLayout({ children }) {
     return (
         <html lang="en" suppressHydrationWarning={true}>
+            <head>
+                <link rel="icon" href="/favicon.ico" sizes="any" />
+            </head>
             <body
                 className={`${geistSans.variable} ${geistMono.variable} antialiased`}
             >

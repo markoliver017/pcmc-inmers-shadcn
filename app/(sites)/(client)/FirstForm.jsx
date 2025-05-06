@@ -93,19 +93,23 @@ export default function FirstForm({ setIsProceedForm, onNext }) {
 
     return (
         <section className="flex-1 h-full flex flex-col">
-
             <div className="flex-1">
-
                 <div className="flex flex-wrap sm:gap-5">
                     <h2 className="card-title text-2xl">Patient Details</h2>
-                    <div className="text-orange-600 italic">* required fields</div>
+                    <div className="text-orange-600 italic">
+                        * required fields
+                    </div>
                 </div>
 
                 <div className="mt-5 hidden">
                     <FormLabel labelText="Report Date: <sup>default now</sup>" />
                     <label className="input mt-1 border border-gray-300 dark:text-white">
                         <Calendar className="h-3" />
-                        <input type="date" {...register("report_date")} readOnly />
+                        <input
+                            type="date"
+                            {...register("report_date")}
+                            readOnly
+                        />
                     </label>
                     <p className="text-red-500 text-sm">
                         {errors.report_date && (
@@ -305,8 +309,6 @@ export default function FirstForm({ setIsProceedForm, onNext }) {
                     )}
                 </div>
             </div>
-
-
 
             <div className="flex-none card-actions justify-between mt-5">
                 <button

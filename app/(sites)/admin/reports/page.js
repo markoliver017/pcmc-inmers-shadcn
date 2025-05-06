@@ -4,6 +4,12 @@ import Loading from "./loading";
 import { fetchErrorTypes } from "@/action/error_types";
 import { fetchReports } from "./action";
 
+export const metadata = {
+    title: "Inmerse Portal - Form Responses",
+    description:
+        "Integrated National Medication Error Reporting System - Form Responses",
+};
+
 export default async function Page({ searchParams }) {
     const { start_date, end_date } = await searchParams;
 

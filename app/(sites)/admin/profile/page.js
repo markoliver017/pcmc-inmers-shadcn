@@ -3,6 +3,11 @@ import Password from "./Password";
 import UpdateProfile from "./UpdateProfile";
 import { getAdmin } from "./action";
 import { auth } from "@lib/auth";
+export const metadata = {
+    title: "Inmerse Portal - Profile",
+    description:
+        "Integrated National Medication Error Reporting System - Profile",
+};
 
 export default async function Page() {
     const session = await auth();
