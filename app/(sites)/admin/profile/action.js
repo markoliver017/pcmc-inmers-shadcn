@@ -84,10 +84,10 @@ export async function updateAdmin(formData) {
         await new Promise((resolve) => setTimeout(resolve, 1000));
         // Handle form data here
         const data = Object.fromEntries(formData);
-        console.log("updateAdminnnnnnnnnnn", data);
+        // console.log("updateAdminnnnnnnnnnn", data);
         const { id } = data;
 
-        const file = formData.get("profile_picture"); // "avatar" is the name attribute
+        const file = formData.get("profile_picture");
 
         const admin = await Admin.findByPk(id);
 
@@ -245,6 +245,6 @@ export async function handleProfilePictureUpload(admin, file) {
             }
         }
 
-        return avatarUrl;
+        return process.env.host + avatarUrl;
     }
 }

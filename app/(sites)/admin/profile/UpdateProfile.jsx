@@ -35,6 +35,7 @@ import notify from "@components/ui/notify";
 import { updateAdmin } from "./action";
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import { useSession } from "next-auth/react";
 
 const formSchema = z.object({
     first_name: z.string().min(2, {
@@ -70,16 +71,27 @@ export default function UpdateProfile({
     onClose = () => console.log("closing .."),
     onSave = () => console.log("updating .."),
 }) {
-    // useEffect(() => {
-    //     console.log("Admin>>>>>>>>>>>>>>>>>>>>", admin);
-    // }, [admin]);
-
+    const { data: session, status, update } = useSession();
+    const isCurrentUser = admin?.id == session?.profile?.id || false;
+    console.log("adminnnnnn", admin);
     const [state, setState] = useState({
         isSubmitting: false,
         error: null,
         success: false,
         avatarUrl: admin?.File?.url || "/default_avatar.png",
     });
+
+    let provider = "credentials";
+
+    useEffect(() => {
+        if (status == "authenticated" && isCurrentUser) {
+            const { user } = session;
+            if (user?.image) {
+                setState((prev) => ({ ...prev, avatarUrl: user.image }));
+            }
+            if (session?.provider) provider = session?.provider;
+        }
+    }, [status]);
 
     const form = useForm({
         mode: "onChange",
@@ -89,23 +101,37 @@ export default function UpdateProfile({
             last_name: admin.last_name,
             gender: admin.gender,
             profile_picture: null,
-            // email: admin.email,
         },
     });
-    // console.log(form.watch())
+
+    const profile_pic = form.watch("profile_picture");
+    useEffect(() => {
+        if (!profile_pic) return;
+        setState((prev) => ({
+            ...prev,
+            avatarUrl: URL.createObjectURL(profile_pic),
+        }));
+    }, [profile_pic]);
 
     const onSubmit = async (data) => {
-        setState({ isSubmitting: true, error: null, success: false });
+        setState((prev) => ({ ...prev, isSubmitting: true }));
+
         const formData = new FormData();
+
         formData.append("id", admin.id);
+
         Object.entries(data).forEach(([key, value]) => {
             if (value !== null) {
                 formData.append(key, value);
             }
         });
         const result = await updateAdmin(formData);
+
         setState(result);
+        console.log("update profile", result);
+
         if (result.success) {
+            const { details } = result;
             notify(
                 {
                     error: result.success,
@@ -113,9 +139,20 @@ export default function UpdateProfile({
                 },
                 "success"
             );
-            form.resetField("profile_picture");
+
             onSave();
             onClose();
+
+            if (isCurrentUser) {
+                let newSession = {
+                    name: details?.full_name,
+                    profile: details,
+                };
+                if (result?.avatarUrl) {
+                    newSession.image = result.avatarUrl;
+                }
+                update(newSession); /* update session */
+            }
         } else if (result.details?.length) {
             notify(
                 {
@@ -223,30 +260,33 @@ export default function UpdateProfile({
                                     </FormItem>
                                 )}
                             />
-
-                            <FormField
-                                control={form.control}
-                                name="profile_picture"
-                                render={({
-                                    field: { onChange, value, ...field },
-                                }) => (
-                                    <FormItem className="hidden">
-                                        <FormLabel>
-                                            New Profile Picture
-                                        </FormLabel>
-                                        <FormControl>
-                                            <Input
-                                                type="file"
-                                                onChange={(e) =>
-                                                    onChange(e.target.files[0])
-                                                }
-                                                {...field}
-                                            />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
+                            {provider == "credentials" && (
+                                <FormField
+                                    control={form.control}
+                                    name="profile_picture"
+                                    render={({
+                                        field: { onChange, value, ...field },
+                                    }) => (
+                                        <FormItem className="hidden">
+                                            <FormLabel>
+                                                New Profile Picture
+                                            </FormLabel>
+                                            <FormControl>
+                                                <Input
+                                                    type="file"
+                                                    onChange={(e) =>
+                                                        onChange(
+                                                            e.target.files[0]
+                                                        )
+                                                    }
+                                                    {...field}
+                                                />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                            )}
                         </div>
                     </CardContent>
                     <CardFooter className="flex justify-end">

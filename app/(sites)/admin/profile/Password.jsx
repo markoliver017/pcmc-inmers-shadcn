@@ -23,11 +23,9 @@ import {
     FormLabel,
     FormMessage,
 } from "@components/ui/form";
-import Link from "next/link";
 import notify from "@components/ui/notify";
 import { changePassword } from "./action";
-import { useEffect, useState } from "react";
-import Image from "next/image";
+import { useState } from "react";
 import { signOut, useSession } from "next-auth/react";
 import SweetAlert from "@components/ui/SweetAlert";
 
@@ -57,12 +55,7 @@ export default function Password({
     onSave = () => console.log("updating .."),
 }) {
     const session = useSession();
-    const isCurrentUser = admin?.id == session?.data?.user?.id || false;
-    // useEffect(() => {
-    //     console.log("Admin>>>>>>>>>>>>>>>>>>>>", admin.id);
-    //     console.log("session>>>>>>>>>>>>>>>>>>>>", session.data.user.id);
-    //     console.log("isCurrentUser>>>>>>>>>>>>>>>>>>>>", isCurrentUser);
-    // }, [admin]);
+    const isCurrentUser = admin?.id == session?.data?.profile?.id || false;
 
     const [state, setState] = useState({
         isSubmitting: false,

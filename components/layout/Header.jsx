@@ -31,21 +31,22 @@ const Header = ({
     admin = {
         name: "Dela Cruz, Juan",
         email: "admin@email.com",
-        avatar: "https://avatar.iran.liara.run/public/boy",
+        image: "https://avatar.iran.liara.run/public/boy",
     },
 }) => {
     let isLoggedIn = false;
     const { data: session, status } = useSession();
 
     if (status == "authenticated") {
-        const { user } = session;
+        const { user, profile } = session;
         isLoggedIn = true;
         admin.name = user?.name;
         admin.email = user?.email;
-        admin.avatar =
-            user?.avatar || user?.gender == "female"
-                ? "https://avatar.iran.liara.run/public/girl"
-                : "https://avatar.iran.liara.run/public/boy";
+        admin.image = user?.image
+            ? user?.image
+            : profile?.gender == "female"
+            ? "https://avatar.iran.liara.run/public/girl"
+            : "https://avatar.iran.liara.run/public/boy";
     }
 
     const handleLogOut = () => {
@@ -150,7 +151,7 @@ const Header = ({
                                 <Button variant="ghost" className="h-8 w-8 p-0">
                                     <span className="sr-only">Open menu</span>
                                     <Image
-                                        src={admin.avatar}
+                                        src={admin.image}
                                         className="flex-none rounded-4xl"
                                         width={50}
                                         height={50}

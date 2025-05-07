@@ -4,14 +4,14 @@ import React, { useState } from "react";
 import { Key, Mail } from "lucide-react";
 import Image from "next/image";
 import { IoMdLogIn } from "react-icons/io";
-import { set, useForm } from "react-hook-form";
-import notify from "@components/ui/notify";
+import { useForm } from "react-hook-form";
+
 import { toast } from "react-toastify";
 // import { signIn } from "@lib/auth";
-import { signIn, useSession } from "next-auth/react";
+import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { GitHubLogoIcon } from "@radix-ui/react-icons";
-import { FaGoogle } from "react-icons/fa";
+import { GrGoogle } from "react-icons/gr";
 
 const credentials = {
     email: "admin@email.com",
@@ -20,9 +20,12 @@ const credentials = {
 
 export default function LoginForm() {
     const router = useRouter();
-    const session = useSession();
-    console.log(session);
-    const [isLoading, setIsLoading] = useState(false);
+
+    const [isLoading, setIsLoading] = useState({
+        credentials: false,
+        github: false,
+        google: false,
+    });
     const {
         register,
         watch,
@@ -40,7 +43,7 @@ export default function LoginForm() {
     // console.log("form errors", errors);
 
     const onSubmit = async (data) => {
-        setIsLoading(true);
+        setIsLoading((prev) => ({ ...prev, credentials: true }));
         const { email, password } = data;
         const res = await signIn("credentials", {
             email,
@@ -50,7 +53,6 @@ export default function LoginForm() {
         });
 
         setIsLoading(false);
-        // console.log("res>>>>>>>>>", res)
         if (res.ok && res.error == undefined) {
             toast.success("Login successful!", {
                 message: "Login successful!",
@@ -63,32 +65,23 @@ export default function LoginForm() {
                 type: "manual",
                 message: "Invalid email or password!",
             });
+            setIsLoading((prev) => ({ ...prev, credentials: false }));
         }
-    }
-    const onSubmitGithub = async () => {
-
-        const res = await signIn("github", {
-            // redirect: false,
-            callbackUrl: "/admin", // redirect after login
-        });
-
-        console.log("res>>>>>>>>>", res)
-
-        // if (res.ok && res.error == undefined) {
-        //     toast.success("Login successful!", {
-        //         message: "Login successful!",
-        //         position: "top-right",
-        //     });
-
-        //     router.push(res.url);
-        // } else {
-        //     setError("password", {
-        //         type: "manual",
-        //         message: "Invalid email or password!",
-        //     });
-        // }
-
     };
+
+    // if (res.ok && res.error == undefined) {
+    //     toast.success("Login successful!", {
+    //         message: "Login successful!",
+    //         position: "top-right",
+    //     });
+
+    //     router.push(res.url);
+    // } else {
+    //     setError("password", {
+    //         type: "manual",
+    //         message: "Invalid email or password!",
+    //     });
+    // }
 
     return (
         <>
@@ -129,7 +122,7 @@ export default function LoginForm() {
                                 },
                             })}
                             placeholder="mail@site.com"
-                        // required
+                            // required
                         />
                     </label>
                     <p className="text-red-500 text-sm">
@@ -159,12 +152,14 @@ export default function LoginForm() {
                         />
                     </label>
                     <p className="text-red-500 text-sm">
-                        {errors.password && <span>{errors.password?.message}</span>}
+                        {errors.password && (
+                            <span>{errors.password?.message}</span>
+                        )}
                     </p>
                 </div>
 
                 <button className="btn btn-neutral mt-4 hover:bg-neutral-800 hover:text-green-300">
-                    {isLoading ? (
+                    {isLoading?.credentials ? (
                         <>
                             <span className="loading loading-bars loading-xs"></span>
                             Signing In...
@@ -177,21 +172,53 @@ export default function LoginForm() {
                     )}
                 </button>
             </form>
-            <div className="flex flex-col gap-3">
 
+            <div className="divider py-5">
+                or Sign In with the following options
+            </div>
+
+            <div className="flex flex-col gap-2 px-4">
                 <button
-                    onClick={onSubmitGithub}
-                    className="btn btn-neutral mt-4 w-full hover:bg-neutral-800 hover:text-green-300">
-                    <GitHubLogoIcon />
-                    Sign In
+                    onClick={() => {
+                        setIsLoading((prev) => ({ ...prev, google: true }));
+                        signIn("google", {
+                            callbackUrl: "/admin",
+                        });
+                    }}
+                    className="btn bg-[#4081EC] mt-4 w-full hover:bg-neutral-800 hover:text-green-300"
+                >
+                    {isLoading?.google ? (
+                        <>
+                            <span className="loading loading-bars loading-xs"></span>
+                            Signing In...
+                        </>
+                    ) : (
+                        <>
+                            <GrGoogle />
+                            Sign In with Google
+                        </>
+                    )}
                 </button>
                 <button
-                    onClick={() => signIn("google", {
-                        callbackUrl: "/admin",
-                    })}
-                    className="btn btn-neutral mt-4 w-full hover:bg-neutral-800 hover:text-green-300">
-                    <FaGoogle />
-                    Sign In
+                    onClick={() => {
+                        signIn("github", {
+                            callbackUrl: "/admin",
+                        });
+                        setIsLoading((prev) => ({ ...prev, github: true }));
+                    }}
+                    className="btn bg-violet-300 mt-4 w-full hover:bg-neutral-800 hover:text-green-300"
+                >
+                    {isLoading?.github ? (
+                        <>
+                            <span className="loading loading-bars loading-xs"></span>
+                            Signing In...
+                        </>
+                    ) : (
+                        <>
+                            <GitHubLogoIcon />
+                            Sign In with Github
+                        </>
+                    )}
                 </button>
             </div>
         </>
