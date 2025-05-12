@@ -70,16 +70,15 @@ export default function SecondForm({
 
     return (
         <section className="flex-1 h-full flex flex-col">
-
             <div className="flex-1">
-
-
                 <div className="flex flex-wrap sm:gap-5">
                     <h2 className="card-title text-2xl">
                         Medication Error Details
                     </h2>
 
-                    <div className="text-orange-600 italic">* required fields</div>
+                    <div className="text-orange-600 italic">
+                        * required fields
+                    </div>
                 </div>
                 <div className="mt-5">
                     <FormLabel labelText="Type of Medication Error: *" />
@@ -87,7 +86,9 @@ export default function SecondForm({
                         <Controller
                             control={control}
                             name="error_type_id"
-                            render={({ field: { onChange, value, name, ref } }) => {
+                            render={({
+                                field: { onChange, value, name, ref },
+                            }) => {
                                 const selectedOption =
                                     errorTypeOptions.find(
                                         (option) => option.id === value
@@ -104,7 +105,9 @@ export default function SecondForm({
                                                 "selected_error_type",
                                                 selectedOption
                                             );
-                                            setSelectedErrorType(selectedOption);
+                                            setSelectedErrorType(
+                                                selectedOption
+                                            );
                                             onChange(
                                                 selectedOption
                                                     ? selectedOption.id
@@ -137,7 +140,9 @@ export default function SecondForm({
                 {/****** Medicine Details  *********/}
                 {selectedErrorType && selectedErrorType.is_medicine_needed && (
                     <Card className="mt-5">
-                        <CardTitle className="p-5 pb-2">Medicine Details</CardTitle>
+                        <CardTitle className="p-5 pb-2">
+                            Medicine Details
+                        </CardTitle>
                         <CardDescription className="px-10 pb-2">
                             Select the generic name and routes. Click on “Add
                             another medicine” for each new medicine you need to
@@ -156,7 +161,9 @@ export default function SecondForm({
                                                 <button
                                                     type="button"
                                                     disabled={index == 0}
-                                                    onClick={() => remove(index)}
+                                                    onClick={() =>
+                                                        remove(index)
+                                                    }
                                                     className="btn btn-error btn-sm btn-outline"
                                                 >
                                                     <MdDeleteForever />
@@ -222,19 +229,19 @@ export default function SecondForm({
                                                     }}
                                                 />
                                             </fieldset>
-                                            {errors?.form_2_details?.medicines?.[
-                                                index
-                                            ]?.medicine_generic_id && (
-                                                    <p className="text-red-500 text-sm flex-items-center">
-                                                        <BiError />
-                                                        {
-                                                            errors?.form_2_details
-                                                                ?.medicines[index]
-                                                                .medicine_generic_id
-                                                                .message
-                                                        }
-                                                    </p>
-                                                )}
+                                            {errors?.form_2_details
+                                                ?.medicines?.[index]
+                                                ?.medicine_generic_id && (
+                                                <p className="text-red-500 text-sm flex-items-center">
+                                                    <BiError />
+                                                    {
+                                                        errors?.form_2_details
+                                                            ?.medicines[index]
+                                                            .medicine_generic_id
+                                                            .message
+                                                    }
+                                                </p>
+                                            )}
                                         </div>
 
                                         <div>
@@ -294,19 +301,19 @@ export default function SecondForm({
                                                     }}
                                                 />
                                             </fieldset>
-                                            {errors?.form_2_details?.medicines?.[
-                                                index
-                                            ]?.medicine_route_id && (
-                                                    <p className="text-red-500 text-sm flex-items-center">
-                                                        <BiError />
-                                                        {
-                                                            errors?.form_2_details
-                                                                ?.medicines[index]
-                                                                .medicine_route_id
-                                                                .message
-                                                        }
-                                                    </p>
-                                                )}
+                                            {errors?.form_2_details
+                                                ?.medicines?.[index]
+                                                ?.medicine_route_id && (
+                                                <p className="text-red-500 text-sm flex-items-center">
+                                                    <BiError />
+                                                    {
+                                                        errors?.form_2_details
+                                                            ?.medicines[index]
+                                                            .medicine_route_id
+                                                            .message
+                                                    }
+                                                </p>
+                                            )}
                                         </div>
                                     </CardContent>
                                 </Card>
@@ -350,7 +357,10 @@ export default function SecondForm({
                         {errors?.form_2_details?.other_error_type && (
                             <p className="text-red-500 text-sm flex-items-center">
                                 <BiError />
-                                {errors?.form_2_details?.other_error_type?.message}
+                                {
+                                    errors?.form_2_details?.other_error_type
+                                        ?.message
+                                }
                             </p>
                         )}
                     </div>
