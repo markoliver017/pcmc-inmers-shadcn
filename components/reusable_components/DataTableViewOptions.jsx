@@ -33,6 +33,13 @@ export function DataTableViewOptions({ table, toggleLabels }) {
                             column.getCanHide()
                     )
                     .map((column) => {
+                        let key = (toggleLabels && toggleLabels[column.id]) || column.id;
+                        if (key == "report_date") {
+                            key = "date_reported"
+                        }
+                        if (key == "error_date") {
+                            key = "medication_error_date"
+                        }
                         return (
                             <DropdownMenuCheckboxItem
                                 key={column.id}
@@ -43,8 +50,7 @@ export function DataTableViewOptions({ table, toggleLabels }) {
                                 }
                                 onSelect={(event) => event.preventDefault()}
                             >
-                                {(toggleLabels && toggleLabels[column.id]) ||
-                                    column.id}
+                                {key.replaceAll("_", " ")}
                             </DropdownMenuCheckboxItem>
                         );
                     })}

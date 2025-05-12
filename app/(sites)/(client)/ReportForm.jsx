@@ -162,6 +162,7 @@ export default function ReportForm({
     const [selectedErrorType, setSelectedErrorType] = useState({});
     const [genericMedicineOptions, setGenericMedicineOptions] = useState([]);
     const [medicineRouteOptions, setMedicineRouteOptions] = useState([]);
+    const [duplicates, setDuplicates] = useState([]);
     const [sectionNo, setSectionNo] = useState(0);
 
     const handleNext = (n) => {
@@ -298,7 +299,10 @@ export default function ReportForm({
                             )}
 
                             {sectionNo == 4 ? (
-                                <FifthForm onNext={handleNext} />
+                                <FifthForm
+                                    onNext={handleNext}
+                                    setDuplicates={setDuplicates}
+                                />
                             ) : (
                                 ""
                             )}
@@ -312,6 +316,7 @@ export default function ReportForm({
                                         genericMedicineOptions
                                     }
                                     medicineRouteOptions={medicineRouteOptions}
+                                    duplicates={duplicates}
                                 />
                             ) : (
                                 ""

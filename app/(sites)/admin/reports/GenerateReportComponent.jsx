@@ -1,5 +1,11 @@
 "use client";
 
+const headerLabel = {
+    id: "ID#",
+    report_date: "Report Date",
+    error_date: "Medication Error Date",
+    patient_age: "Patient Age",
+}
 import DateRangePickerComponent from "@components/reusable_components/DateRangePickerComponent";
 import { Calendar, Filter } from "lucide-react";
 import moment from "moment";
@@ -12,6 +18,7 @@ import { getMedicationErrorReportHtml } from "@lib/pdf-html-template/getPdfHtmlT
 
 export default function GenerateReport({
     data,
+    visibleKeys,
     onLoad,
     onDataChange,
     visibleData,
@@ -20,7 +27,7 @@ export default function GenerateReport({
     const start_date = searchParams.get("start_date");
     const end_date = searchParams.get("end_date");
 
-    // console.log("current visibleData", visibleData);
+    console.log("current visibleKeys", visibleKeys);
 
     const [htmlReport, setHtmlReport] = useState();
     const [isGenerating, setIsGenerating] = useState();
@@ -28,10 +35,10 @@ export default function GenerateReport({
         {
             startDate: start_date
                 ? moment(start_date, "YYYY-MM-DD").toDate()
-                : moment().startOf("month").toDate(),
+                : null,
             endDate: end_date
                 ? moment(end_date, "YYYY-MM-DD").toDate()
-                : moment().toDate(),
+                : null,
             key: "selection",
         },
     ]);
@@ -46,8 +53,13 @@ export default function GenerateReport({
 
     useEffect(() => {
         // console.log("data", data);
-        const start_date = moment(dateRange[0].startDate).format("MMMM DD - ");
-        const end_date = moment(dateRange[0].endDate).format("MMMM DD, YYYY");
+        let reportTitle = `Medication Error Summary Report`;
+        if (dateRange[0].startDate && dateRange[0].endDate) {
+            const start_date = moment(dateRange[0].startDate).format("MMMM DD - ");
+            const end_date = moment(dateRange[0].endDate).format("MMMM DD, YYYY");
+            reportTitle = `Medication Error Summary Report for ${start_date}${end_date}`;
+        };
+
 
         const reports = data.map((row) => ({
             ...row,
@@ -59,26 +71,39 @@ export default function GenerateReport({
 
         const htmls = getMedicationErrorReportHtml(
             reports,
-            `Medication Error Summary Report (${start_date}${end_date})`
+            reportTitle
         );
 
         setHtmlReport(htmls);
     }, [data]);
 
-    useEffect(() => {
-        const start = moment(dateRange[0].startDate).format("YYYY-MM-DD");
-        const end = moment(dateRange[0].endDate).format("YYYY-MM-DD");
 
-        if (
-            prevStart.current?.start == start &&
-            prevStart.current?.end == end
-        ) {
-            // console.log("skipppppppppppp", prevStart.current);
-            return;
+    useEffect(() => {
+        console.log("dateRangedateRangedateRange", dateRange)
+        let start = null;
+        let end = null;
+        if (dateRange[0].startDate && dateRange[0].endDate) {
+            start = moment(dateRange[0].startDate).format("YYYY-MM-DD");
+            end = moment(dateRange[0].endDate).format("YYYY-MM-DD");
         }
 
-        prevStart.current = start;
+        console.log("heree 1")
+        if (
+            prevStart.current?.startDate == start &&
+            prevStart.current?.endDate == end
+        ) {
+            console.log("prevStart.current?.start", prevStart.current?.start)
+            console.log("prevStart.current?.end", prevStart.current?.end)
+            console.log("prevStart.current?.start", start)
+            console.log("prevStart.current?.end", end)
+            console.log("heree stop")
+            return;
+        }
+        console.log("heree 2")
 
+        prevStart.current = dateRange[0];
+
+        console.log("prevStart.current", prevStart.current);
         // console.log("filterringggggggggggggggg");
 
         onLoad();
@@ -117,12 +142,8 @@ export default function GenerateReport({
 
         const blob = await res.blob();
         const url = window.URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = "generated.pdf";
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
+        window.open(url, '_blank')
+
         window.URL.revokeObjectURL(url);
         setIsGenerating(false);
     };
@@ -135,6 +156,7 @@ export default function GenerateReport({
                 <DateRangePickerComponent
                     state={dateRange}
                     handleSelect={handleDateRangeChange}
+                    setDateRange={setDateRange}
                 />
             </form>
 

@@ -33,32 +33,37 @@ export async function GET(request) {
     console.log("startDate", startDate);
     console.log("endDate", endDate);
 
-    try {
-        const reports = await Report.findAll({
-            where: {
-                error_date: {
-                    [Op.gte]: startDate,
-                    [Op.lte]: endDate,
-                },
+    const queryOptions = {
+        order: [["createdAt", "DESC"]],
+        include: [
+            {
+                attributes: ["id", "name", "is_medicine_needed"],
+                model: ErrorType,
+                as: "error_type",
+                required: false,
             },
-            order: [["createdAt", "DESC"]],
-            include: [
-                {
-                    attributes: ["id", "name", "is_medicine_needed"],
-                    model: ErrorType,
-                    as: "error_type",
-                    required: false,
-                },
-                {
-                    attributes: ["id"],
-                    model: ReportMedicineRoute,
-                    include: [
-                        { model: GenericMedicine, attributes: ["name"] },
-                        { model: RouteMedicine, attributes: ["name"] },
-                    ],
-                },
-            ],
-        });
+            {
+                attributes: ["id"],
+                model: ReportMedicineRoute,
+                include: [
+                    { model: GenericMedicine, attributes: ["name"] },
+                    { model: RouteMedicine, attributes: ["name"] },
+                ],
+            },
+        ],
+    }
+
+    if (start_date && end_date) {
+        queryOptions.where = {
+            error_date: {
+                [Op.gte]: start_date,
+                [Op.lte]: end_date,
+            },
+        };
+    }
+
+    try {
+        const reports = await Report.findAll(queryOptions);
 
         return NextResponse.json({ success: true, reports }, { status: 200 });
     } catch (error) {

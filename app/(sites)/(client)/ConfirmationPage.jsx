@@ -9,6 +9,9 @@ import clsx from "clsx";
 import Preloader2 from "@components/layout/Preloader2";
 import notify from "@components/ui/notify";
 import { downloadReport } from "./report.utils";
+import { getMedicationErrorReportHtml } from "@lib/pdf-html-template/getPdfHtmlTemplate";
+import { FaFilePdf } from "react-icons/fa";
+import { IoWarning } from "react-icons/io5";
 
 export default function ConfirmationPage({
     onNext,
@@ -16,13 +19,42 @@ export default function ConfirmationPage({
     methods,
     genericMedicineOptions,
     medicineRouteOptions,
+    duplicates
 }) {
     const { watch, handleSubmit } = methods;
     const [isConfirmed, setIsConfirmed] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [isDownLoading, setIsDownLoading] = useState(false);
+    const [isGenerating, setIsGenerating] = useState(false);
 
-    // console.log("medicineRouteOptions", medicineRouteOptions);
+
+    const generateDuplicateReport = async () => {
+        const htmlReport = getMedicationErrorReportHtml(
+            duplicates,
+            `Medication Error Report (${watch('error_date')})`
+        );
+        setIsGenerating(true);
+        const res = await fetch("/api/generate-pdf", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ html: htmlReport }),
+        });
+
+        if (!res.ok) {
+            console.error(`Failed to generate PDF: ${res.statusText}`);
+            return;
+        }
+
+        const blob = await res.blob();
+        const url = window.URL.createObjectURL(blob);
+        window.open(url, '_blank');
+        window.URL.revokeObjectURL(url);
+
+        setIsGenerating(false);
+    };
+
     const onFinalSubmit = () => {
         SweetAlert({
             title: "Confirmation",
@@ -139,8 +171,8 @@ export default function ConfirmationPage({
     const error_type =
         data.selected_error_type?.value == "Others"
             ? `${data.selected_error_type?.label} <i>(${watch(
-                  "other_error_type"
-              )})</i>`
+                "other_error_type"
+            )})</i>`
             : data.selected_error_type?.label;
 
     return (
@@ -161,6 +193,25 @@ export default function ConfirmationPage({
                     {isToggleReview ? "Hide Response" : "View Response"}
                 </button> */}
             </div>
+            {duplicates && duplicates.length ? (
+                <button
+                    type="button"
+                    onClick={generateDuplicateReport}
+                    className="btn btn-block btn-warning hover:bg-neutral-800 hover:text-green-300"
+                >
+                    {isGenerating ? (
+                        <>
+                            <span className="loading loading-bars loading-xs"></span>
+                            Generating...
+                        </>
+                    ) : (
+                        <>
+                            <IoWarning />
+                            WARNING: Similar reports found – Click to view
+                        </>
+                    )}
+                </button>
+            ) : ''}
             <div className="card shadow-md mt-2">
                 <div className="card-body overflow-x-auto rounded-box border border-base-content/5 bg-base-100">
                     <table className="table">

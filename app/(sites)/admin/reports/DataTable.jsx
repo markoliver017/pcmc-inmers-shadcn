@@ -43,7 +43,7 @@ export function DataTable({ get_reports, get_error_types }) {
     const [globalFilter, setGlobalFilter] = useState([]);
     const [columnVisibility, setColumnVisibility] = useState({
         id: false,
-        date_reported: false,
+        report_date: false,
     });
     const [rowSelection, setRowSelection] = useState({});
     // const [userOptions, setUserOptions] = useState([]);
@@ -90,6 +90,16 @@ export function DataTable({ get_reports, get_error_types }) {
         return selectedRows.map((row) => row.original);
     };
 
+    const visibleKeys = columns
+        .filter((col) => {
+            const accesorKey = col?.accessorKey?.replaceAll(".", "_");
+            return accesorKey && columnVisibility[accesorKey] !== false
+        }
+        )
+        .map((col) => col.accessorKey);
+
+
+
     function getVisibleData(data, columns, columnVisibility) {
         // Flatten columns with accessorKey only
         const visibleKeys = columns
@@ -129,10 +139,11 @@ export function DataTable({ get_reports, get_error_types }) {
     return (
         <div className="p-2">
             <GenerateReport
-                data={data}
+                data={data} //for pdf reports
+                visibleKeys={visibleKeys} //for pdf reports
                 onLoad={() => setIsLoading(true)}
                 onDataChange={handleChangeData}
-                visibleData={getVisibleData(data, columns, columnVisibility)}
+                visibleData={getVisibleData(data, columns, columnVisibility)} //for excel report
             />
 
             {isLoading ? (
@@ -158,12 +169,12 @@ export function DataTable({ get_reports, get_error_types }) {
                                     options={errorTypeOptions}
                                     onValueChange={(selectedOptions) => {
                                         table
-                                            .getColumn("error_type")
+                                            .getColumn("error_type_name")
                                             ?.setFilterValue(selectedOptions);
                                     }}
                                     value={
                                         table
-                                            .getColumn("error_type")
+                                            .getColumn("error_type_name")
                                             ?.getFilterValue() ?? []
                                     }
                                     placeholder={
@@ -242,10 +253,10 @@ export function DataTable({ get_reports, get_error_types }) {
                                                 {header.isPlaceholder
                                                     ? null
                                                     : flexRender(
-                                                          header.column
-                                                              .columnDef.header,
-                                                          header.getContext()
-                                                      )}
+                                                        header.column
+                                                            .columnDef.header,
+                                                        header.getContext()
+                                                    )}
                                             </TableHead>
                                         ))}
                                     </TableRow>

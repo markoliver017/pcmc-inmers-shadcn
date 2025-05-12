@@ -17,7 +17,6 @@ const Sidebar = ({
     },
 }) => {
     const { data: session, status } = useSession();
-    const sessionData = useSession();
     const [isCollapsed, setIsCollapsed] = useState(false);
     const menus = usePagesStore((state) => state.pages);
     const currentRoute = usePathname();
@@ -53,8 +52,8 @@ const Sidebar = ({
     admin.image = user?.image
         ? user?.image
         : profile?.gender == "female"
-        ? "https://avatar.iran.liara.run/public/girl"
-        : "https://avatar.iran.liara.run/public/boy";
+            ? "https://avatar.iran.liara.run/public/girl"
+            : "https://avatar.iran.liara.run/public/boy";
 
     const handleToggleSidebar = () => {
         setIsCollapsed(!isCollapsed);

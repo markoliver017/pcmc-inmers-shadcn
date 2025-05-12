@@ -21,8 +21,6 @@ export default function ThirdForm({ onNext }) {
         const valid = await trigger([
             "exact_prescription",
             "incident_description",
-            "workplace_environment",
-            // "patient_condition",
         ]);
         if (valid) {
             onNext(1);
@@ -97,31 +95,6 @@ export default function ThirdForm({ onNext }) {
                     )}
                 </div>
 
-                <div className="mt-5">
-                    <FormLabel labelText="Workplace environment description before, during, and after the medication error incident: *" />
-                    <fieldset className="fieldset">
-                        <textarea
-                            className="textarea h-24 w-full border border-gray-300"
-                            placeholder="Your answer"
-                            name="workplace_environment"
-                            {...register("workplace_environment", {
-                                required:
-                                    "Workplace environment description is required.",
-                                minLength: {
-                                    value: 3,
-                                    message:
-                                        "Workplace environment description must be at least 3 characters long.",
-                                },
-                            })}
-                        ></textarea>
-                    </fieldset>
-                    {errors.workplace_environment && (
-                        <p className="text-red-500 text-sm flex-items-center">
-                            <BiError />
-                            {errors.workplace_environment?.message}
-                        </p>
-                    )}
-                </div>
             </div>
             <div className="card-actions justify-between mt-5">
                 <button
