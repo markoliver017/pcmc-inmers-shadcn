@@ -71,60 +71,59 @@ export default function ConfirmationPage({
                                 onCancel: () => resetForm(),
                             });
                         } catch (data) {
+                            let detailContent = null;
                             if (
                                 data?.message == "Validation failed" &&
                                 Array.isArray(data.details)
                             ) {
                                 const { error, details, message } = data;
 
-                                let detailContent = null;
-
-                                if (Array.isArray(details)) {
-                                    // If it's an array, show a list
-                                    detailContent = (
-                                        <ul className="list-disc list-inside">
-                                            {details.map((err, index) => (
-                                                <li key={index}>{err}</li>
-                                            ))}
-                                        </ul>
-                                    );
-                                } else if (
-                                    typeof details === "object" &&
-                                    details !== null
-                                ) {
-                                    // If it's an object, show key-value pairs
-                                    detailContent = (
-                                        <ul className="list-disc list-inside">
-                                            {Object.entries(details).map(
-                                                ([key, val], index) => (
-                                                    <li key={index}>
-                                                        <strong>{key}:</strong>{" "}
-                                                        {val}
-                                                    </li>
-                                                )
-                                            )}
-                                        </ul>
-                                    );
-                                }
-
-                                notify({
-                                    error,
-                                    message: (
-                                        <div tabIndex={0} className="collapse">
-                                            <div className="collapse-title font-semibold">
-                                                {message}
-                                                <br />
-                                                <small className="link link-warning">
-                                                    See details
-                                                </small>
-                                            </div>
-                                            <div className="collapse-content text-sm">
-                                                {detailContent}
-                                            </div>
-                                        </div>
-                                    ),
-                                });
+                                // If it's an array, show a list
+                                detailContent = (
+                                    <ul className="list-disc list-inside">
+                                        {details.map((err, index) => (
+                                            <li key={index}>{err}</li>
+                                        ))}
+                                    </ul>
+                                );
                             }
+
+                            // If it's an object, show key-value pairs
+                            if (
+                                typeof details === "object" &&
+                                details !== null
+                            ) {
+                                detailContent = (
+                                    <ul className="list-disc list-inside">
+                                        {Object.entries(details).map(
+                                            ([key, val], index) => (
+                                                <li key={index}>
+                                                    <strong>{key}:</strong>{" "}
+                                                    {val}
+                                                </li>
+                                            )
+                                        )}
+                                    </ul>
+                                );
+                            }
+
+                            notify({
+                                error,
+                                message: (
+                                    <div tabIndex={0} className="collapse">
+                                        <div className="collapse-title font-semibold">
+                                            {message}
+                                            <br />
+                                            <small className="link link-warning">
+                                                See details
+                                            </small>
+                                        </div>
+                                        <div className="collapse-content text-sm">
+                                            {detailContent}
+                                        </div>
+                                    </div>
+                                ),
+                            });
                         } finally {
                             setIsLoading(false);
                         }
