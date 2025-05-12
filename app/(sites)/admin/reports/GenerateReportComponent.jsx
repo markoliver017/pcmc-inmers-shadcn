@@ -1,11 +1,5 @@
 "use client";
 
-const headerLabel = {
-    id: "ID#",
-    report_date: "Report Date",
-    error_date: "Medication Error Date",
-    patient_age: "Patient Age",
-}
 import DateRangePickerComponent from "@components/reusable_components/DateRangePickerComponent";
 import { Calendar, Filter } from "lucide-react";
 import moment from "moment";
