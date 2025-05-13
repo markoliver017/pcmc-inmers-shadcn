@@ -48,7 +48,7 @@ export function getColumns() {
             },
         },
         {
-            id: "medication_error_date",
+            // id: "medication_error_date",
             accessorKey: "error_date",
             header: ({ column }) => (
                 <DataTableColumnHeader
@@ -66,7 +66,7 @@ export function getColumns() {
             filterFn: "columnFilter",
         },
         {
-            id: "date_reported",
+            // id: "date_reported",
             accessorKey: "report_date",
             header: ({ column }) => (
                 <DataTableColumnHeader column={column} title="Date Reported" />
@@ -74,7 +74,6 @@ export function getColumns() {
             filterFn: "columnFilter",
         },
         {
-            id: "error_type",
             accessorKey: "error_type.name",
             header: ({ column }) => (
                 <DataTableColumnHeader
@@ -98,26 +97,62 @@ export function getColumns() {
             },
             filterFn: "columnFilter",
         },
-
         {
             accessorKey: "patient_sex",
             header: ({ column }) => (
-                <DataTableColumnHeader column={column} title="Patient Sex" />
+                <DataTableColumnHeader column={column} title="Sex" />
             ),
+            filterFn: "columnFilter",
+        },
+        {
+            accessorKey: "patient_age",
+            header: ({ column }) => (
+                <DataTableColumnHeader column={column} title="Age" />
+            ),
+            cell: ({ row, getValue }) => {
+                const data = row.original;
+                return (
+                    <div className="max-h-40 overflow-scroll">
+                        {Math.round(getValue())} {data.age_unit.toUpperCase()}
+                    </div>
+                );
+
+            },
             filterFn: "columnFilter",
         },
         {
             accessorKey: "patient_weight",
             header: ({ column }) => (
-                <DataTableColumnHeader column={column} title="Patient Weight" />
+                <DataTableColumnHeader column={column} title="Weight" />
             ),
+            cell: ({ row, getValue }) => {
+                const data = row.original;
+                return (
+                    <div className="max-h-40 overflow-scroll">
+                        {getValue()} {data.weight_unit.toUpperCase()}
+                    </div>
+                );
+
+            },
             filterFn: "columnFilter",
         },
         {
             accessorKey: "patient_height",
             header: ({ column }) => (
-                <DataTableColumnHeader column={column} title="Patient Height" />
+                <DataTableColumnHeader column={column} title="Height" />
             ),
+            cell: ({ row }) => {
+                const data = row.original;
+                const label = data.patient_height.toLowerCase() != "n/a" ?
+                    `${data.patient_height} ${data.height_unit}` :
+                    "N/A";
+                return (
+                    <div className="max-h-40 overflow-scroll">
+                        {label}
+                    </div>
+                );
+
+            },
             filterFn: "columnFilter",
         },
         {
@@ -128,6 +163,14 @@ export function getColumns() {
                     title="Exact Prescription"
                 />
             ),
+            cell: ({ getValue }) => {
+                return (
+                    <div className="max-h-40 overflow-scroll">
+                        {getValue()}
+                    </div>
+                );
+
+            },
             filterFn: "columnFilter",
         },
         {
@@ -138,6 +181,14 @@ export function getColumns() {
                     title="Incident Description"
                 />
             ),
+            cell: ({ getValue }) => {
+                return (
+                    <div className="max-h-40 overflow-scroll">
+                        {getValue()}
+                    </div>
+                );
+
+            },
             filterFn: "columnFilter",
         },
         {
@@ -148,6 +199,14 @@ export function getColumns() {
                     title="Workplace Environment"
                 />
             ),
+            cell: ({ getValue }) => {
+                return (
+                    <div className="max-h-40 overflow-scroll">
+                        {getValue()}
+                    </div>
+                );
+
+            },
             filterFn: "columnFilter",
         },
         {
@@ -158,6 +217,14 @@ export function getColumns() {
                     title="Patient Condition"
                 />
             ),
+            cell: ({ getValue }) => {
+                return (
+                    <div className="max-h-40 overflow-scroll">
+                        {getValue()}
+                    </div>
+                );
+
+            },
             filterFn: "columnFilter",
         },
         {
@@ -168,6 +235,14 @@ export function getColumns() {
                     title="Immediate Action"
                 />
             ),
+            cell: ({ getValue }) => {
+                return (
+                    <div className="max-h-40 overflow-scroll">
+                        {getValue()}
+                    </div>
+                );
+
+            },
             filterFn: "columnFilter",
         },
         {
@@ -178,6 +253,14 @@ export function getColumns() {
                     title="Corrective Action"
                 />
             ),
+            cell: ({ getValue }) => {
+                return (
+                    <div className="max-h-40 overflow-scroll">
+                        {getValue()}
+                    </div>
+                );
+
+            },
             filterFn: "columnFilter",
         },
         {
@@ -188,6 +271,14 @@ export function getColumns() {
                     title="Preventive Action"
                 />
             ),
+            cell: ({ getValue }) => {
+                return (
+                    <div className="max-h-40 overflow-scroll">
+                        {getValue()}
+                    </div>
+                );
+
+            },
             filterFn: "columnFilter",
         },
 

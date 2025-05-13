@@ -3,18 +3,27 @@
 import { Card } from "@components/ui/card";
 import SweetAlert from "@components/ui/SweetAlert";
 import clsx from "clsx";
-import React, { use, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import { FaWpforms } from "react-icons/fa";
 import { HiMiniInformationCircle } from "react-icons/hi2";
 import ReportForm from "./ReportForm";
 import { FileArchive } from "lucide-react";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 
 export default function Terms({
     fetch_error_types,
     fetch_generic_medicines,
     fetch_medicine_routes,
 }) {
+    const { data: session, status } = useSession();
+
+    useEffect(() => {
+        if (status == "authenticated") {
+            console.log(session);
+        }
+    }, [status]);
+
     const error_types = use(fetch_error_types);
     const generic_medicines = use(fetch_generic_medicines);
     const medicine_routes = use(fetch_medicine_routes);
@@ -24,6 +33,9 @@ export default function Terms({
     if (isProceedForm == false) {
         return (
             <div className="h-full flex justify-center items-center relative p-5">
+                {/* <button onClick={() => update({ name: "John Doe" })}>
+                    Update
+                </button> */}
                 <div
                     className="absolute inset-0 bg-[url('/bg-2.jpg')] bg-no-repeat bg-center bg-cover opacity-50 pointer-events-none z-0 shadow-2xl rounded"
                     aria-hidden="true"

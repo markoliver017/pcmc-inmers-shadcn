@@ -18,7 +18,7 @@ export default function FourthForm({ onNext }) {
     } = useFormContext();
 
     const handleNext = async () => {
-        const valid = await trigger(["patient_condition", "immediate_actions"]);
+        const valid = await trigger(["workplace_environment", "patient_condition"]);
         if (valid) {
             onNext(1);
         } else {
@@ -44,6 +44,31 @@ export default function FourthForm({ onNext }) {
                     <div className="text-orange-600 italic">* required fields</div>
                 </div>
 
+                <div className="mt-5">
+                    <FormLabel labelText="Workplace environment description before, during, and after the medication error incident: *" />
+                    <fieldset className="fieldset">
+                        <textarea
+                            className="textarea h-24 w-full border border-gray-300"
+                            placeholder="Your answer"
+                            name="workplace_environment"
+                            {...register("workplace_environment", {
+                                required:
+                                    "Workplace environment description is required.",
+                                minLength: {
+                                    value: 3,
+                                    message:
+                                        "Workplace environment description must be at least 3 characters long.",
+                                },
+                            })}
+                        ></textarea>
+                    </fieldset>
+                    {errors.workplace_environment && (
+                        <p className="text-red-500 text-sm flex-items-center">
+                            <BiError />
+                            {errors.workplace_environment?.message}
+                        </p>
+                    )}
+                </div>
 
                 <div className="mt-5">
                     <FormLabel labelText="Patient’s condition before, during, and after the medication error incident: *" />
@@ -70,30 +95,6 @@ export default function FourthForm({ onNext }) {
                     )}
                 </div>
 
-                <div className="mt-5">
-                    <FormLabel labelText="Immediate action/s done after the medication error incident: *" />
-                    <fieldset className="fieldset">
-                        <textarea
-                            className="textarea h-24 w-full border border-gray-300"
-                            placeholder="Your answer"
-                            name="immediate_actions"
-                            {...register("immediate_actions", {
-                                required: "Immediate action/s done * is required.",
-                                minLength: {
-                                    value: 3,
-                                    message:
-                                        "Immediate action/s done * must be at least 3 characters long.",
-                                },
-                            })}
-                        ></textarea>
-                    </fieldset>
-                    {errors.immediate_actions && (
-                        <p className="text-red-500 text-sm flex-items-center">
-                            <BiError />
-                            {errors.immediate_actions?.message}
-                        </p>
-                    )}
-                </div>
             </div>
             <div className="card-actions justify-between mt-5">
                 <button

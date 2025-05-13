@@ -13,7 +13,7 @@ const Sidebar = ({
     admin = {
         name: "Bonnie Green",
         email: "admin@email.com",
-        avatar: "https://avatar.iran.liara.run/public/boy",
+        image: "https://avatar.iran.liara.run/public/boy",
     },
 }) => {
     const { data: session, status } = useSession();
@@ -22,9 +22,7 @@ const Sidebar = ({
     const currentRoute = usePathname();
     const isAdminRoute = currentRoute.startsWith("/admin");
 
-    // console.log("sidebar currentRoute", currentRoute)
-    // console.log("sidebar session", session)
-    // console.log("sidebar status", status)
+    // console.log("sidebar sessionData", sessionData);
 
     useEffect(() => {
         const handleResize = () => {
@@ -48,11 +46,12 @@ const Sidebar = ({
         return;
     }
 
-    const { user } = session;
+    const { user, profile } = session;
     admin.name = user?.name;
     admin.email = user?.email;
-    admin.avatar =
-        user?.avatar || user?.gender == "female"
+    admin.image = user?.image
+        ? user?.image
+        : profile?.gender == "female"
             ? "https://avatar.iran.liara.run/public/girl"
             : "https://avatar.iran.liara.run/public/boy";
 
@@ -85,7 +84,7 @@ const Sidebar = ({
                 )}
             >
                 <Image
-                    src={admin.avatar}
+                    src={admin.image}
                     className="flex-none rounded-4xl"
                     width={50}
                     height={50}

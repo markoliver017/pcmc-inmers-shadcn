@@ -55,7 +55,7 @@ export async function POST(request) {
 }
 
 export async function GET() {
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+    // await new Promise((resolve) => setTimeout(resolve, 2000));
 
     try {
         const admins = await Admin.findAll({

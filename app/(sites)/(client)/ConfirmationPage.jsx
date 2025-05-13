@@ -9,6 +9,9 @@ import clsx from "clsx";
 import Preloader2 from "@components/layout/Preloader2";
 import notify from "@components/ui/notify";
 import { downloadReport } from "./report.utils";
+import { getMedicationErrorReportHtml } from "@lib/pdf-html-template/getPdfHtmlTemplate";
+import { FaFilePdf } from "react-icons/fa";
+import { IoWarning } from "react-icons/io5";
 
 export default function ConfirmationPage({
     onNext,
@@ -16,13 +19,42 @@ export default function ConfirmationPage({
     methods,
     genericMedicineOptions,
     medicineRouteOptions,
+    duplicates,
 }) {
     const { watch, handleSubmit } = methods;
     const [isConfirmed, setIsConfirmed] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [isDownLoading, setIsDownLoading] = useState(false);
+    const [isGenerating, setIsGenerating] = useState(false);
 
-    // console.log("medicineRouteOptions", medicineRouteOptions);
+    // console.log("duplicates", duplicates);
+    const generateDuplicateReport = async () => {
+        const htmlReport = getMedicationErrorReportHtml(
+            duplicates,
+            `Medication Error Report (${watch("error_date")})`
+        );
+        setIsGenerating(true);
+        const res = await fetch("/api/generate-pdf", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ html: htmlReport }),
+        });
+
+        if (!res.ok) {
+            console.error(`Failed to generate PDF: ${res.statusText}`);
+            return;
+        }
+
+        const blob = await res.blob();
+        const url = window.URL.createObjectURL(blob);
+        window.open(url, "_blank");
+        window.URL.revokeObjectURL(url);
+
+        setIsGenerating(false);
+    };
+
     const onFinalSubmit = () => {
         SweetAlert({
             title: "Confirmation",
@@ -71,60 +103,59 @@ export default function ConfirmationPage({
                                 onCancel: () => resetForm(),
                             });
                         } catch (data) {
+                            let detailContent = null;
                             if (
                                 data?.message == "Validation failed" &&
                                 Array.isArray(data.details)
                             ) {
                                 const { error, details, message } = data;
 
-                                let detailContent = null;
-
-                                if (Array.isArray(details)) {
-                                    // If it's an array, show a list
-                                    detailContent = (
-                                        <ul className="list-disc list-inside">
-                                            {details.map((err, index) => (
-                                                <li key={index}>{err}</li>
-                                            ))}
-                                        </ul>
-                                    );
-                                } else if (
-                                    typeof details === "object" &&
-                                    details !== null
-                                ) {
-                                    // If it's an object, show key-value pairs
-                                    detailContent = (
-                                        <ul className="list-disc list-inside">
-                                            {Object.entries(details).map(
-                                                ([key, val], index) => (
-                                                    <li key={index}>
-                                                        <strong>{key}:</strong>{" "}
-                                                        {val}
-                                                    </li>
-                                                )
-                                            )}
-                                        </ul>
-                                    );
-                                }
-
-                                notify({
-                                    error,
-                                    message: (
-                                        <div tabIndex={0} className="collapse">
-                                            <div className="collapse-title font-semibold">
-                                                {message}
-                                                <br />
-                                                <small className="link link-warning">
-                                                    See details
-                                                </small>
-                                            </div>
-                                            <div className="collapse-content text-sm">
-                                                {detailContent}
-                                            </div>
-                                        </div>
-                                    ),
-                                });
+                                // If it's an array, show a list
+                                detailContent = (
+                                    <ul className="list-disc list-inside">
+                                        {details.map((err, index) => (
+                                            <li key={index}>{err}</li>
+                                        ))}
+                                    </ul>
+                                );
                             }
+
+                            // If it's an object, show key-value pairs
+                            if (
+                                typeof details === "object" &&
+                                details !== null
+                            ) {
+                                detailContent = (
+                                    <ul className="list-disc list-inside">
+                                        {Object.entries(details).map(
+                                            ([key, val], index) => (
+                                                <li key={index}>
+                                                    <strong>{key}:</strong>{" "}
+                                                    {val}
+                                                </li>
+                                            )
+                                        )}
+                                    </ul>
+                                );
+                            }
+
+                            notify({
+                                error,
+                                message: (
+                                    <div tabIndex={0} className="collapse">
+                                        <div className="collapse-title font-semibold">
+                                            {message}
+                                            <br />
+                                            <small className="link link-warning">
+                                                See details
+                                            </small>
+                                        </div>
+                                        <div className="collapse-content text-sm">
+                                            {detailContent}
+                                        </div>
+                                    </div>
+                                ),
+                            });
                         } finally {
                             setIsLoading(false);
                         }
@@ -161,6 +192,27 @@ export default function ConfirmationPage({
                     {isToggleReview ? "Hide Response" : "View Response"}
                 </button> */}
             </div>
+            {duplicates && duplicates.length ? (
+                <button
+                    type="button"
+                    onClick={generateDuplicateReport}
+                    className="btn btn-block btn-warning hover:bg-neutral-800 hover:text-green-300"
+                >
+                    {isGenerating ? (
+                        <>
+                            <span className="loading loading-bars loading-xs"></span>
+                            Generating...
+                        </>
+                    ) : (
+                        <>
+                            <IoWarning />
+                            WARNING: Similar reports found – Click to view
+                        </>
+                    )}
+                </button>
+            ) : (
+                ""
+            )}
             <div className="card shadow-md mt-2">
                 <div className="card-body overflow-x-auto rounded-box border border-base-content/5 bg-base-100">
                     <table className="table">

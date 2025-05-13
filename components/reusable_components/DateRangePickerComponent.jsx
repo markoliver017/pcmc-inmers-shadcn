@@ -7,8 +7,10 @@ import {
 } from "react-date-range";
 import "react-date-range/dist/styles.css"; // main style file
 import "react-date-range/dist/theme/default.css"; // theme css file
+import { GrClear } from "react-icons/gr";
+import { X } from "lucide-react";
 
-export default function DateRangePickerComponent({ state, handleSelect }) {
+export default function DateRangePickerComponent({ state, handleSelect, setDateRange }) {
     const pickerRef = useRef(null);
 
     const [showCalendar, setShowCalendar] = useState(false);
@@ -42,6 +44,16 @@ export default function DateRangePickerComponent({ state, handleSelect }) {
         },
     ]);
 
+    const handleClear = () => {
+        setDateRange([
+            {
+                startDate: null,
+                endDate: null,
+                key: "selection",
+            },
+        ])
+    }
+
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (
@@ -58,17 +70,30 @@ export default function DateRangePickerComponent({ state, handleSelect }) {
         };
     }, []);
 
+    // let startDate = "//"
+    // let endDate = "//"
+    let dateRangeplaceholder = "Filter by date"
+    if (state[0].startDate && state[0].endDate) {
+        const startDate = moment(state[0].startDate).format("MMM. DD, YYYY");
+        const endDate = moment(state[0].endDate).format("MMM. DD, YYYY");
+        dateRangeplaceholder = `${startDate} - ${endDate}`;
+    }
+
     return (
         <div className="relative" ref={pickerRef}>
-            <input
-                type="text"
-                readOnly
-                value={`${moment(state[0].startDate).format(
-                    "MMM. DD, YYYY"
-                )} - ${moment(state[0].endDate).format("MMM. D, YYYY")}`}
-                className="p-2 border border-gray-300 rounded-md rounded-e-none cursor-pointer w-full sm:min-w-64 dark:border-neutral-800 dark:bg-neutral-950 dark:text-neutral-50"
-                onClick={() => setShowCalendar(!showCalendar)}
-            />
+            <div className="flex items-center">
+
+                <input
+                    type="text"
+                    readOnly
+                    value={dateRangeplaceholder}
+                    className="p-2 border border-gray-300 rounded-md rounded-e-none cursor-pointer w-full sm:min-w-64 dark:border-neutral-800 dark:bg-neutral-950 dark:text-neutral-50"
+                    onClick={() => setShowCalendar(!showCalendar)}
+                />
+                {dateRangeplaceholder != "Filter by date" ? (
+                    <button onClick={handleClear} type="button" className="btn btn-square" title="Clear date filter"><X /></button>
+                ) : ''}
+            </div>
 
             {/* Conditional rendering of the DateRangePicker */}
             {showCalendar && (
