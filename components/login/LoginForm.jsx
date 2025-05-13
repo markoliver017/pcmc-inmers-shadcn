@@ -12,8 +12,8 @@ import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
 const credentials = {
-    email: "admin@email.com",
-    password: "password",
+    email: "",
+    password: "",
 };
 
 export default function LoginForm() {
