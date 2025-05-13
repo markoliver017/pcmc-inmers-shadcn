@@ -19,7 +19,7 @@ export default function ConfirmationPage({
     methods,
     genericMedicineOptions,
     medicineRouteOptions,
-    duplicates
+    duplicates,
 }) {
     const { watch, handleSubmit } = methods;
     const [isConfirmed, setIsConfirmed] = useState(false);
@@ -27,11 +27,11 @@ export default function ConfirmationPage({
     const [isDownLoading, setIsDownLoading] = useState(false);
     const [isGenerating, setIsGenerating] = useState(false);
 
-
+    console.log("duplicates", duplicates);
     const generateDuplicateReport = async () => {
         const htmlReport = getMedicationErrorReportHtml(
             duplicates,
-            `Medication Error Report (${watch('error_date')})`
+            `Medication Error Report (${watch("error_date")})`
         );
         setIsGenerating(true);
         const res = await fetch("/api/generate-pdf", {
@@ -49,7 +49,7 @@ export default function ConfirmationPage({
 
         const blob = await res.blob();
         const url = window.URL.createObjectURL(blob);
-        window.open(url, '_blank');
+        window.open(url, "_blank");
         window.URL.revokeObjectURL(url);
 
         setIsGenerating(false);
@@ -170,8 +170,8 @@ export default function ConfirmationPage({
     const error_type =
         data.selected_error_type?.value == "Others"
             ? `${data.selected_error_type?.label} <i>(${watch(
-                "other_error_type"
-            )})</i>`
+                  "other_error_type"
+              )})</i>`
             : data.selected_error_type?.label;
 
     return (
@@ -210,7 +210,9 @@ export default function ConfirmationPage({
                         </>
                     )}
                 </button>
-            ) : ''}
+            ) : (
+                ""
+            )}
             <div className="card shadow-md mt-2">
                 <div className="card-body overflow-x-auto rounded-box border border-base-content/5 bg-base-100">
                     <table className="table">

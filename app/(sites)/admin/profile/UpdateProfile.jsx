@@ -73,7 +73,7 @@ export default function UpdateProfile({
 }) {
     const { data: session, status, update } = useSession();
     const isCurrentUser = admin?.id == session?.profile?.id || false;
-    console.log("adminnnnnn", admin);
+    // console.log("adminnnnnn", admin);
     const [state, setState] = useState({
         isSubmitting: false,
         error: null,

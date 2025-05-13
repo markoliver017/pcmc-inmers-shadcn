@@ -21,7 +21,7 @@ export default function GenerateReport({
     const start_date = searchParams.get("start_date");
     const end_date = searchParams.get("end_date");
 
-    console.log("current visibleKeys", visibleKeys);
+    // console.log("current visibleData", visibleData);
 
     const [htmlReport, setHtmlReport] = useState();
     const [isGenerating, setIsGenerating] = useState();
@@ -30,9 +30,7 @@ export default function GenerateReport({
             startDate: start_date
                 ? moment(start_date, "YYYY-MM-DD").toDate()
                 : null,
-            endDate: end_date
-                ? moment(end_date, "YYYY-MM-DD").toDate()
-                : null,
+            endDate: end_date ? moment(end_date, "YYYY-MM-DD").toDate() : null,
             key: "selection",
         },
     ]);
@@ -49,11 +47,14 @@ export default function GenerateReport({
         // console.log("data", data);
         let reportTitle = `Medication Error Summary Report`;
         if (dateRange[0].startDate && dateRange[0].endDate) {
-            const start_date = moment(dateRange[0].startDate).format("MMMM DD - ");
-            const end_date = moment(dateRange[0].endDate).format("MMMM DD, YYYY");
+            const start_date = moment(dateRange[0].startDate).format(
+                "MMMM DD - "
+            );
+            const end_date = moment(dateRange[0].endDate).format(
+                "MMMM DD, YYYY"
+            );
             reportTitle = `Medication Error Summary Report for ${start_date}${end_date}`;
-        };
-
+        }
 
         const reports = data.map((row) => ({
             ...row,
@@ -63,17 +64,13 @@ export default function GenerateReport({
                     : row.error_type?.name,
         }));
 
-        const htmls = getMedicationErrorReportHtml(
-            reports,
-            reportTitle
-        );
+        const htmls = getMedicationErrorReportHtml(reports, reportTitle);
 
         setHtmlReport(htmls);
     }, [data]);
 
-
     useEffect(() => {
-        console.log("dateRangedateRangedateRange", dateRange)
+        // console.log("dateRangedateRangedateRange", dateRange);
         let start = null;
         let end = null;
         if (dateRange[0].startDate && dateRange[0].endDate) {
@@ -81,24 +78,16 @@ export default function GenerateReport({
             end = moment(dateRange[0].endDate).format("YYYY-MM-DD");
         }
 
-        console.log("heree 1")
         if (
             prevStart.current?.startDate == start &&
             prevStart.current?.endDate == end
         ) {
-            console.log("prevStart.current?.start", prevStart.current?.start)
-            console.log("prevStart.current?.end", prevStart.current?.end)
-            console.log("prevStart.current?.start", start)
-            console.log("prevStart.current?.end", end)
-            console.log("heree stop")
             return;
         }
-        console.log("heree 2")
 
         prevStart.current = dateRange[0];
 
-        console.log("prevStart.current", prevStart.current);
-        // console.log("filterringggggggggggggggg");
+        // console.log("prevStart.current", prevStart.current);
 
         onLoad();
         const filterReports = async () => {
@@ -136,7 +125,7 @@ export default function GenerateReport({
 
         const blob = await res.blob();
         const url = window.URL.createObjectURL(blob);
-        window.open(url, '_blank')
+        window.open(url, "_blank");
 
         window.URL.revokeObjectURL(url);
         setIsGenerating(false);

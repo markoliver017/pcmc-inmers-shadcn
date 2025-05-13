@@ -1,5 +1,5 @@
 "use client";
-import React, { use, useState } from "react";
+import React, { use, useEffect, useMemo, useState } from "react";
 
 import {
     flexRender,
@@ -46,7 +46,7 @@ export function DataTable({ get_reports, get_error_types }) {
         report_date: false,
     });
     const [rowSelection, setRowSelection] = useState({});
-    // const [userOptions, setUserOptions] = useState([]);
+    const [errorTypeOptions, setErrorTypeOptions] = useState([]);
 
     const table = useReactTable({
         data,
@@ -90,25 +90,18 @@ export function DataTable({ get_reports, get_error_types }) {
         return selectedRows.map((row) => row.original);
     };
 
-    const visibleKeys = columns
-        .filter((col) => {
-            const accesorKey = col?.accessorKey?.replaceAll(".", "_");
-            return accesorKey && columnVisibility[accesorKey] !== false
-        }
-        )
-        .map((col) => col.accessorKey);
-
-
-
-    function getVisibleData(data, columns, columnVisibility) {
-        // Flatten columns with accessorKey only
-        const visibleKeys = columns
-            .filter(
-                (col) =>
-                    col.accessorKey &&
-                    columnVisibility[col.accessorKey] !== false
-            )
+    function getVisibleKeys() {
+        return columns
+            .filter((col) => {
+                const accesorKey = col?.accessorKey?.replaceAll(".", "_");
+                return accesorKey && columnVisibility[accesorKey] !== false;
+            })
             .map((col) => col.accessorKey);
+    }
+
+    function getVisibleData(data) {
+        // Flatten columns with accessorKey only
+        const visibleKeys = getVisibleKeys();
 
         return data.map((row) => {
             const filteredRow = {};
@@ -129,21 +122,40 @@ export function DataTable({ get_reports, get_error_types }) {
         });
     }
 
-    const errorTypeOptions = error_types.map((type) => ({
-        id: type.id,
-        label: type.name,
-        value: type.name,
-        number: data.filter((row) => row.error_type.id == type.id).length,
-    }));
+    useEffect(() => {
+        setErrorTypeOptions(() => {
+            return error_types.map((type) => ({
+                id: type.id,
+                label: type.name,
+                value: type.name,
+                number: data.filter((row) => row.error_type.id == type.id)
+                    .length,
+            }));
+        });
+        table.getAllColumns().forEach((column) => {
+            column.setFilterValue(undefined);
+        });
+    }, [data]);
+    // const errorTypeOptions = error_types.map((type) => ({
+    //     id: type.id,
+    //     label: type.name,
+    //     value: type.name,
+    //     number: data.filter((row) => row.error_type.id == type.id).length,
+    // }));
+
+    const visibleData = useMemo(
+        () => getVisibleData(data, columns, columnVisibility),
+        [data, columns, columnVisibility]
+    );
 
     return (
         <div className="p-2">
             <GenerateReport
                 data={data} //for pdf reports
-                visibleKeys={visibleKeys} //for pdf reports
+                visibleKeys={getVisibleKeys()} //for pdf reports
                 onLoad={() => setIsLoading(true)}
                 onDataChange={handleChangeData}
-                visibleData={getVisibleData(data, columns, columnVisibility)} //for excel report
+                visibleData={visibleData} //for excel report
             />
 
             {isLoading ? (
@@ -253,10 +265,10 @@ export function DataTable({ get_reports, get_error_types }) {
                                                 {header.isPlaceholder
                                                     ? null
                                                     : flexRender(
-                                                        header.column
-                                                            .columnDef.header,
-                                                        header.getContext()
-                                                    )}
+                                                          header.column
+                                                              .columnDef.header,
+                                                          header.getContext()
+                                                      )}
                                             </TableHead>
                                         ))}
                                     </TableRow>
