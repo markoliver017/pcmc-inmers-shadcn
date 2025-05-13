@@ -27,7 +27,7 @@ export default function ConfirmationPage({
     const [isDownLoading, setIsDownLoading] = useState(false);
     const [isGenerating, setIsGenerating] = useState(false);
 
-    console.log("duplicates", duplicates);
+    // console.log("duplicates", duplicates);
     const generateDuplicateReport = async () => {
         const htmlReport = getMedicationErrorReportHtml(
             duplicates,
