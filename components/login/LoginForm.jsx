@@ -7,11 +7,11 @@ import { IoMdLogIn } from "react-icons/io";
 import { useForm } from "react-hook-form";
 
 import { toast } from "react-toastify";
-// import { signIn } from "@lib/auth";
+
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { GitHubLogoIcon } from "@radix-ui/react-icons";
-import { GrGoogle } from "react-icons/gr";
+// import { GitHubLogoIcon } from "@radix-ui/react-icons";
+// import { GrGoogle } from "react-icons/gr";
 
 const credentials = {
     email: "admin@email.com",
@@ -173,11 +173,11 @@ export default function LoginForm() {
                 </button>
             </form>
 
-            <div className="divider py-5">
+            {/* <div className="divider py-5">
                 or Sign In with the following options
-            </div>
+            </div> */}
 
-            <div className="flex flex-col gap-2 px-4">
+            {/* <div className="flex flex-col gap-2 px-4">
                 <button
                     onClick={() => {
                         setIsLoading((prev) => ({ ...prev, google: true }));
@@ -247,7 +247,7 @@ export default function LoginForm() {
                         </>
                     )}
                 </button>
-            </div>
+            </div> */}
         </>
     );
 }

@@ -9,9 +9,10 @@ import {
     DropdownMenuTrigger,
 } from "@components/ui/dropdown-menu";
 import { Button } from "@components/ui/button";
-import { Command, Eye, MoreHorizontal } from "lucide-react";
+import { Command, Eye, MoreHorizontal, Pencil, Trash } from "lucide-react";
 import Link from "next/link";
-export function getColumns() {
+
+export function getColumns(handleDelete) {
     return [
         {
             id: "actions",
@@ -42,6 +43,19 @@ export function getColumns() {
                                     <span>Show</span>
                                 </DropdownMenuItem>
                             </Link>
+                            <Link href={`/admin/reports/${report.id}/edit`}>
+                                <DropdownMenuItem className="flex items-center space-x-2">
+                                    <Pencil className="w-4 h-4" />
+                                    <span>Edit</span>
+                                </DropdownMenuItem>
+                            </Link>
+                            <DropdownMenuItem
+                                onClick={() => handleDelete(report.id)}
+                                className="flex items-center space-x-2"
+                            >
+                                <Trash className="w-4 h-4" />
+                                <span>Delete</span>
+                            </DropdownMenuItem>
                         </DropdownMenuContent>
                     </DropdownMenu>
                 );
@@ -116,7 +130,6 @@ export function getColumns() {
                         {Math.round(getValue())} {data.age_unit.toUpperCase()}
                     </div>
                 );
-
             },
             filterFn: "columnFilter",
         },
@@ -132,7 +145,6 @@ export function getColumns() {
                         {getValue()} {data.weight_unit.toUpperCase()}
                     </div>
                 );
-
             },
             filterFn: "columnFilter",
         },
@@ -143,15 +155,11 @@ export function getColumns() {
             ),
             cell: ({ row }) => {
                 const data = row.original;
-                const label = data.patient_height.toLowerCase() != "n/a" ?
-                    `${data.patient_height} ${data.height_unit}` :
-                    "N/A";
-                return (
-                    <div className="max-h-40 overflow-scroll">
-                        {label}
-                    </div>
-                );
-
+                const label =
+                    data.patient_height.toLowerCase() != "n/a"
+                        ? `${data.patient_height} ${data.height_unit}`
+                        : "N/A";
+                return <div className="max-h-40 overflow-scroll">{label}</div>;
             },
             filterFn: "columnFilter",
         },
@@ -165,11 +173,8 @@ export function getColumns() {
             ),
             cell: ({ getValue }) => {
                 return (
-                    <div className="max-h-40 overflow-scroll">
-                        {getValue()}
-                    </div>
+                    <div className="max-h-40 overflow-scroll">{getValue()}</div>
                 );
-
             },
             filterFn: "columnFilter",
         },
@@ -183,11 +188,8 @@ export function getColumns() {
             ),
             cell: ({ getValue }) => {
                 return (
-                    <div className="max-h-40 overflow-scroll">
-                        {getValue()}
-                    </div>
+                    <div className="max-h-40 overflow-scroll">{getValue()}</div>
                 );
-
             },
             filterFn: "columnFilter",
         },
@@ -201,11 +203,8 @@ export function getColumns() {
             ),
             cell: ({ getValue }) => {
                 return (
-                    <div className="max-h-40 overflow-scroll">
-                        {getValue()}
-                    </div>
+                    <div className="max-h-40 overflow-scroll">{getValue()}</div>
                 );
-
             },
             filterFn: "columnFilter",
         },
@@ -219,11 +218,8 @@ export function getColumns() {
             ),
             cell: ({ getValue }) => {
                 return (
-                    <div className="max-h-40 overflow-scroll">
-                        {getValue()}
-                    </div>
+                    <div className="max-h-40 overflow-scroll">{getValue()}</div>
                 );
-
             },
             filterFn: "columnFilter",
         },
@@ -237,11 +233,8 @@ export function getColumns() {
             ),
             cell: ({ getValue }) => {
                 return (
-                    <div className="max-h-40 overflow-scroll">
-                        {getValue()}
-                    </div>
+                    <div className="max-h-40 overflow-scroll">{getValue()}</div>
                 );
-
             },
             filterFn: "columnFilter",
         },
@@ -255,11 +248,8 @@ export function getColumns() {
             ),
             cell: ({ getValue }) => {
                 return (
-                    <div className="max-h-40 overflow-scroll">
-                        {getValue()}
-                    </div>
+                    <div className="max-h-40 overflow-scroll">{getValue()}</div>
                 );
-
             },
             filterFn: "columnFilter",
         },
@@ -273,11 +263,8 @@ export function getColumns() {
             ),
             cell: ({ getValue }) => {
                 return (
-                    <div className="max-h-40 overflow-scroll">
-                        {getValue()}
-                    </div>
+                    <div className="max-h-40 overflow-scroll">{getValue()}</div>
                 );
-
             },
             filterFn: "columnFilter",
         },

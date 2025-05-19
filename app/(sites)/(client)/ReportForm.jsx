@@ -73,6 +73,7 @@ export default function ReportForm({
             patient_age: "",
             patient_weight: "",
             patient_height: "",
+            age_unit: "Year",
             height_unit: "cm",
             weight_unit: "kg",
             converted_weight: "",

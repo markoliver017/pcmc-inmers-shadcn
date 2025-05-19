@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export default async function Page({ params }) {
     const { id } = await params;
-    const url = new URL(`/api/reports/${id}`, "http://localhost:3000");
+    const url = new URL(`/api/reports/${id}`, process.env.NEXT_PUBLIC_DOMAIN);
     const response = await fetch(url, {
         method: "GET",
         cache: "no-store",
@@ -36,7 +36,7 @@ export default async function Page({ params }) {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr className="bg-gray-200 border-b border-gray-300">
+                            <tr className="bg-gray-200 dark:bg-gray-800 border-b border-gray-300">
                                 <th colSpan={2}>Patient Details</th>
                             </tr>
                             <tr className="hover:bg-base-300">
@@ -70,7 +70,7 @@ export default async function Page({ params }) {
                                     )
                                 </td>
                             </tr>
-                            <tr className="bg-gray-200 border-b border-gray-300">
+                            <tr className="bg-gray-200 dark:bg-gray-800 border-b border-gray-300">
                                 <th colSpan={2}>Medication Error Details</th>
                             </tr>
                             <tr className="hover:bg-base-300">
@@ -91,7 +91,7 @@ export default async function Page({ params }) {
                                         <th>Medicine Details</th>
                                         <td>
                                             <table className="table table-zebra">
-                                                <thead className="bg-gray-200">
+                                                <thead className="bg-gray-200 dark:bg-gray-800">
                                                     <tr>
                                                         <th>
                                                             Generic Medicine

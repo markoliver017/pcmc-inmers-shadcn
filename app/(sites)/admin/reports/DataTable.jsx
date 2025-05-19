@@ -26,6 +26,15 @@ import { getColumns } from "./columns";
 import GenerateReport from "./GenerateReportComponent";
 import Skeleton from "@components/ui/skeleton";
 
+import { toast } from "react-toastify";
+
+async function deleteReport(id) {
+    const res = await fetch(`/api/reports/${id}`, {
+        method: "DELETE",
+    });
+    return await res.json();
+}
+
 export function DataTable({ get_reports, get_error_types }) {
     const fetch_errors = use(get_reports);
     const error_types = use(get_error_types);
@@ -36,7 +45,21 @@ export function DataTable({ get_reports, get_error_types }) {
     const [data, setData] = useState(fetch_errors.reports);
     const [isLoading, setIsLoading] = useState(false);
 
-    const columns = getColumns();
+    const handleChangeData = (newData) => {
+        setData(newData);
+        setIsLoading(false);
+    };
+
+    const handleDelete = async (id) => {
+        const res = await deleteReport(id);
+        if (res.success) {
+            const newData = data.filter((row) => row.id != id);
+            handleChangeData(newData);
+            toast.success(res.message);
+        }
+    };
+
+    const columns = getColumns(handleDelete);
 
     const [sorting, setSorting] = useState([]);
     const [columnFilters, setColumnFilters] = useState([]);
@@ -79,11 +102,6 @@ export function DataTable({ get_reports, get_error_types }) {
             },
         },
     });
-
-    const handleChangeData = (newData) => {
-        setData(newData);
-        setIsLoading(false);
-    };
 
     const getSelectedRows = () => {
         const selectedRows = table.getFilteredSelectedRowModel().rows;
