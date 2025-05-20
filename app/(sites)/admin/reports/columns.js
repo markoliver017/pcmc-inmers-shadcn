@@ -30,7 +30,7 @@ export function getColumns(handleDelete) {
                                 <MoreHorizontal className="h-4 w-4" />
                             </Button>
                         </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
+                        <DropdownMenuContent side="bottom" align="start">
                             <DropdownMenuLabel className="flex items-center space-x-2">
                                 <Command className="w-3 h-3" />
                                 <span>Actions</span>
