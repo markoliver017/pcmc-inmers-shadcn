@@ -57,9 +57,10 @@ export async function PUT(request, { params }) {
     if (!session) throw "You are not authorized to access this request.";
 
     const { profile } = session;
+    console.log("session", session);
 
     try {
-        const id = params.id;
+        const id = (await params).id;
         const body = await request.json();
         body.updated_by = profile.id;
 

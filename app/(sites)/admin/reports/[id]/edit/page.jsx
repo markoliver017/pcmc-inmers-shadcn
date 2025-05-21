@@ -25,7 +25,7 @@ export default async function Page({ params }) {
     });
     const { report } = await response.json();
 
-    console.log("report", report);
+    // console.log("report", report);
 
     return (
         <div className="h-full flex justify-center items-center relative p-2">

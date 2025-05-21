@@ -27,10 +27,9 @@ export default function FifthForm({ onNext, setDuplicates }) {
         ]);
         if (valid) {
             handleSubmit((data) => {
-                console.log("handleSubmit", data);
+                // console.log("handleSubmit", data);
 
                 (async function () {
-
                     const res = await checkDuplicateReports(data);
                     if (res && res.length) {
                         const duplicateReports = res.map((row) => ({
@@ -42,8 +41,7 @@ export default function FifthForm({ onNext, setDuplicates }) {
                         }));
                         setDuplicates(duplicateReports);
                     }
-                })()
-
+                })();
             })();
             onNext(1);
         } else {
@@ -60,13 +58,14 @@ export default function FifthForm({ onNext, setDuplicates }) {
     return (
         <section className="dark:text-white flex-1 flex flex-col h-full">
             <div className="flex-1">
-
                 <div className="flex flex-wrap sm:gap-5">
                     <h2 className="card-title text-2xl">
                         Medication Error Details
                     </h2>
 
-                    <div className="text-orange-600 italic">* required fields</div>
+                    <div className="text-orange-600 italic">
+                        * required fields
+                    </div>
                 </div>
 
                 <div className="mt-5">
@@ -77,7 +76,8 @@ export default function FifthForm({ onNext, setDuplicates }) {
                             placeholder="Your answer"
                             name="immediate_actions"
                             {...register("immediate_actions", {
-                                required: "Immediate action/s done * is required.",
+                                required:
+                                    "Immediate action/s done * is required.",
                                 minLength: {
                                     value: 3,
                                     message:
@@ -102,7 +102,8 @@ export default function FifthForm({ onNext, setDuplicates }) {
                             placeholder="Your answer"
                             name="corrective_actions"
                             {...register("corrective_actions", {
-                                required: "Corrective action/s done * is required.",
+                                required:
+                                    "Corrective action/s done * is required.",
                                 minLength: {
                                     value: 3,
                                     message:
@@ -127,7 +128,8 @@ export default function FifthForm({ onNext, setDuplicates }) {
                             placeholder="Your answer"
                             name="preventive_actions"
                             {...register("preventive_actions", {
-                                required: "Corrective action/s done * is required.",
+                                required:
+                                    "Corrective action/s done * is required.",
                                 minLength: {
                                     value: 3,
                                     message:

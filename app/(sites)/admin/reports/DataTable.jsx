@@ -27,6 +27,8 @@ import GenerateReport from "./GenerateReportComponent";
 import Skeleton from "@components/ui/skeleton";
 
 import { toast } from "react-toastify";
+import SweetAlert from "@components/ui/SweetAlert";
+import { useRouter } from "next/navigation";
 
 async function deleteReport(id) {
     const res = await fetch(`/api/reports/${id}`, {
@@ -36,6 +38,7 @@ async function deleteReport(id) {
 }
 
 export function DataTable({ get_reports, get_error_types }) {
+    const router = useRouter();
     const fetch_errors = use(get_reports);
     const error_types = use(get_error_types);
 
@@ -50,16 +53,40 @@ export function DataTable({ get_reports, get_error_types }) {
         setIsLoading(false);
     };
 
-    const handleDelete = async (id) => {
-        const res = await deleteReport(id);
-        if (res.success) {
-            const newData = data.filter((row) => row.id != id);
-            handleChangeData(newData);
-            toast.success(res.message);
-        }
+    const handleDelete = (id) => {
+        SweetAlert({
+            title: "Confirm Deletion",
+            text: "Are you sure you want to delete this report?",
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonText: "Confirm",
+            cancelButtonText: "Cancel",
+            onConfirm: async () => {
+                const res = await deleteReport(id);
+                if (res.success) {
+                    const newData = data.filter((row) => row.id != id);
+                    handleChangeData(newData);
+                    toast.success(res.message);
+                }
+            },
+        });
     };
 
-    const columns = getColumns(handleDelete);
+    const handleUpdate = (id) => {
+        SweetAlert({
+            title: "Update Report",
+            text: "Are you sure you want to update this report?",
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonText: "Proceed",
+            cancelButtonText: "Cancel",
+            onConfirm: async () => {
+                router.push(`/admin/reports/${id}/edit`);
+            },
+        });
+    };
+
+    const columns = getColumns(handleDelete, handleUpdate);
 
     const [sorting, setSorting] = useState([]);
     const [columnFilters, setColumnFilters] = useState([]);

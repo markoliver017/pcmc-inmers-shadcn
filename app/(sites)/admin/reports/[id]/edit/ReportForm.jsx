@@ -102,7 +102,7 @@ export default function ReportForm({
 
     useEffect(() => {
         if (!errors) return;
-        console.log("form errors", errors);
+        // console.log("form errors", errors);
     }, [errors]);
 
     const errorTypeOptions = error_types.map((type) => ({
@@ -134,9 +134,9 @@ export default function ReportForm({
         setValue("selected_error_type", selectedErrorType);
     }, [selectedErrorType]);
 
-    useEffect(() => {
-        console.log("watchAll", watch());
-    }, [watch()]);
+    // useEffect(() => {
+    //     console.log("watchAll", watch());
+    // }, [watch()]);
 
     const [sectionNo, setSectionNo] = useState(0);
 

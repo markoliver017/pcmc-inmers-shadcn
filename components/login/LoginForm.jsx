@@ -34,8 +34,8 @@ export default function LoginForm() {
         formState: { errors },
     } = useForm({
         defaultValues: {
-            email: credentials.email,
-            password: credentials.password,
+            email: "",
+            password: "",
         },
     });
 

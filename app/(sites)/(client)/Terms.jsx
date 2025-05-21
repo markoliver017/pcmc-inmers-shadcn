@@ -16,13 +16,13 @@ export default function Terms({
     fetch_generic_medicines,
     fetch_medicine_routes,
 }) {
-    const { data: session, status } = useSession();
+    // const { data: session, status } = useSession();
 
-    useEffect(() => {
-        if (status == "authenticated") {
-            console.log(session);
-        }
-    }, [status]);
+    // useEffect(() => {
+    //     if (status == "authenticated") {
+    //         console.log(session);
+    //     }
+    // }, [status]);
 
     const error_types = use(fetch_error_types);
     const generic_medicines = use(fetch_generic_medicines);

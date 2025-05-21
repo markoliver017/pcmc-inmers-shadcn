@@ -12,7 +12,7 @@ import { Button } from "@components/ui/button";
 import { Command, Eye, MoreHorizontal, Pencil, Trash } from "lucide-react";
 import Link from "next/link";
 
-export function getColumns(handleDelete) {
+export function getColumns(handleDelete, handleUpdate) {
     return [
         {
             id: "actions",
@@ -43,12 +43,15 @@ export function getColumns(handleDelete) {
                                     <span>Show</span>
                                 </DropdownMenuItem>
                             </Link>
-                            <Link href={`/admin/reports/${report.id}/edit`}>
-                                <DropdownMenuItem className="flex items-center space-x-2">
-                                    <Pencil className="w-4 h-4" />
-                                    <span>Edit</span>
-                                </DropdownMenuItem>
-                            </Link>
+
+                            <DropdownMenuItem
+                                onClick={() => handleUpdate(report.id)}
+                                className="flex items-center space-x-2"
+                            >
+                                <Pencil className="w-4 h-4" />
+                                <span>Edit</span>
+                            </DropdownMenuItem>
+
                             <DropdownMenuItem
                                 onClick={() => handleDelete(report.id)}
                                 className="flex items-center space-x-2"

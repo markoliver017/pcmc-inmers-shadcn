@@ -28,7 +28,7 @@ export default function ConfirmationPage({
     const onFinalSubmit = () => {
         SweetAlert({
             title: "Confirmation",
-            text: "You are about to submit a report.",
+            text: "You are about to update this report.",
             icon: "question",
             showCancelButton: true,
             confirmButtonText: "Submit",
@@ -81,7 +81,7 @@ export default function ConfirmationPage({
                                 onCancel: () => resetForm(),
                             });
                         } catch (data) {
-                            console.log("error>>>>>>>>>>>>>", data);
+                            // console.log("error>>>>>>>>>>>>>", data);
                             let detailContent = null;
                             if (
                                 data?.message == "Validation failed" &&
@@ -101,12 +101,12 @@ export default function ConfirmationPage({
 
                             // If it's an object, show key-value pairs
                             if (
-                                typeof details === "object" &&
-                                details !== null
+                                typeof data?.details === "object" &&
+                                data?.details !== null
                             ) {
                                 detailContent = (
                                     <ul className="list-disc list-inside">
-                                        {Object.entries(details).map(
+                                        {Object.entries(data?.details).map(
                                             ([key, val], index) => (
                                                 <li key={index}>
                                                     <strong>{key}:</strong>{" "}
@@ -119,16 +119,19 @@ export default function ConfirmationPage({
                             }
 
                             notify({
-                                error,
+                                error: true,
                                 message: (
                                     <div tabIndex={0} className="collapse">
                                         <div className="collapse-title font-semibold">
-                                            {message}
+                                            {data?.message}
                                             <br />
-                                            <small className="link link-warning">
-                                                See details
-                                            </small>
+                                            {detailContent && (
+                                                <small className="link link-warning">
+                                                    See details
+                                                </small>
+                                            )}
                                         </div>
+
                                         <div className="collapse-content text-sm">
                                             {detailContent}
                                         </div>

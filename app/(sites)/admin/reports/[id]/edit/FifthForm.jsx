@@ -27,7 +27,7 @@ export default function FifthForm({ onNext }) {
         ]);
         if (valid) {
             handleSubmit((data) => {
-                console.log("handleSubmit", data);
+                // console.log("handleSubmit", data);
                 // (async function () {
                 //     const res = await checkDuplicateReports(data);
                 //     if (res && res.length) {
