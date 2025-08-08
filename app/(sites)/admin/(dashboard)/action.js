@@ -6,6 +6,7 @@ export async function getErrorTypeReports(formData) {
 }
 
 export async function fetchMonthYearReports(year = new Date().getFullYear()) {
+    console.log("INTERNAL_API_URL", process.env.INTERNAL_API_URL);
     const url = new URL(
         `/api/dashboard/month_year?year=${year}`,
         process.env.INTERNAL_API_URL
