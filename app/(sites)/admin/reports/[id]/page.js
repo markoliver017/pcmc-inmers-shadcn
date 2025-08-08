@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export default async function Page({ params }) {
     const { id } = await params;
-    const url = new URL(`/api/reports/${id}`, process.env.NEXT_PUBLIC_DOMAIN);
+    const url = new URL(`/api/reports/${id}`, process.env.INTERNAL_API_URL);
     const response = await fetch(url, {
         method: "GET",
         cache: "no-store",

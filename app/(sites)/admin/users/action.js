@@ -6,7 +6,7 @@ import { v4 as uuidv4 } from "uuid";
 import fs from "fs";
 
 export async function fetchAdmins() {
-    const url = new URL(`/api/admin`, process.env.host);
+    const url = new URL(`/api/admin`, process.env.INTERNAL_API_URL);
 
     const response = await fetch(url, {
         method: "GET",

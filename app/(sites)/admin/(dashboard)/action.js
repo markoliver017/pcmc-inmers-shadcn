@@ -6,7 +6,10 @@ export async function getErrorTypeReports(formData) {
 }
 
 export async function fetchMonthYearReports(year = new Date().getFullYear()) {
-    const url = new URL(`/api/dashboard/month_year?year=${year}`, process.env.host);
+    const url = new URL(
+        `/api/dashboard/month_year?year=${year}`,
+        process.env.INTERNAL_API_URL
+    );
     const response = await fetch(url, {
         method: "GET",
         cache: "no-store",

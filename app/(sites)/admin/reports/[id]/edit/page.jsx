@@ -18,7 +18,7 @@ export default async function Page({ params }) {
     const medicine_routes = await fetchMedicineRoutes();
 
     const { id } = await params;
-    const url = new URL(`/api/reports/${id}`, process.env.NEXT_PUBLIC_DOMAIN);
+    const url = new URL(`/api/reports/${id}`, process.env.INTERNAL_API_URL);
     const response = await fetch(url, {
         method: "GET",
         cache: "no-store",
