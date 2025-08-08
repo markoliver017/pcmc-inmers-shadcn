@@ -10,6 +10,7 @@ import { toast } from "react-toastify";
 
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { GitHubLogoIcon } from "@radix-ui/react-icons";
 // import { GitHubLogoIcon } from "@radix-ui/react-icons";
 // import { GrGoogle } from "react-icons/gr";
 
@@ -173,11 +174,11 @@ export default function LoginForm() {
                 </button>
             </form>
 
-            {/* <div className="divider py-5">
+            <div className="divider py-5">
                 or Sign In with the following options
-            </div> */}
+            </div>
 
-            {/* <div className="flex flex-col gap-2 px-4">
+            <div className="flex flex-col gap-2 px-4">
                 <button
                     onClick={() => {
                         setIsLoading((prev) => ({ ...prev, google: true }));
@@ -247,7 +248,7 @@ export default function LoginForm() {
                         </>
                     )}
                 </button>
-            </div> */}
+            </div>
         </>
     );
 }
