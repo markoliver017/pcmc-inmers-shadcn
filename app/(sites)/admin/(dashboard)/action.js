@@ -10,6 +10,8 @@ export async function fetchMonthYearReports(year = new Date().getFullYear()) {
         `/api/dashboard/month_year?year=${year}`,
         process.env.INTERNAL_API_URL
     );
+    console.log("urlString", url);
+
     const response = await fetch(url, {
         method: "GET",
         cache: "no-store",

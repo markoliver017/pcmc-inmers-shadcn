@@ -1,3 +1,4 @@
+// npx sequelize-cli db:seed --seed 20250416183513-admin-user.js
 import { faker } from "@faker-js/faker";
 import bcrypt from "bcryptjs";
 
