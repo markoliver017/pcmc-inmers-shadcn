@@ -11,7 +11,10 @@ export const metadata = {
 };
 
 async function fetchErrorTypeReports() {
-    const url = new URL(`/api/dashboard/error_type_count`, process.env.host);
+    const url = new URL(
+        `/api/dashboard/error_type_count`,
+        process.env.INTERNAL_API_URL
+    );
     const response = await fetch(url, {
         method: "GET",
         cache: "no-store",
