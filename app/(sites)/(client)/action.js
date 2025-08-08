@@ -97,7 +97,7 @@ export async function checkDuplicateReports(data) {
 }
 
 export const fetchErrorTypes = async () => {
-    const url = new URL(`/api/error_types`, process.env.NEXT_PUBLIC_DOMAIN);
+    const url = new URL(`/api/error_types`, process.env.INTERNAL_API_URL);
     const res = await fetch(url, {
         method: "GET",
         cache: "no-store",
@@ -107,10 +107,7 @@ export const fetchErrorTypes = async () => {
 };
 
 export const fetchGenericMedicines = async () => {
-    const url = new URL(
-        `/api/generic_medicines`,
-        process.env.NEXT_PUBLIC_DOMAIN
-    );
+    const url = new URL(`/api/generic_medicines`, process.env.INTERNAL_API_URL);
     const res = await fetch(url, {
         method: "GET",
         cache: "no-store",
@@ -120,7 +117,7 @@ export const fetchGenericMedicines = async () => {
 };
 
 export const fetchMedicineRoutes = async () => {
-    const url = new URL(`/api/route_medicines`, process.env.NEXT_PUBLIC_DOMAIN);
+    const url = new URL(`/api/route_medicines`, process.env.INTERNAL_API_URL);
     const res = await fetch(url, {
         method: "GET",
         cache: "no-store",

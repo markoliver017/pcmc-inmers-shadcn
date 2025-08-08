@@ -9,7 +9,7 @@ export default function Preloader() {
     useEffect(() => {
         const timeout = setTimeout(() => {
             setIsLoading(false);
-        }, 1000);
+        }, 500);
 
         return () => clearTimeout(timeout);
     }, []);
@@ -48,7 +48,6 @@ export default function Preloader() {
                             width={500}
                             height={500}
                             alt="Logo"
-                            unoptimized
                         />
                     </motion.div>
                 </motion.div>
