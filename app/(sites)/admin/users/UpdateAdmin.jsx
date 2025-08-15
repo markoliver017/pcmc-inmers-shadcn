@@ -32,7 +32,7 @@ export default function UpdateAdmin({ isOpen, setIsOpen, admin, onSave }) {
                         {/* </DialogDescription> */}
 
                         <Tabs defaultValue="profile" className="w-full mt-5">
-                            <TabsList className="grid w-full grid-cols-2">
+                            <TabsList className="grid w-full grid-cols-2 dark:text-white">
                                 <TabsTrigger value="profile">
                                     Profile
                                 </TabsTrigger>

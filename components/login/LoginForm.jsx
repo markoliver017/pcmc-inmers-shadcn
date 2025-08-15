@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Key, Mail } from "lucide-react";
+import { Eye, EyeOff, Key, Mail } from "lucide-react";
 import Image from "next/image";
 import { IoMdLogIn } from "react-icons/io";
 import { useForm } from "react-hook-form";
@@ -22,6 +22,7 @@ const credentials = {
 export default function LoginForm() {
     const router = useRouter();
 
+    const [showPassword, setShowPassword] = useState(false);
     const [isLoading, setIsLoading] = useState({
         credentials: false,
         github: false,
@@ -136,7 +137,7 @@ export default function LoginForm() {
                     <label className="input validator mt-1">
                         <Key className="h-3" />
                         <input
-                            type="password"
+                            type={showPassword ? "text" : "password"}
                             {...register("password", {
                                 required: "Password is required.",
                                 validate: (value) => {
@@ -151,6 +152,17 @@ export default function LoginForm() {
                             pattern=".{8,}"
                             title="Must be more than 8 characters"
                         />
+                        {!showPassword ? (
+                            <Eye
+                                className="cursor-pointer opacity-50"
+                                onClick={() => setShowPassword(!showPassword)}
+                            />
+                        ) : (
+                            <EyeOff
+                                className="cursor-pointer opacity-50"
+                                onClick={() => setShowPassword(!showPassword)}
+                            />
+                        )}
                     </label>
                     <p className="text-red-500 text-sm">
                         {errors.password && (
