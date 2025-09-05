@@ -15,8 +15,8 @@ import { GitHubLogoIcon } from "@radix-ui/react-icons";
 // import { GrGoogle } from "react-icons/gr";
 
 const credentials = {
-    email: "admin@email.com",
-    password: "password",
+    email: "",
+    password: "",
 };
 
 export default function LoginForm() {
